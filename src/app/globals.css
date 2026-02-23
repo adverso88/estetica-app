@@ -1,0 +1,325 @@
+/* Google Fonts - Inter + Playfair Display */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   DESIGN SYSTEM: CLÍNICA ESTÉTICA
+   Headings: Playfair Display | Body: Inter
+   Estilo: Soft Luxury + Rose Gold + Blush
+   ============================================ */
+
+:root {
+  /* Rosa principal - identidad de clínica estética */
+  --color-primary: #C2556E;
+  --color-primary-50: #FFF0F3;
+  --color-primary-100: #FFD6E0;
+  --color-primary-200: #FFB3C6;
+  --color-primary-300: #FF85A1;
+  --color-primary-400: #E8668A;
+  --color-primary-500: #C2556E;
+  --color-primary-600: #A84260;
+  --color-primary-700: #8D3052;
+  --color-primary-800: #721E44;
+  --color-primary-900: #570D35;
+
+  /* Oro rosado - acento premium */
+  --color-secondary: #D4956A;
+  --color-secondary-50: #FDF6EF;
+  --color-secondary-100: #F8E5CF;
+  --color-secondary-200: #F2CAA0;
+  --color-secondary-300: #EAB071;
+  --color-secondary-400: #DC9A52;
+  --color-secondary-500: #D4956A;
+  --color-secondary-600: #B87D4A;
+  --color-secondary-700: #9A6432;
+  --color-secondary-800: #7B4B1B;
+  --color-secondary-900: #5C3300;
+
+  /* Blush suave - fondos y tarjetas */
+  --color-blush: #FDF0F3;
+  --color-blush-100: #FCE4EC;
+  --color-blush-200: #F8CEDB;
+
+  /* Estado citas */
+  --color-agendada: #F59E0B;
+  --color-confirmada: #3B82F6;
+  --color-en_sala: #8B5CF6;
+  --color-completada: #10B981;
+  --color-no_show: #EF4444;
+  --color-cancelada: #9CA3AF;
+
+  /* Superficies */
+  --color-background: #FDFAFB;
+  --color-surface: #FFFFFF;
+  --color-foreground: #1A0A10;
+  --color-foreground-secondary: #6B5460;
+  --color-foreground-muted: #9E8A93;
+  --color-border: #EEE0E5;
+  --color-border-light: #F7F0F3;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 3px 0 rgb(194 85 110 / 0.08);
+  --shadow-md: 0 4px 12px -1px rgb(194 85 110 / 0.12), 0 2px 6px -2px rgb(194 85 110 / 0.08);
+  --shadow-lg: 0 10px 25px -3px rgb(194 85 110 / 0.15), 0 4px 10px -4px rgb(194 85 110 / 0.1);
+  --shadow-rose: 0 8px 32px 0 rgba(194, 85, 110, 0.18);
+}
+
+html {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  line-height: 1.6;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+::selection {
+  background-color: var(--color-primary-200);
+  color: var(--color-primary-800);
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #F7F0F3; }
+::-webkit-scrollbar-thumb { background: #E8CCD5; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #C2556E; }
+
+h1, h2, h3, h4, h5, h6, .heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+@layer components {
+  /* Card con efecto glass rosa */
+  .card-glass {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: var(--shadow-rose);
+    border-radius: 20px;
+  }
+
+  .card-elevated {
+    background: var(--color-surface);
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border-light);
+  }
+
+  /* Badges de estado de citas */
+  .badge-agendada   { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+  .badge-confirmada { background: #DBEAFE; color: #1E40AF; border: 1px solid #93C5FD; }
+  .badge-en_sala    { background: #EDE9FE; color: #5B21B6; border: 1px solid #C4B5FD; }
+  .badge-completada { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
+  .badge-no_show    { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+  .badge-cancelada  { background: #F3F4F6; color: #4B5563; border: 1px solid #D1D5DB; }
+
+  /* Stat card para dashboard */
+  .stat-card {
+    background: var(--color-surface);
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid var(--color-border-light);
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-primary-400), var(--color-secondary-400));
+    border-radius: 20px 20px 0 0;
+  }
+  .stat-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  /* Sidebar item */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 16px;
+    border-radius: 14px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    color: rgba(255,255,255,0.72);
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.12); color: white; }
+  .nav-item.active {
+    background: rgba(255,255,255,0.16);
+    color: white;
+    border-left: 3px solid #FFB3C6;
+  }
+
+  /* Input field */
+  .input-field {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--color-border);
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: white;
+    color: var(--color-foreground);
+    transition: all 0.2s ease;
+    outline: none;
+  }
+  .input-field:focus {
+    border-color: var(--color-primary-400);
+    box-shadow: 0 0 0 3px rgba(194, 85, 110, 0.12);
+  }
+  .input-field::placeholder { color: var(--color-foreground-muted); }
+
+  /* Botón primario */
+  .btn-primary {
+    background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(194, 85, 110, 0.35);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* Botón secundario */
+  .btn-secondary {
+    background: white;
+    color: var(--color-primary-600);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: 1.5px solid var(--color-primary-300);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-secondary:hover {
+    background: var(--color-blush);
+    border-color: var(--color-primary-400);
+  }
+
+  /* Botón ghost */
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-foreground-secondary);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-ghost:hover { background: var(--color-blush); color: var(--color-primary-600); }
+
+  /* Table row */
+  .table-row {
+    border-bottom: 1px solid var(--color-border-light);
+    transition: background 0.15s;
+  }
+  .table-row:hover { background: var(--color-blush); }
+
+  /* Selector de fecha / pills */
+  .day-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .day-pill.today { background: var(--color-primary-100); color: var(--color-primary-700); font-weight: 700; }
+  .day-pill.selected { background: var(--color-primary-500); color: white; }
+  .day-pill:hover:not(.selected) { background: var(--color-blush-100); }
+}
+
+@layer utilities {
+  .glass-rose {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+  }
+
+  .gradient-rose {
+    background: linear-gradient(135deg, #C2556E 0%, #D4956A 100%);
+  }
+
+  .gradient-rose-soft {
+    background: linear-gradient(135deg, #FDF0F3 0%, #FDF6EF 100%);
+  }
+
+  .text-gradient-rose {
+    background: linear-gradient(135deg, #C2556E 0%, #D4956A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Animaciones */
+  .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+  .animate-slide-up { animation: slideUp 0.3s ease-out; }
+  .animate-scale-in { animation: scaleIn 0.2s ease-out; }
+  .animate-pulse-soft { animation: pulseSoft 2s ease-in-out infinite; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes pulseSoft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+}
