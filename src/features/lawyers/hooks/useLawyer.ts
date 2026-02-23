@@ -1,32 +1,32 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { lawyerService } from '../services/lawyerService'
-import type { LawyerWithProfile } from '@/types/database'
+import { profesionalService } from '../services/lawyerService'
+import type { Profesional } from '@/types/database'
 
 export function useLawyer(id: string) {
-  const [lawyer, setLawyer] = useState<LawyerWithProfile | null>(null)
+  const [profesional, setProfesional] = useState<Profesional | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    async function fetchLawyer() {
+    async function fetchProfesional() {
       try {
         setLoading(true)
         setError(null)
-        const data = await lawyerService.getById(id)
-        setLawyer(data)
+        const data = await profesionalService.getById(id)
+        setProfesional(data)
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error al cargar abogado')
+        setError(err instanceof Error ? err.message : 'Error al cargar profesional')
       } finally {
         setLoading(false)
       }
     }
 
     if (id) {
-      fetchLawyer()
+      fetchProfesional()
     }
   }, [id])
 
-  return { lawyer, loading, error }
+  return { profesional, loading, error }
 }

@@ -1,24 +1,24 @@
 import { createClient } from '@/lib/supabase/client'
-import type { LawyerWithProfile } from '@/types/database'
+import type { Profesional } from '@/types/database'
 
-export interface LawyerFilters {
-  specialty?: string
+export interface ProfesionalFilters {
+  especialidad?: string
   isActive?: boolean
 }
 
-export const lawyerService = {
-  async getAll(filters?: LawyerFilters): Promise<LawyerWithProfile[]> {
+export const profesionalService = {
+  async getAll(filters?: ProfesionalFilters): Promise<Profesional[]> {
     const supabase = createClient()
     let query = supabase
-      .from('lawyers')
+      .from('profesionales')
       .select(`
         *,
         profile:profiles(id, full_name, email, avatar_url, role)
       `)
-      .order('rating', { ascending: false })
+      .order('nombre', { ascending: true })
 
-    if (filters?.specialty) {
-      query = query.eq('specialty', filters.specialty)
+    if (filters?.especialidad) {
+      query = query.eq('especialidad', filters.especialidad)
     }
     if (filters?.isActive !== undefined) {
       query = query.eq('is_active', filters.isActive)
@@ -26,17 +26,16 @@ export const lawyerService = {
 
     const { data, error } = await query
     if (error) throw error
-    return data as LawyerWithProfile[]
+    return data as Profesional[]
   },
 
-  async getById(id: string): Promise<LawyerWithProfile | null> {
+  async getById(id: string): Promise<Profesional | null> {
     const supabase = createClient()
     const { data, error } = await supabase
-      .from('lawyers')
+      .from('profesionales')
       .select(`
         *,
-        profile:profiles(id, full_name, email, avatar_url, role),
-        availability(*)
+        profile:profiles(id, full_name, email, avatar_url, role)
       `)
       .eq('id', id)
       .single()
@@ -45,17 +44,17 @@ export const lawyerService = {
       if (error.code === 'PGRST116') return null
       throw error
     }
-    return data as LawyerWithProfile
+    return data as Profesional
   },
 
   async getSpecialties(): Promise<string[]> {
     const supabase = createClient()
     const { data, error } = await supabase
-      .from('lawyers')
-      .select('specialty')
+      .from('profesionales')
+      .select('especialidad')
       .eq('is_active', true)
 
     if (error) throw error
-    return [...new Set(data.map(l => l.specialty))]
+    return [...new Set(data.filter(l => l.especialidad).map(l => l.especialidad as string))]
   }
 }

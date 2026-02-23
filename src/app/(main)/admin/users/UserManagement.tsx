@@ -11,9 +11,9 @@ interface UserManagementProps {
 }
 
 const ROLES: { value: UserRole; label: string; color: string }[] = [
-  { value: 'admin', label: 'Admin', color: 'bg-secondary-100 text-secondary-700' },
-  { value: 'lawyer', label: 'Abogado', color: 'bg-accent-100 text-accent-700' },
-  { value: 'client', label: 'Cliente', color: 'bg-success-100 text-success-700' },
+  { value: 'admin', label: 'Administrador', color: 'bg-secondary-100 text-secondary-700' },
+  { value: 'profesional', label: 'Profesional', color: 'bg-accent-100 text-accent-700' },
+  { value: 'recepcionista', label: 'Recepcionista/Staff', color: 'bg-success-100 text-success-700' },
 ]
 
 export function UserManagement({ initialUsers }: UserManagementProps) {
@@ -71,11 +71,10 @@ export function UserManagement({ initialUsers }: UserManagementProps) {
         <div className="flex gap-2">
           <button
             onClick={() => setFilter('all')}
-            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-              filter === 'all'
+            className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${filter === 'all'
                 ? 'bg-primary-500 text-white'
                 : 'bg-white border border-border text-foreground-secondary hover:bg-gray-50'
-            }`}
+              }`}
           >
             Todos
           </button>
@@ -83,11 +82,10 @@ export function UserManagement({ initialUsers }: UserManagementProps) {
             <button
               key={role.value}
               onClick={() => setFilter(role.value)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                filter === role.value
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${filter === role.value
                   ? 'bg-primary-500 text-white'
                   : 'bg-white border border-border text-foreground-secondary hover:bg-gray-50'
-              }`}
+                }`}
             >
               {role.label}s
             </button>
@@ -139,11 +137,10 @@ export function UserManagement({ initialUsers }: UserManagementProps) {
                             key={role.value}
                             onClick={() => handleRoleChange(user.id, role.value)}
                             disabled={saving}
-                            className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
-                              user.role === role.value
+                            className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${user.role === role.value
                                 ? `${role.color} ring-2 ring-offset-2 ring-primary-500`
                                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                            }`}
+                              }`}
                           >
                             {role.label}
                           </button>

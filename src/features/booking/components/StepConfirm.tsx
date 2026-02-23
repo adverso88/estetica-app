@@ -6,16 +6,16 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { createAppointment } from '@/actions/appointments'
 import { useBookingStore } from '../store/bookingStore'
-import { lawyerService } from '@/features/lawyers/services/lawyerService'
+import { profesionalService } from '@/features/lawyers/services/lawyerService'
 import { appointmentService } from '@/features/appointments/services/appointmentService'
-import type { LawyerWithProfile, AppointmentType } from '@/types/database'
+import type { Profesional, Tratamiento } from '@/types/database'
 
 export function StepConfirm() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [lawyer, setLawyer] = useState<LawyerWithProfile | null>(null)
-  const [appointmentType, setAppointmentType] = useState<AppointmentType | null>(null)
+  const [profesional, setProfesional] = useState<Profesional | null>(null)
+  const [tratamiento, setTratamiento] = useState<Tratamiento | null>(null)
 
   const {
     lawyerId,
@@ -28,17 +28,17 @@ export function StepConfirm() {
     reset
   } = useBookingStore()
 
-  // Cargar datos del abogado y tipo de cita
+  // Cargar datos del profesional y tratamiento
   useEffect(() => {
     async function loadData() {
       if (lawyerId) {
-        const l = await lawyerService.getById(lawyerId)
-        setLawyer(l)
+        const l = await profesionalService.getById(lawyerId)
+        setProfesional(l)
       }
       if (appointmentTypeId) {
         const types = await appointmentService.getAppointmentTypes()
         const t = types.find(t => t.id === appointmentTypeId)
-        if (t) setAppointmentType(t)
+        if (t) setTratamiento(t)
       }
     }
     loadData()
@@ -74,7 +74,7 @@ export function StepConfirm() {
     }
   }
 
-  if (!lawyer || !appointmentType || !selectedDate || !selectedTime) {
+  if (!profesional || !tratamiento || !selectedDate || !selectedTime) {
     return (
       <div className="text-center py-12">
         <p className="text-foreground-secondary">Cargando resumen...</p>
@@ -82,7 +82,7 @@ export function StepConfirm() {
     )
   }
 
-  const initials = lawyer.profile?.full_name
+  const initials = profesional.profile?.full_name
     ?.split(' ')
     .map(n => n[0])
     .join('')
@@ -98,12 +98,12 @@ export function StepConfirm() {
       {/* Resumen de la cita */}
       <Card className="p-6">
         <div className="space-y-6">
-          {/* Abogado */}
+          {/* Profesional */}
           <div className="flex items-center gap-4">
-            {lawyer.profile?.avatar_url ? (
+            {profesional.profile?.avatar_url ? (
               <img
-                src={lawyer.profile.avatar_url}
-                alt={lawyer.profile.full_name || 'Abogado'}
+                src={profesional.profile.avatar_url}
+                alt={profesional.profile.full_name || 'Profesional'}
                 className="w-16 h-16 rounded-full object-cover"
               />
             ) : (
@@ -113,9 +113,9 @@ export function StepConfirm() {
             )}
             <div>
               <h4 className="font-semibold text-foreground">
-                {lawyer.profile?.full_name}
+                {profesional.profile?.full_name}
               </h4>
-              <p className="text-sm text-accent-500">{lawyer.specialty}</p>
+              <p className="text-sm text-accent-500">{profesional.especialidad}</p>
             </div>
           </div>
 
@@ -124,12 +124,12 @@ export function StepConfirm() {
           {/* Detalles */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-foreground-muted mb-1">Tipo de consulta</p>
-              <p className="font-medium text-foreground">{appointmentType.name}</p>
+              <p className="text-sm text-foreground-muted mb-1">Tipo de tratamiento</p>
+              <p className="font-medium text-foreground">{tratamiento.nombre}</p>
             </div>
             <div>
               <p className="text-sm text-foreground-muted mb-1">Duración</p>
-              <p className="font-medium text-foreground">{appointmentType.duration_minutes} minutos</p>
+              <p className="font-medium text-foreground">{tratamiento.duracion_minutos} minutos</p>
             </div>
             <div>
               <p className="text-sm text-foreground-muted mb-1">Fecha</p>
@@ -152,9 +152,9 @@ export function StepConfirm() {
 
           {/* Precio */}
           <div className="flex items-center justify-between">
-            <span className="text-foreground-secondary">Costo de la consulta</span>
+            <span className="text-foreground-secondary">Costo del servicio</span>
             <span className="text-2xl font-bold text-secondary-600">
-              ${appointmentType.price}
+              ${tratamiento.precio}
             </span>
           </div>
         </div>
@@ -171,7 +171,7 @@ export function StepConfirm() {
             onChange={(e) => setNotes(e.target.value)}
             className="w-full p-3 border rounded-lg resize-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             rows={3}
-            placeholder="Describe brevemente el motivo de tu consulta..."
+            placeholder="Describe brevemente el motivo de tu visita..."
           />
         </label>
       </Card>
@@ -202,7 +202,7 @@ export function StepConfirm() {
             </>
           ) : (
             <>
-              Confirmar Cita
+              Confirmar Tratamiento
               <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>

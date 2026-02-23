@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { lawyerService, type LawyerFilters } from '../services/lawyerService'
-import type { LawyerWithProfile } from '@/types/database'
+import { profesionalService, type ProfesionalFilters } from '../services/lawyerService'
+import type { Profesional } from '@/types/database'
 
-export function useLawyers(filters?: LawyerFilters) {
-  const [lawyers, setLawyers] = useState<LawyerWithProfile[]>([])
+export function useLawyers(filters?: ProfesionalFilters) {
+  const [lawyers, setLawyers] = useState<Profesional[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -14,22 +14,22 @@ export function useLawyers(filters?: LawyerFilters) {
       try {
         setLoading(true)
         setError(null)
-        const data = await lawyerService.getAll({
+        const data = await profesionalService.getAll({
           ...filters,
           isActive: true
         })
         setLawyers(data)
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Error al cargar abogados')
+        setError(err instanceof Error ? err.message : 'Error al cargar profesionales')
       } finally {
         setLoading(false)
       }
     }
 
     fetchLawyers()
-  }, [filters?.specialty])
+  }, [filters?.especialidad])
 
-  return { lawyers, loading, error, refetch: () => {} }
+  return { lawyers, loading, error, refetch: () => { } }
 }
 
 export function useSpecialties() {
@@ -39,7 +39,7 @@ export function useSpecialties() {
   useEffect(() => {
     async function fetchSpecialties() {
       try {
-        const data = await lawyerService.getSpecialties()
+        const data = await profesionalService.getSpecialties()
         setSpecialties(data)
       } catch {
         // Silently fail
