@@ -54,9 +54,8 @@ export function Navbar() {
                     <>
                       <button
                         onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                        className={`flex items-center gap-1 px-4 py-2 text-body-sm font-medium uppercase tracking-wider transition-colors ${
-                          openDropdown === item.label ? 'text-teal-600' : 'text-gray-700 hover:text-teal-600'
-                        }`}
+                        className={`flex items-center gap-1 px-4 py-2 text-body-sm font-medium uppercase tracking-wider transition-colors ${openDropdown === item.label ? 'text-teal-600' : 'text-gray-700 hover:text-teal-600'
+                          }`}
                       >
                         {item.label}
                         <ChevronDownIcon className={`w-4 h-4 transition-transform ${openDropdown === item.label ? 'rotate-180' : ''}`} />
@@ -90,7 +89,7 @@ export function Navbar() {
                 href="/login"
                 className="ml-4 px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-body-sm font-semibold rounded-lg transition-colors"
               >
-                Portal Abogado
+                Portal Profesional
               </Link>
             </div>
 

@@ -4,8 +4,8 @@ import { siteConfig } from '@/config/siteConfig'
 import { SectionHeading } from '@/components/public/SectionHeading'
 
 export const metadata: Metadata = {
-  title: siteConfig.seo.titleTemplate.replace('%s', 'Equipo Legal'),
-  description: `Conozca al equipo legal de ${siteConfig.firmName}. Abogados experimentados en derecho de familia en ${siteConfig.contact.city}, ${siteConfig.contact.country}.`,
+  title: siteConfig.seo.titleTemplate.replace('%s', 'Nuestro Equipo'),
+  description: `Conozca al equipo de especialistas de ${siteConfig.firmName}. Profesionales experimentados en medicina estética en ${siteConfig.contact.city}, ${siteConfig.contact.country}.`,
 }
 
 export default function EquipoPage() {
@@ -16,8 +16,8 @@ export default function EquipoPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             label="Nuestro Equipo"
-            title="Equipo Legal"
-            subtitle={`Conozca a los profesionales comprometidos con proteger los derechos de su familia.`}
+            title="Especialistas en Estética"
+            subtitle={`Conozca a los profesionales comprometidos con realzar su belleza natural.`}
             light
           />
         </div>

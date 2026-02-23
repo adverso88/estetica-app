@@ -24,11 +24,11 @@ export function AboutSection() {
           {/* Content */}
           <div>
             <p className="text-body-sm font-semibold uppercase tracking-widest text-teal-600 mb-3">
-              Derecho de Familia de {firmName.split(' ')[0]}
+              Clínica Estética de {firmName.split(' ')[0]}
             </p>
             <h2 className="font-heading text-display-md md:text-display-lg text-gray-900 mb-6">
-              Somos una firma de{' '}
-              <span className="text-teal-600">derecho de familia</span>{' '}
+              Somos expertos en{' '}
+              <span className="text-teal-600">medicina estética</span>{' '}
               en {siteConfig.contact.city}, {siteConfig.contact.country}.
             </h2>
             <p className="text-body-lg text-foreground-secondary leading-relaxed mb-8">
@@ -50,7 +50,7 @@ export function AboutSection() {
               href="/equipo"
               className="inline-flex items-center mt-6 text-teal-600 hover:text-teal-700 font-semibold transition-colors"
             >
-              Conocer al equipo
+              Conocer a nuestros especialistas
               <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
