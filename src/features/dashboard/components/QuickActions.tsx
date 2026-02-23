@@ -4,14 +4,14 @@ import Link from 'next/link'
 import { Card } from '@/components/ui/card'
 
 interface QuickActionsProps {
-  userRole: 'client' | 'lawyer'
+  userRole: any
 }
 
 export function QuickActions({ userRole }: QuickActionsProps) {
   const clientActions = [
     {
       title: 'Agendar Cita',
-      description: 'Reserva una consulta legal',
+      description: 'Reserva un tratamiento estético',
       href: '/appointments/new',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,8 +21,8 @@ export function QuickActions({ userRole }: QuickActionsProps) {
       color: 'bg-primary-500'
     },
     {
-      title: 'Ver Abogados',
-      description: 'Explora nuestros profesionales',
+      title: 'Ver Profesionales',
+      description: 'Explora nuestros médicos',
       href: '/lawyers',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,8 +47,8 @@ export function QuickActions({ userRole }: QuickActionsProps) {
   const lawyerActions = [
     {
       title: 'Ver Agenda',
-      description: 'Revisa tus citas del día',
-      href: '/appointments',
+      description: 'Revisa tu agenda del día',
+      href: '/agenda',
       icon: (
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -80,7 +80,7 @@ export function QuickActions({ userRole }: QuickActionsProps) {
     }
   ]
 
-  const actions = userRole === 'lawyer' ? lawyerActions : clientActions
+  const actions = userRole === 'profesional' ? lawyerActions : clientActions
 
   return (
     <Card className="p-6">

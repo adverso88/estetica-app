@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { UserManagement } from './UserManagement'
 
 export const metadata = {
-  title: 'Gestión de Usuarios | LexAgenda Admin'
+  title: 'Gestión de Usuarios | EstéticaApp Admin'
 }
 
 export default async function AdminUsersPage() {
@@ -37,8 +37,8 @@ export default async function AdminUsersPage() {
   const stats = {
     total: users?.length || 0,
     admins: users?.filter(u => u.role === 'admin').length || 0,
-    lawyers: users?.filter(u => u.role === 'lawyer').length || 0,
-    clients: users?.filter(u => u.role === 'client').length || 0,
+    profesionales: users?.filter(u => u.role === 'profesional').length || 0,
+    staff: users?.filter(u => u.role === 'recepcionista').length || 0,
   }
 
   return (
@@ -62,12 +62,12 @@ export default async function AdminUsersPage() {
           <p className="text-2xl font-bold text-secondary-600">{stats.admins}</p>
         </Card>
         <Card className="p-4 border-l-4 border-accent-500">
-          <p className="text-sm text-foreground-secondary">Abogados</p>
-          <p className="text-2xl font-bold text-accent-600">{stats.lawyers}</p>
+          <p className="text-sm text-foreground-secondary">Profesionales</p>
+          <p className="text-2xl font-bold text-accent-600">{stats.profesionales}</p>
         </Card>
         <Card className="p-4 border-l-4 border-success-500">
-          <p className="text-sm text-foreground-secondary">Clientes</p>
-          <p className="text-2xl font-bold text-success-600">{stats.clients}</p>
+          <p className="text-sm text-foreground-secondary">Staff / Recepción</p>
+          <p className="text-2xl font-bold text-success-600">{stats.staff}</p>
         </Card>
       </div>
 

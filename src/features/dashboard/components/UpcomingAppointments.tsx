@@ -7,8 +7,8 @@ import { Badge } from '@/components/ui/badge'
 import type { AppointmentWithRelations } from '@/types/database'
 
 interface UpcomingAppointmentsProps {
-  appointments: AppointmentWithRelations[]
-  userRole: 'client' | 'lawyer'
+  appointments: any[]
+  userRole: any
 }
 
 export function UpcomingAppointments({ appointments, userRole }: UpcomingAppointmentsProps) {
@@ -23,7 +23,7 @@ export function UpcomingAppointments({ appointments, userRole }: UpcomingAppoint
             </svg>
           </div>
           <p className="text-foreground-secondary">No tienes citas próximas</p>
-          {userRole === 'client' && (
+          {userRole !== 'profesional' && (
             <Link href="/appointments/new">
               <Button size="sm" className="mt-4">
                 Agendar Cita
@@ -48,9 +48,11 @@ export function UpcomingAppointments({ appointments, userRole }: UpcomingAppoint
 
       <div className="space-y-4">
         {appointments.map((appointment) => {
-          const date = new Date(appointment.scheduled_at)
-          const person = userRole === 'client' ? appointment.lawyer : appointment.client
-          const personName = person?.profile?.full_name || 'Sin nombre'
+          const date = new Date(appointment.fecha_hora || appointment.scheduled_at)
+          const person = userRole === 'profesional' ? appointment.paciente || appointment.client : appointment.profesional || appointment.lawyer
+          const personName = (person as any)?.nombre
+            ? `${(person as any).nombre} ${(person as any).apellido || ''}`
+            : (person as any)?.profile?.full_name || 'Sin nombre'
           const personInitial = personName.charAt(0).toUpperCase()
 
           return (
@@ -70,14 +72,14 @@ export function UpcomingAppointments({ appointments, userRole }: UpcomingAppoint
                       {personName}
                     </p>
                     <Badge
-                      variant={appointment.status === 'confirmed' ? 'confirmed' : 'pending'}
+                      variant={(appointment.estado || appointment.status) === 'confirmada' || appointment.status === 'confirmed' ? 'confirmed' : 'pending'}
                       className="flex-shrink-0"
                     >
-                      {appointment.status === 'confirmed' ? 'Confirmada' : 'Pendiente'}
+                      {(appointment.estado || appointment.status) === 'confirmada' || appointment.status === 'confirmed' ? 'Confirmada' : 'Pendiente'}
                     </Badge>
                   </div>
                   <p className="text-sm text-foreground-secondary">
-                    {appointment.appointment_type?.name}
+                    {appointment.tratamiento?.nombre || appointment.appointment_type?.name}
                   </p>
                 </div>
 

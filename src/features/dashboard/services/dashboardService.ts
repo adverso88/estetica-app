@@ -1,5 +1,38 @@
 import { createClient } from '@/lib/supabase/server'
 
+export interface DashboardStats {
+  upcomingToday: number
+  pendingAppointments: number
+  confirmedAppointments: number
+  completedAppointments: number
+  monthlyRevenue: number
+  lostMoney: number
+}
+
+export interface LawyerAnalytics {
+  id: string
+  name: string
+  monthlyRevenue: number
+  totalAppointments: number
+  completedAppointments: number
+  averageRating: number
+}
+
+export interface AdminDashboardStats {
+  totalLawyers: number
+  activeLawyers: number
+  totalClients: number
+  todayAppointments: number
+  pendingAppointments: number
+  monthlyRevenue: number
+  totalAppointments: number
+  lawyerAnalytics: LawyerAnalytics[]
+}
+
+// Aliases para claridad clínica
+export type ProfesionalAnalytics = LawyerAnalytics
+export type AdminClinicalStats = AdminDashboardStats
+
 export const dashboardService = {
   async getStatsAdmin() {
     const supabase = await createClient()
@@ -49,6 +82,7 @@ export const dashboardService = {
     const costoNoShows = (noShowsMes || 0) * precioPromedio
 
     return {
+      // Campos clínicos directos
       citasHoy: citasHoy || 0,
       citasConfirmadas: citasConfirmadas || 0,
       citasPendientes: citasPendientes || 0,
@@ -58,6 +92,14 @@ export const dashboardService = {
       ingresosMes,
       costoNoShows,
       citasHoyList: (citasHoyData.data || []) as unknown[],
+
+      // Mapeo para DashboardStats (retrocompatibilidad / UI genérica)
+      upcomingToday: citasHoy || 0,
+      pendingAppointments: citasPendientes || 0,
+      confirmedAppointments: citasConfirmadas || 0,
+      completedAppointments: citasCompletadasMes || 0,
+      monthlyRevenue: ingresosMes,
+      lostMoney: costoNoShows
     }
   },
 

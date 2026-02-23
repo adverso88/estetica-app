@@ -1,4 +1,4 @@
-// Email templates for LexAgenda
+// Email templates for EstéticaApp
 
 interface AppointmentEmailData {
   clientName: string
@@ -13,19 +13,19 @@ interface AppointmentEmailData {
 const baseStyles = `
   body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px; }
   .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-  .header { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); padding: 32px; text-align: center; }
+  .header { background: linear-gradient(135deg, #e11d48 0%, #fb7185 100%); padding: 32px; text-align: center; }
   .header h1 { color: #ffffff; margin: 0; font-size: 28px; font-weight: 600; }
   .header p { color: rgba(255,255,255,0.8); margin: 8px 0 0; font-size: 14px; }
   .content { padding: 32px; }
   .greeting { font-size: 18px; color: #1f2937; margin-bottom: 16px; }
   .message { color: #4b5563; line-height: 1.6; margin-bottom: 24px; }
-  .details-card { background-color: #f0f9ff; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
-  .details-card h3 { color: #1e40af; margin: 0 0 16px; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e0f2fe; }
+  .details-card { background-color: #fff1f2; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+  .details-card h3 { color: #be123c; margin: 0 0 16px; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #fecdd3; }
   .detail-row:last-child { border-bottom: none; }
   .detail-label { color: #6b7280; font-size: 14px; }
   .detail-value { color: #1f2937; font-weight: 600; font-size: 14px; }
-  .cta-button { display: inline-block; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 16px 0; }
+  .cta-button { display: inline-block; background: linear-gradient(135deg, #e11d48 0%, #fb7185 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 16px 0; }
   .footer { background-color: #f9fafb; padding: 24px 32px; text-align: center; border-top: 1px solid #e5e7eb; }
   .footer p { color: #6b7280; font-size: 12px; margin: 4px 0; }
   .status-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; }
@@ -40,13 +40,13 @@ export function appointmentCreatedClientEmail(data: AppointmentEmailData): strin
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cita Confirmada - LexAgenda</title>
+  <title>Cita Confirmada - EstéticaApp</title>
   <style>${baseStyles}</style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>LexAgenda</h1>
+      <h1>EstéticaApp</h1>
       <p>Tu cita ha sido agendada</p>
     </div>
     <div class="content">
@@ -59,7 +59,7 @@ export function appointmentCreatedClientEmail(data: AppointmentEmailData): strin
       <div class="details-card">
         <h3>Detalles de la Cita</h3>
         <div class="detail-row">
-          <span class="detail-label">Abogado</span>
+          <span class="detail-label">Profesional</span>
           <span class="detail-value">${data.lawyerName}</span>
         </div>
         <div class="detail-row">
@@ -71,7 +71,7 @@ export function appointmentCreatedClientEmail(data: AppointmentEmailData): strin
           <span class="detail-value">${data.appointmentTime}</span>
         </div>
         <div class="detail-row">
-          <span class="detail-label">Tipo de Consulta</span>
+          <span class="detail-label">Tratamiento</span>
           <span class="detail-value">${data.appointmentType}</span>
         </div>
         <div class="detail-row">
@@ -92,8 +92,8 @@ export function appointmentCreatedClientEmail(data: AppointmentEmailData): strin
       </p>
     </div>
     <div class="footer">
-      <p>Este correo fue enviado autom&aacute;ticamente por LexAgenda</p>
-      <p>&copy; ${new Date().getFullYear()} LexAgenda - Gesti&oacute;n Legal Inteligente</p>
+      <p>Este correo fue enviado autom&aacute;ticamente por EstéticaApp</p>
+      <p>&copy; ${new Date().getFullYear()} EstéticaApp - Expertos en Estética Médica</p>
     </div>
   </div>
 </body>
@@ -108,26 +108,26 @@ export function appointmentCreatedLawyerEmail(data: AppointmentEmailData): strin
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nueva Cita Agendada - LexAgenda</title>
+  <title>Nueva Cita Agendada - EstéticaApp</title>
   <style>${baseStyles}</style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>LexAgenda</h1>
+      <h1>EstéticaApp</h1>
       <p>Nueva cita agendada</p>
     </div>
     <div class="content">
       <p class="greeting">Hola ${data.lawyerName},</p>
       <p class="message">
-        El cliente <strong>${data.clientName}</strong> ha agendado una cita contigo.
+        El paciente <strong>${data.clientName}</strong> ha agendado una cita contigo.
         A continuaci&oacute;n encontrar&aacute;s los detalles.
       </p>
 
       <div class="details-card">
         <h3>Detalles de la Cita</h3>
         <div class="detail-row">
-          <span class="detail-label">Cliente</span>
+          <span class="detail-label">Paciente</span>
           <span class="detail-value">${data.clientName}</span>
         </div>
         <div class="detail-row">
@@ -139,7 +139,7 @@ export function appointmentCreatedLawyerEmail(data: AppointmentEmailData): strin
           <span class="detail-value">${data.appointmentTime}</span>
         </div>
         <div class="detail-row">
-          <span class="detail-label">Tipo de Consulta</span>
+          <span class="detail-label">Tratamiento</span>
           <span class="detail-value">${data.appointmentType}</span>
         </div>
         <div class="detail-row">
@@ -155,8 +155,8 @@ export function appointmentCreatedLawyerEmail(data: AppointmentEmailData): strin
       </div>
     </div>
     <div class="footer">
-      <p>Este correo fue enviado autom&aacute;ticamente por LexAgenda</p>
-      <p>&copy; ${new Date().getFullYear()} LexAgenda - Gesti&oacute;n Legal Inteligente</p>
+      <p>Este correo fue enviado autom&aacute;ticamente por EstéticaApp</p>
+      <p>&copy; ${new Date().getFullYear()} EstéticaApp - Expertos en Estética Médica</p>
     </div>
   </div>
 </body>
@@ -171,29 +171,29 @@ export function appointmentCreatedAdminEmail(data: AppointmentEmailData): string
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nueva Cita en el Sistema - LexAgenda</title>
+  <title>Nueva Cita en el Sistema - EstéticaApp</title>
   <style>${baseStyles}</style>
 </head>
 <body>
   <div class="container">
-    <div class="header" style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);">
-      <h1>LexAgenda Admin</h1>
+    <div class="header" style="background: linear-gradient(135deg, #e11d48 0%, #fb7185 100%);">
+      <h1>EstéticaApp Admin</h1>
       <p>Nueva cita registrada en el sistema</p>
     </div>
     <div class="content">
       <p class="greeting">Notificaci&oacute;n de Administrador</p>
       <p class="message">
-        Se ha registrado una nueva cita en el sistema LexAgenda.
+        Se ha registrado una nueva cita en el sistema EstéticaApp.
       </p>
 
       <div class="details-card">
         <h3>Detalles de la Cita</h3>
         <div class="detail-row">
-          <span class="detail-label">Cliente</span>
+          <span class="detail-label">Paciente</span>
           <span class="detail-value">${data.clientName}</span>
         </div>
         <div class="detail-row">
-          <span class="detail-label">Abogado</span>
+          <span class="detail-label">Profesional</span>
           <span class="detail-value">${data.lawyerName}</span>
         </div>
         <div class="detail-row">
@@ -205,20 +205,20 @@ export function appointmentCreatedAdminEmail(data: AppointmentEmailData): string
           <span class="detail-value">${data.appointmentTime}</span>
         </div>
         <div class="detail-row">
-          <span class="detail-label">Tipo de Consulta</span>
+          <span class="detail-label">Tratamiento</span>
           <span class="detail-value">${data.appointmentType}</span>
         </div>
       </div>
 
       <div style="text-align: center;">
-        <a href="https://saas-factory-theta.vercel.app/admin/analytics" class="cta-button" style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);">
+        <a href="https://saas-factory-theta.vercel.app/admin/analytics" class="cta-button" style="background: linear-gradient(135deg, #e11d48 0%, #fb7185 100%);">
           Ver Analytics
         </a>
       </div>
     </div>
     <div class="footer">
-      <p>Notificaci&oacute;n autom&aacute;tica del sistema LexAgenda</p>
-      <p>&copy; ${new Date().getFullYear()} LexAgenda</p>
+      <p>Notificaci&oacute;n autom&aacute;tica del sistema EstéticaApp</p>
+      <p>&copy; ${new Date().getFullYear()} EstéticaApp</p>
     </div>
   </div>
 </body>
@@ -238,7 +238,7 @@ export function appointmentStatusChangedEmail(
   const config = statusConfig[data.status]
   const recipientName = data.recipientType === 'client' ? data.clientName : data.lawyerName
   const otherParty = data.recipientType === 'client' ? data.lawyerName : data.clientName
-  const otherPartyLabel = data.recipientType === 'client' ? 'Abogado' : 'Cliente'
+  const otherPartyLabel = data.recipientType === 'client' ? 'Profesional' : 'Paciente'
 
   return `
 <!DOCTYPE html>
@@ -246,13 +246,13 @@ export function appointmentStatusChangedEmail(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cita ${config.label} - LexAgenda</title>
+  <title>Cita ${config.label} - EstéticaApp</title>
   <style>${baseStyles}</style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>LexAgenda</h1>
+      <h1>EstéticaApp</h1>
       <p>${config.message}</p>
     </div>
     <div class="content">
@@ -277,7 +277,7 @@ export function appointmentStatusChangedEmail(
           <span class="detail-value">${data.appointmentTime}</span>
         </div>
         <div class="detail-row">
-          <span class="detail-label">Tipo de Consulta</span>
+          <span class="detail-label">Tratamiento</span>
           <span class="detail-value">${data.appointmentType}</span>
         </div>
       </div>
@@ -289,8 +289,8 @@ export function appointmentStatusChangedEmail(
       </div>
     </div>
     <div class="footer">
-      <p>Este correo fue enviado autom&aacute;ticamente por LexAgenda</p>
-      <p>&copy; ${new Date().getFullYear()} LexAgenda - Gesti&oacute;n Legal Inteligente</p>
+      <p>Este correo fue enviado autom&aacute;ticamente por EstéticaApp</p>
+      <p>&copy; ${new Date().getFullYear()} EstéticaApp - Expertos en Estética Médica</p>
     </div>
   </div>
 </body>

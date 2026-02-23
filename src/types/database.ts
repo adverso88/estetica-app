@@ -97,6 +97,9 @@ export interface Cita {
   paciente?: Paciente
   profesional?: Profesional & { profile?: Profile | null }
   tratamiento?: Tratamiento | null
+  // Aliases de retrocompatibilidad
+  lawyer?: Profesional & { profile?: Profile | null }
+  client?: Paciente
 }
 
 export interface HistorialClinico {

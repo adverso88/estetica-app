@@ -10,10 +10,10 @@ interface AdminDashboardProps {
   upcomingAppointments: AppointmentWithRelations[]
 }
 
-// Helper to get client name from profile or direct field (for guest clients)
-const getClientName = (client: AppointmentWithRelations['client'] | undefined): string => {
-  if (!client) return 'Cliente'
-  return client.profile?.full_name || client.full_name || 'Cliente'
+// Helper to get paciente name from profile or direct field (for guest pacientes)
+const getPacienteName = (paciente: AppointmentWithRelations['paciente'] | any): string => {
+  if (!paciente) return 'Paciente'
+  return paciente.nombre ? `${paciente.nombre} ${paciente.apellido || ''}` : paciente.profile?.full_name || paciente.full_name || 'Paciente'
 }
 
 export function AdminDashboard({ stats, upcomingAppointments }: AdminDashboardProps) {
@@ -30,14 +30,14 @@ export function AdminDashboard({ stats, upcomingAppointments }: AdminDashboardPr
       {/* Overview Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard
-          title="Total Abogados"
+          title="Total Profesionales"
           value={stats.totalLawyers}
           subtitle={`${stats.activeLawyers} activos`}
           icon={<UsersIcon className="w-6 h-6 text-primary-500" />}
           color="primary"
         />
         <StatCard
-          title="Total Clientes"
+          title="Total Pacientes"
           value={stats.totalClients}
           subtitle="registrados"
           icon={<UserGroupIcon className="w-6 h-6 text-accent-500" />}
@@ -67,7 +67,7 @@ export function AdminDashboard({ stats, upcomingAppointments }: AdminDashboardPr
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
                 <ChartIcon className="w-5 h-5 text-accent-500" />
-                Rendimiento por Abogado
+                Rendimiento por Profesional
               </h2>
               <span className="text-xs text-foreground-secondary bg-gray-100 px-2 py-1 rounded-full">
                 Este mes
@@ -136,7 +136,7 @@ export function AdminDashboard({ stats, upcomingAppointments }: AdminDashboardPr
           <Link href="/lawyers" className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
             <UsersIcon className="w-8 h-8 text-accent-500" />
             <div>
-              <p className="font-medium text-foreground">Abogados</p>
+              <p className="font-medium text-foreground">Profesionales</p>
               <p className="text-xs text-foreground-secondary">Gestionar equipo</p>
             </div>
           </Link>
@@ -144,14 +144,14 @@ export function AdminDashboard({ stats, upcomingAppointments }: AdminDashboardPr
             <PlusIcon className="w-8 h-8 text-success-500" />
             <div>
               <p className="font-medium text-foreground">Nueva Cita</p>
-              <p className="text-xs text-foreground-secondary">Agendar para un abogado</p>
+              <p className="text-xs text-foreground-secondary">Agendar para un profesional</p>
             </div>
           </Link>
           <Link href="/projects" className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
             <BriefcaseIcon className="w-8 h-8 text-warning-500" />
             <div>
-              <p className="font-medium text-foreground">Proyectos</p>
-              <p className="text-xs text-foreground-secondary">Ver casos activos</p>
+              <p className="font-medium text-foreground">Seguimientos</p>
+              <p className="text-xs text-foreground-secondary">Ver planes activos</p>
             </div>
           </Link>
         </div>
@@ -248,11 +248,11 @@ function LawyerRow({
 
 function AppointmentCard({ appointment }: { appointment: AppointmentWithRelations }) {
   const statusColors: Record<string, string> = {
-    pending: 'bg-warning-100 text-warning-700',
-    confirmed: 'bg-success-100 text-success-700'
+    agendada: 'bg-warning-100 text-warning-700',
+    confirmada: 'bg-success-100 text-success-700'
   }
 
-  const date = new Date(appointment.scheduled_at)
+  const date = new Date(appointment.fecha_hora || (appointment as any).scheduled_at)
 
   return (
     <Link
@@ -262,18 +262,18 @@ function AppointmentCard({ appointment }: { appointment: AppointmentWithRelation
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <p className="font-medium text-foreground truncate">
-            {getClientName(appointment.client)}
+            {getPacienteName(appointment.paciente || (appointment as any).client)}
           </p>
           <p className="text-sm text-foreground-secondary">
-            con {appointment.lawyer?.profile?.full_name || 'Abogado'}
+            con {appointment.profesional?.nombre || appointment.lawyer?.profile?.full_name || 'Profesional'}
           </p>
           <p className="text-xs text-foreground-secondary mt-1">
             {date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })} -{' '}
             {date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
           </p>
         </div>
-        <span className={`text-xs px-2 py-1 rounded-full ${statusColors[appointment.status] || 'bg-gray-100 text-gray-700'}`}>
-          {appointment.status === 'pending' ? 'Pendiente' : 'Confirmada'}
+        <span className={`text-xs px-2 py-1 rounded-full ${statusColors[appointment.estado || (appointment as any).status] || 'bg-gray-100 text-gray-700'}`}>
+          {(appointment.estado || (appointment as any).status) === 'agendada' || (appointment as any).status === 'pending' ? 'Agendada' : 'Confirmada'}
         </span>
       </div>
     </Link>
