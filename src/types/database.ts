@@ -298,3 +298,30 @@ export type UpdateLawyerDTO = Partial<Profesional>
 export type LawyerWithProfile = Profesional
 export type CreateClientDTO = CreatePacienteDTO
 export type ClientProfile = Paciente
+
+// Tipos de Proyectos (Legacy LexAgenda)
+export type ProjectStatus = 'pending' | 'active' | 'on_hold' | 'completed' | 'cancelled'
+export type ProjectPriority = 'low' | 'medium' | 'high' | 'urgent'
+
+export interface Project {
+  id: string
+  title: string
+  description: string | null
+  status: ProjectStatus
+  priority: ProjectPriority
+  budget: number
+  amount_paid: number
+  due_date: string | null
+  case_type: string | null
+  lawyer_id: string | null
+  client_id: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface ProjectWithRelations extends Project {
+  lawyer?: Profesional & { profile?: Profile | null }
+  client?: Paciente & { profile?: Profile | null } & { full_name?: string }
+  paciente?: Paciente
+  profesional?: Profesional & { profile?: Profile | null }
+}

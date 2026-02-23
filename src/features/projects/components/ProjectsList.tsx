@@ -42,10 +42,10 @@ const PRIORITY_COLORS: Record<ProjectPriority, string> = {
   urgent: 'bg-red-100 text-red-700'
 }
 
-// Helper to get client name
-const getClientName = (client: ProjectWithRelations['client'] | undefined): string => {
-  if (!client) return 'Sin cliente'
-  return client.profile?.full_name || client.full_name || 'Sin nombre'
+// Helper to get paciente name
+const getPacienteName = (paciente: ProjectWithRelations['client'] | ProjectWithRelations['paciente']): string => {
+  if (!paciente) return 'Sin paciente'
+  return (paciente as any).nombre ? `${(paciente as any).nombre} ${(paciente as any).apellido || ''}` : (paciente as any).profile?.full_name || (paciente as any).full_name || 'Sin nombre'
 }
 
 export function ProjectsList({ projects, lawyers, userRole }: ProjectsListProps) {
@@ -55,7 +55,8 @@ export function ProjectsList({ projects, lawyers, userRole }: ProjectsListProps)
 
   const filteredProjects = useMemo(() => {
     return projects.filter(project => {
-      if (selectedLawyer !== 'all' && project.lawyer_id !== selectedLawyer) return false
+      const p_id = (project as any).profesional_id || project.lawyer_id
+      if (selectedLawyer !== 'all' && p_id !== selectedLawyer) return false
       if (selectedStatus !== 'all' && project.status !== selectedStatus) return false
       if (searchTerm && !project.title.toLowerCase().includes(searchTerm.toLowerCase())) return false
       return true
@@ -93,16 +94,16 @@ export function ProjectsList({ projects, lawyers, userRole }: ProjectsListProps)
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Proyectos y Casos</h1>
+          <h1 className="text-2xl font-bold text-foreground">Proyectos Estéticos</h1>
           <p className="text-foreground-secondary mt-1">
-            Gestiona los casos legales y su progreso
+            Gestiona los planes de tratamiento a largo plazo
           </p>
         </div>
         {userRole === 'admin' && (
           <Link href="/projects/new">
             <Button>
               <PlusIcon className="w-4 h-4 mr-2" />
-              Nuevo Proyecto
+              Nuevo Plan
             </Button>
           </Link>
         )}
@@ -149,7 +150,7 @@ export function ProjectsList({ projects, lawyers, userRole }: ProjectsListProps)
               onChange={(e) => setSelectedLawyer(e.target.value)}
               className="px-4 py-2 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
             >
-              <option value="all">Todos los abogados</option>
+              <option value="all">Todos los profesionales</option>
               {lawyers.map(l => (
                 <option key={l.id} value={l.id}>{l.profile.full_name}</option>
               ))}
@@ -192,7 +193,7 @@ export function ProjectsList({ projects, lawyers, userRole }: ProjectsListProps)
           <p className="text-foreground-secondary mb-6">
             {searchTerm || selectedStatus !== 'all' || selectedLawyer !== 'all'
               ? 'No se encontraron proyectos con los filtros seleccionados'
-              : 'Comienza creando tu primer proyecto o caso legal'}
+              : 'Comienza creando tu primer plan de tratamiento estético'}
           </p>
           {userRole === 'admin' && (
             <Link href="/projects/new">
@@ -217,11 +218,14 @@ function ProjectCard({
   project: ProjectWithRelations
   formatCurrency: (n: number) => string
   formatDate: (d: string | null) => string
-  userRole: UserRole
+  userRole: any
 }) {
   const progress = project.budget > 0
     ? Math.min((project.amount_paid / project.budget) * 100, 100)
     : 0
+
+  const profesional = project.profesional || project.lawyer
+  const paciente = project.paciente || project.client
 
   return (
     <Card className="p-5 hover:shadow-md transition-shadow">
@@ -246,15 +250,15 @@ function ProjectCard({
         <div className="flex items-center gap-2 text-sm">
           <UserIcon className="w-4 h-4 text-foreground-secondary" />
           <span className="text-foreground-secondary truncate">
-            {getClientName(project.client)}
+            {getPacienteName(paciente)}
           </span>
         </div>
 
-        {userRole === 'admin' && project.lawyer && (
+        {userRole === 'admin' && profesional && (
           <div className="flex items-center gap-2 text-sm">
             <BriefcaseIcon className="w-4 h-4 text-foreground-secondary" />
             <span className="text-foreground-secondary truncate">
-              {project.lawyer.profile?.full_name || 'Abogado'}
+              {profesional.profile?.full_name || profesional.nombre || 'Profesional'}
             </span>
           </div>
         )}
@@ -262,7 +266,7 @@ function ProjectCard({
         <div className="flex items-center gap-2 text-sm">
           <CalendarIcon className="w-4 h-4 text-foreground-secondary" />
           <span className="text-foreground-secondary">
-            {project.due_date ? `Vence: ${formatDate(project.due_date)}` : 'Sin fecha limite'}
+            {project.due_date ? `Vence: ${formatDate(project.due_date)}` : 'Sin fecha límite'}
           </span>
         </div>
       </div>

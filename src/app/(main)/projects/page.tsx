@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { ProjectsList } from '@/features/projects/components/ProjectsList'
 
 export const metadata = {
-  title: 'Proyectos | LexAgenda'
+  title: 'Proyectos | EstéticaApp'
 }
 
 export default async function ProjectsPage() {
@@ -21,10 +21,10 @@ export default async function ProjectsPage() {
     .eq('id', user.id)
     .single()
 
-  const userRole = profile?.role as 'client' | 'lawyer' | 'admin'
+  const userRole = profile?.role as any
 
-  // Clients don't have access to projects view
-  if (userRole === 'client') {
+  // Recepcionistas don't have access to projects view (if applicable)
+  if (userRole === 'recepcionista') {
     redirect('/dashboard')
   }
 
@@ -33,21 +33,21 @@ export default async function ProjectsPage() {
     .from('projects')
     .select(`
       *,
-      lawyer:lawyers(*, profile:profiles(*)),
-      client:clients(id, full_name, email, profile:profiles(*))
+      profesional:profesionales(*, profile:profiles(*)),
+      paciente:pacientes(id, nombre, apellido, email)
     `)
     .order('updated_at', { ascending: false })
 
-  // Lawyers only see their own projects
-  if (userRole === 'lawyer') {
-    const { data: lawyer } = await supabase
-      .from('lawyers')
+  // Profesionales only see their own projects
+  if (userRole === 'profesional') {
+    const { data: profesional } = await supabase
+      .from('profesionales')
       .select('id')
       .eq('user_id', user.id)
       .single()
 
-    if (lawyer) {
-      projectsQuery = projectsQuery.eq('lawyer_id', lawyer.id)
+    if (profesional) {
+      projectsQuery = projectsQuery.eq('profesional_id', profesional.id)
     }
   }
 
@@ -57,7 +57,7 @@ export default async function ProjectsPage() {
   let lawyers: { id: string; profile: { full_name: string } }[] = []
   if (userRole === 'admin') {
     const { data } = await supabase
-      .from('lawyers')
+      .from('profesionales')
       .select('id, profile:profiles(full_name)')
       .eq('is_active', true)
 
