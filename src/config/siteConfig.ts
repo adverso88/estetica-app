@@ -46,7 +46,7 @@ export interface SiteConfig {
     slug: string
     title: string
     shortDescription: string
-    description: string
+    fullDescription: string
     icon: string
   }>
   team: Array<{
@@ -118,21 +118,21 @@ export const siteConfig: SiteConfig = {
       slug: 'armonizacion-facial',
       title: 'Armonización Facial',
       shortDescription: 'Equilibrio y proporción para tu rostro mediante técnicas avanzadas no invasivas.',
-      description: 'Procedimiento personalizado que combina diferentes rellenos y toxinas para mejorar la estética facial sin cirugía.',
+      fullDescription: 'Procedimiento personalizado que combina diferentes rellenos y toxinas para mejorar la estética facial sin cirugía.',
       icon: 'sparkles',
     },
     {
       slug: 'acido-hialuronico',
       title: 'Ácido Hialurónico',
       shortDescription: 'Hidratación profunda y volumen natural para labios y pómulos.',
-      description: 'Tratamientos de rejuvenecimiento y voluminización con los mejores productos del mercado.',
+      fullDescription: 'Tratamientos de rejuvenecimiento y voluminización con los mejores productos del mercado.',
       icon: 'syringe',
     },
     {
       slug: 'botox-premium',
       title: 'Botox Premium',
       shortDescription: 'Suaviza líneas de expresión manteniendo la naturalidad de tu gesto.',
-      description: 'Aplicación experta de toxina botulínica para prevenir y tratar arrugas dinámicas.',
+      fullDescription: 'Aplicación experta de toxina botulínica para prevenir y tratar arrugas dinámicas.',
       icon: 'face-smile',
     },
   ],

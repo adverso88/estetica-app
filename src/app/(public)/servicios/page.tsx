@@ -5,8 +5,8 @@ import { ServiceIcon } from '@/components/public/icons'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: siteConfig.seo.titleTemplate.replace('%s', 'Servicios Legales'),
-  description: `Conozca nuestros servicios de derecho de familia: ${siteConfig.services.map(s => s.title).join(', ')}. ${siteConfig.firmName} en ${siteConfig.contact.city}.`,
+  title: siteConfig.seo.titleTemplate.replace('%s', 'Nuestros Tratamientos'),
+  description: `Descubra nuestros tratamientos de medicina estética: ${siteConfig.services.map(s => s.title).join(', ')}. ${siteConfig.firmName} en ${siteConfig.contact.city}.`,
 }
 
 export default function ServiciosPage() {
@@ -16,9 +16,9 @@ export default function ServiciosPage() {
       <section className="bg-gradient-to-br from-teal-800 to-teal-700 py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
-            label="Áreas de Práctica"
-            title="Nuestros Servicios Legales"
-            subtitle={`En ${siteConfig.firmName} ofrecemos una amplia gama de servicios de derecho de familia para proteger lo que más importa.`}
+            label="Excelencia Médica"
+            title="Tratamientos de Vanguardia"
+            subtitle={`En ${siteConfig.firmName} combinamos ciencia y arte para realzar su belleza natural con los más altos estándares de seguridad.`}
             light
           />
         </div>
@@ -54,7 +54,7 @@ export default function ServiciosPage() {
                       href="/contacto"
                       className="inline-flex items-center bg-teal-600 hover:bg-teal-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors text-body-sm"
                     >
-                      Consultar sobre {service.title}
+                      Solicitar Información sobre {service.title}
                       <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                       </svg>
@@ -75,17 +75,17 @@ export default function ServiciosPage() {
       <section className="bg-teal-900 py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="font-heading text-display-sm text-white mb-4">
-            &iquest;Necesita asesor&iacute;a legal?
+            &iquest;Desea realzar su belleza?
           </h2>
           <p className="text-body-lg text-teal-200 mb-8">
-            Agende su consulta gratuita hoy y permítanos ayudarle a proteger sus derechos.
+            Agende su valoración profesional hoy y descubra el tratamiento ideal para usted.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
               href="/contacto"
               className="bg-secondary-500 hover:bg-secondary-600 text-white font-bold px-8 py-4 rounded-lg transition-colors uppercase tracking-wider text-body-sm"
             >
-              Agendar Consulta
+              Agendar Valoración
             </Link>
             <a
               href={`tel:${siteConfig.contact.phone}`}
