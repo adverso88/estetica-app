@@ -17,14 +17,14 @@ export async function generateMetadata({ params }: PageProps) {
     .single()
 
   if (!lawyer) {
-    return { title: 'Abogado no encontrado | LexAgenda' }
+    return { title: 'Especialista no encontrado | EstéticaApp' }
   }
 
   const profile = Array.isArray(lawyer.profile) ? lawyer.profile[0] : lawyer.profile
 
   return {
-    title: `Agendar cita con ${profile?.full_name || 'Abogado'} | LexAgenda`,
-    description: `Agenda tu consulta legal con ${profile?.full_name}. Especialidad: ${lawyer.specialty}`
+    title: `Agendar cita con ${profile?.full_name || 'Especialista'} | EstéticaApp`,
+    description: `Agenda tu cita estética con ${profile?.full_name}. Especialidad: ${lawyer.specialty}`
   }
 }
 
@@ -61,7 +61,7 @@ export default async function BookLawyerPage({ params }: PageProps) {
     <PublicBookingPage
       lawyer={{
         id: lawyer.id,
-        name: profile?.full_name || 'Abogado',
+        name: profile?.full_name || 'Especialista',
         email: profile?.email || '',
         avatar: profile?.avatar_url,
         specialty: lawyer.specialty,

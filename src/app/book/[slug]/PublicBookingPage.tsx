@@ -159,13 +159,12 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-background to-secondary-50">
       {/* Header */}
-      <div className="bg-primary-500 text-white py-8">
+      <div className="bg-teal-600 text-white py-8">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-2 mb-4">
-            <ScaleIcon className="w-8 h-8 text-secondary-400" />
-            <span className="text-xl font-semibold">LexAgenda</span>
+            <span className="text-xl font-bold tracking-tight">EstéticaApp</span>
           </div>
-          <h1 className="text-3xl font-bold">Agenda tu Consulta Legal</h1>
+          <h1 className="text-3xl font-bold">Agenda tu Cita Estética</h1>
         </div>
       </div>
 
@@ -174,17 +173,17 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
           {/* Lawyer Profile */}
           <Card className="p-6 md:col-span-1 h-fit">
             <div className="text-center">
-              <div className="w-24 h-24 rounded-full bg-primary-100 mx-auto mb-4 flex items-center justify-center text-3xl font-bold text-primary-600">
+              <div className="w-24 h-24 rounded-full bg-teal-100 mx-auto mb-4 flex items-center justify-center text-3xl font-bold text-teal-600">
                 {lawyer.name.charAt(0)}
               </div>
               <h2 className="text-xl font-bold text-foreground">{lawyer.name}</h2>
-              <p className="text-accent-600 font-medium">{lawyer.specialty}</p>
+              <p className="text-teal-600 font-medium">{lawyer.specialty}</p>
 
               <div className="flex items-center justify-center gap-1 mt-2">
                 {[...Array(5)].map((_, i) => (
                   <StarIcon
                     key={i}
-                    className={`w-4 h-4 ${i < Math.floor(lawyer.rating) ? 'text-secondary-500 fill-secondary-500' : 'text-gray-300'}`}
+                    className={`w-4 h-4 ${i < Math.floor(lawyer.rating) ? 'text-amber-400 fill-amber-400' : 'text-gray-300'}`}
                   />
                 ))}
                 <span className="text-sm text-foreground-secondary ml-1">({lawyer.rating})</span>
@@ -193,17 +192,17 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
               <div className="text-sm text-foreground-secondary mt-4 space-y-2">
                 <p className="flex items-center justify-center gap-2">
                   <BriefcaseIcon className="w-4 h-4" />
-                  {lawyer.experience_years} anos de experiencia
+                  {lawyer.experience_years} años de experiencia
                 </p>
                 <p className="flex items-center justify-center gap-2">
                   <CurrencyIcon className="w-4 h-4" />
-                  {formatPrice(lawyer.hourly_rate)}/hora
+                  {formatPrice(lawyer.hourly_rate)}/consulta
                 </p>
               </div>
 
               {lawyer.bio && (
-                <p className="text-sm text-foreground-secondary mt-4 text-left">
-                  {lawyer.bio}
+                <p className="text-sm text-foreground-secondary mt-4 text-left italic">
+                  "{lawyer.bio}"
                 </p>
               )}
             </div>
@@ -215,19 +214,17 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
             <div className="flex items-center justify-between mb-8">
               {['service', 'datetime', 'info', 'confirm'].map((s, i) => (
                 <div key={s} className="flex items-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                    step === s || ['service', 'datetime', 'info', 'confirm'].indexOf(step) > i
-                      ? 'bg-accent-500 text-white'
-                      : 'bg-gray-200 text-foreground-secondary'
-                  }`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step === s || ['service', 'datetime', 'info', 'confirm'].indexOf(step) > i
+                    ? 'bg-teal-500 text-white'
+                    : 'bg-gray-200 text-foreground-secondary'
+                    }`}>
                     {i + 1}
                   </div>
                   {i < 3 && (
-                    <div className={`w-16 h-1 ${
-                      ['service', 'datetime', 'info', 'confirm'].indexOf(step) > i
-                        ? 'bg-accent-500'
-                        : 'bg-gray-200'
-                    }`} />
+                    <div className={`w-16 h-1 ${['service', 'datetime', 'info', 'confirm'].indexOf(step) > i
+                      ? 'bg-teal-500'
+                      : 'bg-gray-200'
+                      }`} />
                   )}
                 </div>
               ))}
@@ -237,7 +234,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
             {step === 'service' && (
               <Card className="p-6">
                 <h3 className="text-lg font-semibold text-foreground mb-4">
-                  1. Selecciona el tipo de consulta
+                  1. Selecciona el tipo de tratamiento
                 </h3>
                 <div className="space-y-3">
                   {appointmentTypes.map(type => (
@@ -247,11 +244,10 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                         setSelectedType(type)
                         setStep('datetime')
                       }}
-                      className={`w-full p-4 rounded-xl border-2 text-left transition-all hover:border-accent-300 ${
-                        selectedType?.id === type.id
-                          ? 'border-accent-500 bg-accent-50'
-                          : 'border-border'
-                      }`}
+                      className={`w-full p-4 rounded-xl border-2 text-left transition-all hover:border-teal-300 ${selectedType?.id === type.id
+                        ? 'border-teal-600 bg-teal-50'
+                        : 'border-border'
+                        }`}
                     >
                       <div className="flex justify-between items-start">
                         <div>
@@ -264,7 +260,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                             {type.duration_minutes} minutos
                           </p>
                         </div>
-                        <span className="text-lg font-bold text-accent-600">
+                        <span className="text-lg font-bold text-teal-600">
                           {formatPrice(type.price)}
                         </span>
                       </div>
@@ -294,11 +290,10 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                           setSelectedDate(date)
                           setSelectedTime(null)
                         }}
-                        className={`p-3 rounded-lg text-center transition-all ${
-                          selectedDate?.toDateString() === date.toDateString()
-                            ? 'bg-accent-500 text-white'
-                            : 'bg-gray-100 hover:bg-gray-200 text-foreground'
-                        }`}
+                        className={`p-3 rounded-lg text-center transition-all ${selectedDate?.toDateString() === date.toDateString()
+                          ? 'bg-teal-600 text-white'
+                          : 'bg-gray-100 hover:bg-gray-200 text-foreground'
+                          }`}
                       >
                         <div className="text-xs">{DAYS[date.getDay()].slice(0, 3)}</div>
                         <div className="text-lg font-bold">{date.getDate()}</div>
@@ -318,11 +313,10 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                         <button
                           key={time}
                           onClick={() => setSelectedTime(time)}
-                          className={`p-2 rounded-lg text-sm font-medium transition-all ${
-                            selectedTime === time
-                              ? 'bg-accent-500 text-white'
-                              : 'bg-gray-100 hover:bg-gray-200 text-foreground'
-                          }`}
+                          className={`p-2 rounded-lg text-sm font-medium transition-all ${selectedTime === time
+                            ? 'bg-teal-600 text-white'
+                            : 'bg-gray-100 hover:bg-gray-200 text-foreground'
+                            }`}
                         >
                           {time}
                         </button>
@@ -333,12 +327,12 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
 
                 <div className="flex gap-3 mt-6">
                   <Button variant="outline" onClick={() => setStep('service')}>
-                    Atras
+                    Atrás
                   </Button>
                   <Button
                     onClick={() => setStep('info')}
                     disabled={!selectedDate || !selectedTime}
-                    className="flex-1"
+                    className="flex-1 bg-teal-600 hover:bg-teal-700"
                   >
                     Continuar
                   </Button>
@@ -361,44 +355,44 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                     <Input
                       value={formData.name}
                       onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                      placeholder="Juan Perez"
+                      placeholder="Ej: Ana María García"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-foreground-secondary mb-1">
-                      Correo electronico *
+                      Correo electrónico *
                     </label>
                     <Input
                       type="email"
                       value={formData.email}
                       onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                      placeholder="juan@ejemplo.com"
+                      placeholder="tu@email.com"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-foreground-secondary mb-1">
-                      Telefono *
+                      Teléfono *
                     </label>
                     <Input
                       type="tel"
                       value={formData.phone}
                       onChange={e => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                      placeholder="+52 55 1234 5678"
+                      placeholder="+57 300 123 4567"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-foreground-secondary mb-1">
-                      Describe brevemente tu caso
+                      Cuéntanos sobre tus objetivos estéticos
                     </label>
                     <textarea
                       value={formData.description}
                       onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                      placeholder="Cuentanos sobre tu situacion legal..."
+                      placeholder="Describe qué resultados esperas o consulta tus dudas..."
                       rows={4}
-                      className="w-full px-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-500"
+                      className="w-full px-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
                     />
                   </div>
 
@@ -407,23 +401,23 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                       type="checkbox"
                       checked={formData.acceptedTerms}
                       onChange={e => setFormData(prev => ({ ...prev, acceptedTerms: e.target.checked }))}
-                      className="mt-1 w-4 h-4 rounded border-border text-accent-500 focus:ring-accent-500"
+                      className="mt-1 w-4 h-4 rounded border-border text-teal-600 focus:ring-teal-500"
                     />
                     <span className="text-sm text-foreground-secondary">
-                      Acepto la <a href="/privacy" className="text-accent-600 underline">Politica de Privacidad</a> y
-                      los <a href="/terms" className="text-accent-600 underline">Terminos de Servicio</a>
+                      Acepto la <a href="/privacidad" className="text-teal-600 underline">Política de Privacidad</a> y
+                      los <a href="/terminos" className="text-teal-600 underline">Términos de Servicio</a>
                     </span>
                   </label>
                 </div>
 
                 <div className="flex gap-3 mt-6">
                   <Button variant="outline" onClick={() => setStep('datetime')}>
-                    Atras
+                    Atrás
                   </Button>
                   <Button
                     onClick={() => setStep('confirm')}
                     disabled={!formData.name || !formData.email || !formData.phone || !formData.acceptedTerms}
-                    className="flex-1"
+                    className="flex-1 bg-teal-600 hover:bg-teal-700"
                   >
                     Revisar Cita
                   </Button>
@@ -440,11 +434,11 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
 
                 <div className="bg-gray-50 rounded-xl p-4 space-y-3 mb-6">
                   <div className="flex justify-between">
-                    <span className="text-foreground-secondary">Servicio</span>
+                    <span className="text-foreground-secondary">Tratamiento</span>
                     <span className="font-medium text-foreground">{selectedType.name}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-foreground-secondary">Abogado</span>
+                    <span className="text-foreground-secondary">Especialista</span>
                     <span className="font-medium text-foreground">{lawyer.name}</span>
                   </div>
                   <div className="flex justify-between">
@@ -456,36 +450,36 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                     <span className="font-medium text-foreground">{selectedTime}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-foreground-secondary">Duracion</span>
+                    <span className="text-foreground-secondary">Duración</span>
                     <span className="font-medium text-foreground">{selectedType.duration_minutes} min</span>
                   </div>
                   <div className="border-t border-border pt-3 flex justify-between">
-                    <span className="font-semibold text-foreground">Total</span>
-                    <span className="text-xl font-bold text-accent-600">{formatPrice(selectedType.price)}</span>
+                    <span className="font-semibold text-foreground">Inversión</span>
+                    <span className="text-xl font-bold text-teal-600">{formatPrice(selectedType.price)}</span>
                   </div>
                 </div>
 
-                <div className="bg-primary-50 rounded-xl p-4 mb-6">
-                  <h4 className="font-medium text-primary-700 mb-2">Tus datos</h4>
-                  <p className="text-sm text-primary-600">{formData.name}</p>
-                  <p className="text-sm text-primary-600">{formData.email}</p>
-                  <p className="text-sm text-primary-600">{formData.phone}</p>
+                <div className="bg-teal-50 rounded-xl p-4 mb-6">
+                  <h4 className="font-medium text-teal-800 mb-2">Tus datos</h4>
+                  <p className="text-sm text-teal-700">{formData.name}</p>
+                  <p className="text-sm text-teal-700">{formData.email}</p>
+                  <p className="text-sm text-teal-700">{formData.phone}</p>
                 </div>
 
                 {error && (
-                  <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-xl mb-4">
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4 text-sm">
                     {error}
                   </div>
                 )}
 
                 <div className="flex gap-3">
                   <Button variant="outline" onClick={() => setStep('info')}>
-                    Atras
+                    Atrás
                   </Button>
                   <Button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="flex-1"
+                    className="flex-1 bg-teal-600 hover:bg-teal-700"
                   >
                     {isSubmitting ? (
                       <>
@@ -502,11 +496,11 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
 
             {/* Success */}
             {step === 'success' && (
-              <Card className="p-8 text-center">
-                <div className="w-20 h-20 bg-success-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                  <CheckCircleIcon className="w-12 h-12 text-success-500" />
+              <Card className="p-8 text-center border-teal-100 shadow-teal-50">
+                <div className="w-20 h-20 bg-green-100 rounded-full mx-auto mb-6 flex items-center justify-center">
+                  <CheckCircleIcon className="w-12 h-12 text-green-500" />
                 </div>
-                <h3 className="text-2xl font-bold text-foreground mb-2">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
                   Cita Confirmada
                 </h3>
                 <p className="text-foreground-secondary mb-6">
@@ -515,7 +509,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
 
                 <div className="bg-gray-50 rounded-xl p-4 mb-6 text-left">
                   <div className="flex justify-between mb-2">
-                    <span className="text-foreground-secondary">Abogado</span>
+                    <span className="text-foreground-secondary">Especialista</span>
                     <span className="font-medium">{lawyer.name}</span>
                   </div>
                   <div className="flex justify-between mb-2">

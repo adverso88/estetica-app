@@ -288,7 +288,22 @@ export interface CreateAppointmentDTO extends Partial<CreateCitaDTO> {
 }
 
 /** @deprecated usar Tratamiento */
-export type AppointmentType = Tratamiento & { name: string }
+export interface AppointmentType extends Partial<Tratamiento> {
+  id: string
+  name: string
+  description: string
+  duration_minutes: number
+  price: number
+}
+
+/** @deprecated usar Disponibilidad */
+export interface Availability {
+  id: string
+  day_of_week: number
+  start_time: string
+  end_time: string
+  is_available: boolean
+}
 
 export interface Lawyer {
   id: string
