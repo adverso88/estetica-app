@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card'
 import { PricingManager } from './PricingManager'
 
 export const metadata = {
-  title: 'Gestión de Precios | LexAgenda Admin'
+  title: 'Gestión de Precios | EstéticaApp Admin'
 }
 
 export default async function AdminPricingPage() {
@@ -28,13 +28,13 @@ export default async function AdminPricingPage() {
 
   // Obtener tipos de cita existentes
   const { data: appointmentTypes } = await supabase
-    .from('appointment_types')
+    .from('tratamientos')
     .select('*')
-    .order('name')
+    .order('nombre')
 
-  // Obtener abogados con sus tarifas
+  // Obtener profesionales con sus tarifas
   const { data: lawyers } = await supabase
-    .from('lawyers')
+    .from('profesionales')
     .select('*, profile:profiles(full_name, email)')
     .order('created_at', { ascending: false })
 
@@ -44,7 +44,7 @@ export default async function AdminPricingPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground">Gestión de Precios</h1>
         <p className="text-foreground-secondary mt-1">
-          Configura tipos de servicio y tarifas por abogado
+          Configura tipos de servicio y tarifas por profesional
         </p>
       </div>
 

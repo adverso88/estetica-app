@@ -4,18 +4,18 @@ import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import type { AppointmentType, Lawyer, Profile } from '@/types/database'
+import type { Tratamiento, Profesional, Profile } from '@/types/database'
 
 interface PricingManagerProps {
-  initialAppointmentTypes: AppointmentType[]
-  initialLawyers: (Lawyer & { profile: Profile })[]
+  initialAppointmentTypes: Tratamiento[]
+  initialLawyers: (Profesional & { profile: Profile })[]
 }
 
 export function PricingManager({ initialAppointmentTypes, initialLawyers }: PricingManagerProps) {
   const [appointmentTypes, setAppointmentTypes] = useState(initialAppointmentTypes)
   const [lawyers, setLawyers] = useState(initialLawyers)
   const [showAddType, setShowAddType] = useState(false)
-  const [editingType, setEditingType] = useState<AppointmentType | null>(null)
+  const [editingType, setEditingType] = useState<Tratamiento | null>(null)
   const [editingLawyer, setEditingLawyer] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
 
@@ -31,16 +31,16 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
 
     const supabase = createClient()
     const typeData = {
-      name: typeName,
-      description: typeDescription || null,
-      duration_minutes: typeDuration,
-      price: typePrice,
+      nombre: typeName,
+      descripcion: typeDescription || null,
+      duracion_minutos: typeDuration,
+      precio: typePrice,
       is_active: true,
     }
 
     if (editingType) {
       const { error } = await supabase
-        .from('appointment_types')
+        .from('tratamientos')
         .update(typeData)
         .eq('id', editingType.id)
 
@@ -51,7 +51,7 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
       }
     } else {
       const { data, error } = await supabase
-        .from('appointment_types')
+        .from('tratamientos')
         .insert(typeData)
         .select()
         .single()
@@ -70,7 +70,7 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
 
     const supabase = createClient()
     const { error } = await supabase
-      .from('appointment_types')
+      .from('tratamientos')
       .delete()
       .eq('id', id)
 
@@ -84,13 +84,13 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
     const supabase = createClient()
 
     const { error } = await supabase
-      .from('lawyers')
-      .update({ hourly_rate: hourlyRate })
+      .from('profesionales')
+      .update({ tarifa_hora: hourlyRate })
       .eq('id', lawyerId)
 
     if (!error) {
       setLawyers(lawyers =>
-        lawyers.map(l => l.id === lawyerId ? { ...l, hourly_rate: hourlyRate } : l)
+        lawyers.map(l => l.id === lawyerId ? { ...l, tarifa_hora: hourlyRate } : l)
       )
     }
 
@@ -107,11 +107,11 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
     setShowAddType(false)
   }
 
-  const startEditType = (type: AppointmentType) => {
-    setTypeName(type.name)
-    setTypeDescription(type.description || '')
-    setTypeDuration(type.duration_minutes)
-    setTypePrice(type.price)
+  const startEditType = (type: Tratamiento) => {
+    setTypeName(type.nombre)
+    setTypeDescription(type.descripcion || '')
+    setTypeDuration(type.duracion_minutos)
+    setTypePrice(type.precio)
     setEditingType(type)
     setShowAddType(true)
   }
@@ -200,14 +200,13 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
             <Card key={type.id} className="p-5 hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="font-semibold text-foreground">{type.name}</h3>
-                  {type.description && (
-                    <p className="text-sm text-foreground-secondary mt-1">{type.description}</p>
+                  <h3 className="font-semibold text-foreground">{type.nombre}</h3>
+                  {type.descripcion && (
+                    <p className="text-sm text-foreground-secondary mt-1">{type.descripcion}</p>
                   )}
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  type.is_active ? 'bg-success-100 text-success-700' : 'bg-gray-100 text-gray-600'
-                }`}>
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${type.is_active ? 'bg-success-100 text-success-700' : 'bg-gray-100 text-gray-600'
+                  }`}>
                   {type.is_active ? 'Activo' : 'Inactivo'}
                 </span>
               </div>
@@ -215,11 +214,11 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
               <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border">
                 <div>
                   <p className="text-xs text-foreground-secondary">Duración</p>
-                  <p className="font-semibold text-foreground">{type.duration_minutes} min</p>
+                  <p className="font-semibold text-foreground">{type.duracion_minutos} min</p>
                 </div>
                 <div>
                   <p className="text-xs text-foreground-secondary">Precio</p>
-                  <p className="font-semibold text-secondary-600">${type.price}</p>
+                  <p className="font-semibold text-secondary-600">${type.precio}</p>
                 </div>
               </div>
 
@@ -247,13 +246,13 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
 
       {/* Tarifas por Abogado */}
       <section>
-        <h2 className="text-lg font-semibold text-foreground mb-4">Tarifas por Abogado</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Tarifas por Profesional</h2>
 
         <Card className="overflow-hidden">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-border">
               <tr>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-foreground-secondary">Abogado</th>
+                <th className="text-left px-6 py-4 text-sm font-semibold text-foreground-secondary">Profesional</th>
                 <th className="text-left px-6 py-4 text-sm font-semibold text-foreground-secondary">Especialidad</th>
                 <th className="text-left px-6 py-4 text-sm font-semibold text-foreground-secondary">Tarifa por Hora</th>
                 <th className="text-left px-6 py-4 text-sm font-semibold text-foreground-secondary">Estado</th>
@@ -276,14 +275,14 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-foreground-secondary">{lawyer.specialty}</td>
+                  <td className="px-6 py-4 text-foreground-secondary">{lawyer.especialidad}</td>
                   <td className="px-6 py-4">
                     {editingLawyer === lawyer.id ? (
                       <div className="flex items-center gap-2">
                         <span className="text-foreground-secondary">$</span>
                         <input
                           type="number"
-                          defaultValue={lawyer.hourly_rate}
+                          defaultValue={lawyer.tarifa_hora}
                           min={0}
                           className="w-24 px-3 py-1 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500"
                           onKeyDown={(e) => {
@@ -295,13 +294,12 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
                         <span className="text-foreground-secondary">/hora</span>
                       </div>
                     ) : (
-                      <span className="font-semibold text-secondary-600">${lawyer.hourly_rate}/hora</span>
+                      <span className="font-semibold text-secondary-600">${lawyer.tarifa_hora}/hora</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      lawyer.is_active ? 'bg-success-100 text-success-700' : 'bg-gray-100 text-gray-600'
-                    }`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${lawyer.is_active ? 'bg-success-100 text-success-700' : 'bg-gray-100 text-gray-600'
+                      }`}>
                       {lawyer.is_active ? 'Activo' : 'Inactivo'}
                     </span>
                   </td>
@@ -323,7 +321,7 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
 
           {lawyers.length === 0 && (
             <div className="p-8 text-center">
-              <p className="text-foreground-secondary">No hay abogados registrados</p>
+              <p className="text-foreground-secondary">No hay profesionales registrados</p>
             </div>
           )}
         </Card>
