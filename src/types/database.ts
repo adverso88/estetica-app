@@ -24,12 +24,17 @@ export interface Profesional {
   foto_url: string | null
   experiencia_anos: number
   tarifa_hora: number
+  rating: number
   is_active: boolean
   created_at: string
   updated_at: string
   // Relaciones
   profile?: Profile | null
   tratamientos?: Tratamiento[]
+  // Aliases de retrocompatibilidad
+  specialty?: string
+  experience_years?: number
+  hourly_rate?: number
 }
 
 export interface Tratamiento {
@@ -178,6 +183,19 @@ export interface Notificacion {
   created_at: string
 }
 
+export type NotificationType =
+  | 'appointment_created'
+  | 'appointment_confirmed'
+  | 'appointment_cancelled'
+  | 'appointment_reminder'
+  | 'payment_received'
+  | 'case_update'
+  | 'document_request'
+  | string
+
+/** @deprecated usar Notificacion */
+export type Notification = Notificacion
+
 // ============================================
 // DTOs
 // ============================================
@@ -266,8 +284,16 @@ export const DIAS_SEMANA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves'
 /** @deprecated usar CitaEstado */
 export type AppointmentStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'no_show'
 
-/** @deprecated usar Cita */
-export type AppointmentWithRelations = Cita
+export type PaymentStatus = 'pending' | 'completed' | 'failed' | 'refunded'
+
+/** Respuesta de la tabla appointments (lawyers/clients); puede usar status o estado según esquema */
+export type AppointmentWithRelations = Cita & {
+  status?: AppointmentStatus
+  scheduled_at?: string
+  client_id?: string
+  lawyer_id?: string
+  appointment_type_id?: string
+}
 
 /** @deprecated usar UpdateCitaDTO */
 export interface UpdateAppointmentDTO {

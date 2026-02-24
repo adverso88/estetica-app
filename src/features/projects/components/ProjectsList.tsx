@@ -94,9 +94,9 @@ export function ProjectsList({ projects, lawyers, userRole }: ProjectsListProps)
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Proyectos Estéticos</h1>
+          <h1 className="text-2xl font-bold text-foreground">Planes de Tratamiento</h1>
           <p className="text-foreground-secondary mt-1">
-            Gestiona los planes de tratamiento a largo plazo
+            Gestiona los procedimientos y seguimientos a largo plazo
           </p>
         </div>
         {userRole === 'admin' && (
@@ -112,7 +112,7 @@ export function ProjectsList({ projects, lawyers, userRole }: ProjectsListProps)
       {/* Stats Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="p-4 bg-primary-50">
-          <p className="text-sm text-foreground-secondary">Total Proyectos</p>
+          <p className="text-sm text-foreground-secondary">Total Planes</p>
           <p className="text-2xl font-bold text-foreground">{filteredProjects.length}</p>
         </Card>
         <Card className="p-4 bg-success-50">
@@ -136,7 +136,7 @@ export function ProjectsList({ projects, lawyers, userRole }: ProjectsListProps)
           <div className="flex-1 min-w-[200px]">
             <input
               type="text"
-              placeholder="Buscar proyecto..."
+              placeholder="Buscar plan o paciente..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-4 py-2 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
@@ -186,10 +186,10 @@ export function ProjectsList({ projects, lawyers, userRole }: ProjectsListProps)
         </div>
       ) : (
         <Card className="p-12 text-center">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-            <BriefcaseIcon className="w-8 h-8 text-gray-400" />
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary-50 flex items-center justify-center">
+            <SparklesIcon className="w-8 h-8 text-primary-400" />
           </div>
-          <h3 className="text-lg font-medium text-foreground mb-2">No hay proyectos</h3>
+          <h3 className="text-lg font-medium text-foreground mb-2">No hay planes activos</h3>
           <p className="text-foreground-secondary mb-6">
             {searchTerm || selectedStatus !== 'all' || selectedLawyer !== 'all'
               ? 'No se encontraron proyectos con los filtros seleccionados'
@@ -256,9 +256,9 @@ function ProjectCard({
 
         {userRole === 'admin' && profesional && (
           <div className="flex items-center gap-2 text-sm">
-            <BriefcaseIcon className="w-4 h-4 text-foreground-secondary" />
+            <UserIcon className="w-4 h-4 text-foreground-secondary" />
             <span className="text-foreground-secondary truncate">
-              {profesional.profile?.full_name || profesional.nombre || 'Profesional'}
+              Dr(a). {profesional.profile?.full_name || profesional.nombre || 'Especialista'}
             </span>
           </div>
         )}
@@ -308,10 +308,10 @@ function PlusIcon({ className }: { className?: string }) {
   )
 }
 
-function BriefcaseIcon({ className }: { className?: string }) {
+function SparklesIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" />
     </svg>
   )
 }

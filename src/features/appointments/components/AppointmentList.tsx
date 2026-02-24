@@ -7,7 +7,7 @@ interface AppointmentListProps {
   appointments: AppointmentWithRelations[]
   loading?: boolean
   emptyMessage?: string
-  userRole?: 'client' | 'lawyer'
+  userRole?: 'paciente' | 'especialista' | any
 }
 
 export function AppointmentList({
@@ -54,24 +54,24 @@ export function AppointmentList({
           key={appointment.id}
           appointment={{
             id: appointment.id,
-            lawyerName: appointment.lawyer?.profile?.full_name || 'Abogado',
-            lawyerSpecialty: appointment.lawyer?.specialty || '',
-            clientName: appointment.client?.profile?.full_name || 'Cliente',
-            date: new Date(appointment.scheduled_at).toLocaleDateString('es-ES', {
+            lawyerName: appointment.profesional?.nombre || 'Especialista',
+            lawyerSpecialty: appointment.profesional?.especialidad || '',
+            clientName: `${appointment.paciente?.nombre} ${appointment.paciente?.apellido}`.trim() || 'Paciente',
+            date: new Date(appointment.fecha_hora).toLocaleDateString('es-ES', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',
               day: 'numeric'
             }),
-            time: new Date(appointment.scheduled_at).toLocaleTimeString('es-ES', {
+            time: new Date(appointment.fecha_hora).toLocaleTimeString('es-ES', {
               hour: '2-digit',
               minute: '2-digit'
             }),
-            status: appointment.status,
-            type: appointment.appointment_type?.name || 'Consulta',
-            avatarUrl: userRole === 'client'
-              ? appointment.lawyer?.profile?.avatar_url
-              : appointment.client?.profile?.avatar_url
+            status: appointment.estado as any,
+            type: appointment.tratamiento?.nombre || 'Tratamiento',
+            avatarUrl: userRole === 'paciente'
+              ? appointment.profesional?.profile?.avatar_url || appointment.profesional?.foto_url
+              : appointment.paciente?.foto_url
           }}
         />
       ))}

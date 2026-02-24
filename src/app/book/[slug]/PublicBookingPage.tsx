@@ -159,7 +159,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-background to-secondary-50">
       {/* Header */}
-      <div className="bg-teal-600 text-white py-8">
+      <div className="bg-primary-600 text-white py-8 shadow-rose">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-xl font-bold tracking-tight">EstéticaApp</span>
@@ -173,11 +173,11 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
           {/* Lawyer Profile */}
           <Card className="p-6 md:col-span-1 h-fit">
             <div className="text-center">
-              <div className="w-24 h-24 rounded-full bg-teal-100 mx-auto mb-4 flex items-center justify-center text-3xl font-bold text-teal-600">
+              <div className="w-24 h-24 rounded-full bg-primary-100 mx-auto mb-4 flex items-center justify-center text-3xl font-bold text-primary-600">
                 {lawyer.name.charAt(0)}
               </div>
               <h2 className="text-xl font-bold text-foreground">{lawyer.name}</h2>
-              <p className="text-teal-600 font-medium">{lawyer.specialty}</p>
+              <p className="text-primary-600 font-medium">{lawyer.specialty}</p>
 
               <div className="flex items-center justify-center gap-1 mt-2">
                 {[...Array(5)].map((_, i) => (
@@ -191,7 +191,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
 
               <div className="text-sm text-foreground-secondary mt-4 space-y-2">
                 <p className="flex items-center justify-center gap-2">
-                  <BriefcaseIcon className="w-4 h-4" />
+                  <SparklesIcon className="w-4 h-4 text-primary-400" />
                   {lawyer.experience_years} años de experiencia
                 </p>
                 <p className="flex items-center justify-center gap-2">
@@ -215,14 +215,14 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
               {['service', 'datetime', 'info', 'confirm'].map((s, i) => (
                 <div key={s} className="flex items-center">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step === s || ['service', 'datetime', 'info', 'confirm'].indexOf(step) > i
-                    ? 'bg-teal-500 text-white'
+                    ? 'bg-primary-500 text-white'
                     : 'bg-gray-200 text-foreground-secondary'
                     }`}>
                     {i + 1}
                   </div>
                   {i < 3 && (
                     <div className={`w-16 h-1 ${['service', 'datetime', 'info', 'confirm'].indexOf(step) > i
-                      ? 'bg-teal-500'
+                      ? 'bg-primary-500'
                       : 'bg-gray-200'
                       }`} />
                   )}
@@ -244,8 +244,8 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                         setSelectedType(type)
                         setStep('datetime')
                       }}
-                      className={`w-full p-4 rounded-xl border-2 text-left transition-all hover:border-teal-300 ${selectedType?.id === type.id
-                        ? 'border-teal-600 bg-teal-50'
+                      className={`w-full p-4 rounded-xl border-2 text-left transition-all hover:border-primary-300 ${selectedType?.id === type.id
+                        ? 'border-primary-600 bg-primary-50 whitespace-pre-wrap shadow-rose-sm'
                         : 'border-border'
                         }`}
                     >
@@ -260,7 +260,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                             {type.duration_minutes} minutos
                           </p>
                         </div>
-                        <span className="text-lg font-bold text-teal-600">
+                        <span className="text-lg font-bold text-primary-600">
                           {formatPrice(type.price)}
                         </span>
                       </div>
@@ -291,7 +291,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                           setSelectedTime(null)
                         }}
                         className={`p-3 rounded-lg text-center transition-all ${selectedDate?.toDateString() === date.toDateString()
-                          ? 'bg-teal-600 text-white'
+                          ? 'bg-primary-600 text-white shadow-rose-sm'
                           : 'bg-gray-100 hover:bg-gray-200 text-foreground'
                           }`}
                       >
@@ -314,7 +314,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                           key={time}
                           onClick={() => setSelectedTime(time)}
                           className={`p-2 rounded-lg text-sm font-medium transition-all ${selectedTime === time
-                            ? 'bg-teal-600 text-white'
+                            ? 'bg-primary-600 text-white shadow-rose-sm'
                             : 'bg-gray-100 hover:bg-gray-200 text-foreground'
                             }`}
                         >
@@ -332,7 +332,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                   <Button
                     onClick={() => setStep('info')}
                     disabled={!selectedDate || !selectedTime}
-                    className="flex-1 bg-teal-600 hover:bg-teal-700"
+                    className="flex-1 bg-primary-600 hover:bg-primary-700"
                   >
                     Continuar
                   </Button>
@@ -392,7 +392,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                       onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
                       placeholder="Describe qué resultados esperas o consulta tus dudas..."
                       rows={4}
-                      className="w-full px-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full px-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                   </div>
 
@@ -401,11 +401,11 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                       type="checkbox"
                       checked={formData.acceptedTerms}
                       onChange={e => setFormData(prev => ({ ...prev, acceptedTerms: e.target.checked }))}
-                      className="mt-1 w-4 h-4 rounded border-border text-teal-600 focus:ring-teal-500"
+                      className="mt-1 w-4 h-4 rounded border-border text-primary-600 focus:ring-primary-500"
                     />
                     <span className="text-sm text-foreground-secondary">
-                      Acepto la <a href="/privacidad" className="text-teal-600 underline">Política de Privacidad</a> y
-                      los <a href="/terminos" className="text-teal-600 underline">Términos de Servicio</a>
+                      Acepto la <a href="/privacidad" className="text-primary-600 underline">Política de Privacidad</a> y
+                      los <a href="/terminos" className="text-primary-600 underline">Términos de Servicio</a>
                     </span>
                   </label>
                 </div>
@@ -417,7 +417,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                   <Button
                     onClick={() => setStep('confirm')}
                     disabled={!formData.name || !formData.email || !formData.phone || !formData.acceptedTerms}
-                    className="flex-1 bg-teal-600 hover:bg-teal-700"
+                    className="flex-1 bg-primary-600 hover:bg-primary-700"
                   >
                     Revisar Cita
                   </Button>
@@ -455,15 +455,15 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                   </div>
                   <div className="border-t border-border pt-3 flex justify-between">
                     <span className="font-semibold text-foreground">Inversión</span>
-                    <span className="text-xl font-bold text-teal-600">{formatPrice(selectedType.price)}</span>
+                    <span className="text-xl font-bold text-primary-600">{formatPrice(selectedType.price)}</span>
                   </div>
                 </div>
 
-                <div className="bg-teal-50 rounded-xl p-4 mb-6">
-                  <h4 className="font-medium text-teal-800 mb-2">Tus datos</h4>
-                  <p className="text-sm text-teal-700">{formData.name}</p>
-                  <p className="text-sm text-teal-700">{formData.email}</p>
-                  <p className="text-sm text-teal-700">{formData.phone}</p>
+                <div className="bg-primary-50 rounded-xl p-4 mb-6">
+                  <h4 className="font-medium text-primary-800 mb-2">Tus datos</h4>
+                  <p className="text-sm text-primary-700">{formData.name}</p>
+                  <p className="text-sm text-primary-700">{formData.email}</p>
+                  <p className="text-sm text-primary-700">{formData.phone}</p>
                 </div>
 
                 {error && (
@@ -479,7 +479,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
                   <Button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="flex-1 bg-teal-600 hover:bg-teal-700"
+                    className="flex-1 bg-primary-600 hover:bg-primary-700 shadow-rose-sm"
                   >
                     {isSubmitting ? (
                       <>
@@ -496,7 +496,7 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
 
             {/* Success */}
             {step === 'success' && (
-              <Card className="p-8 text-center border-teal-100 shadow-teal-50">
+              <Card className="p-8 text-center border-primary-100 shadow-rose-sm">
                 <div className="w-20 h-20 bg-green-100 rounded-full mx-auto mb-6 flex items-center justify-center">
                   <CheckCircleIcon className="w-12 h-12 text-green-500" />
                 </div>
@@ -551,16 +551,18 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
       <footer className="bg-primary-900 text-white py-8 mt-12">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <ScaleIcon className="w-6 h-6 text-secondary-400" />
-            <span className="font-semibold">LexAgenda</span>
+            <svg className="w-6 h-6 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" />
+            </svg>
+            <span className="font-semibold text-white">EstéticaApp</span>
           </div>
           <p className="text-sm text-white/60">
-            Plataforma de agendamiento legal profesional
+            Plataforma de agendamiento estético profesional
           </p>
           <div className="flex justify-center gap-6 mt-4 text-sm text-white/60">
-            <a href="/privacy" className="hover:text-white">Privacidad</a>
-            <a href="/terms" className="hover:text-white">Terminos</a>
-            <a href="/contact" className="hover:text-white">Contacto</a>
+            <a href="/privacidad" className="hover:text-white">Privacidad</a>
+            <a href="/terminos" className="hover:text-white">Términos</a>
+            <a href="/contacto" className="hover:text-white">Contacto</a>
           </div>
         </div>
       </footer>
@@ -569,14 +571,6 @@ export function PublicBookingPage({ lawyer, appointmentTypes }: PublicBookingPag
 }
 
 // Icons
-function ScaleIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
-    </svg>
-  )
-}
-
 function StarIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -585,10 +579,10 @@ function StarIcon({ className }: { className?: string }) {
   )
 }
 
-function BriefcaseIcon({ className }: { className?: string }) {
+function SparklesIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" />
     </svg>
   )
 }

@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { AdminBookingForm } from '@/features/booking/components/AdminBookingForm'
 
 export const metadata = {
-  title: 'Nueva Cita (Admin) | LexAgenda'
+  title: 'Nueva Cita (Admin) | EstéticaApp'
 }
 
 export default async function AdminNewAppointmentPage() {
@@ -57,7 +57,7 @@ export default async function AdminNewAppointmentPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground">Agendar Cita para Colaborador</h1>
         <p className="text-foreground-secondary mt-1">
-          Crea una cita para cualquier abogado del bufete
+          Crea una cita para cualquier especialista del bufete
         </p>
       </div>
 

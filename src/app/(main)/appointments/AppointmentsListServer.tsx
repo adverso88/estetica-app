@@ -2,13 +2,23 @@ import { createClient } from '@/lib/supabase/server'
 import { AppointmentsCalendar } from '@/features/appointments/components/AppointmentsCalendar'
 import type { AppointmentWithRelations } from '@/types/database'
 
+type ServerRole = 'client' | 'lawyer' | 'admin'
+type CalendarRole = 'cliente' | 'especialista' | 'admin'
+
+const roleToCalendar: Record<ServerRole, CalendarRole> = {
+  client: 'cliente',
+  lawyer: 'especialista',
+  admin: 'admin',
+}
+
 interface AppointmentsListServerProps {
   userId: string
-  userRole: 'client' | 'lawyer' | 'admin'
+  userRole: ServerRole
 }
 
 export async function AppointmentsListServer({ userId, userRole }: AppointmentsListServerProps) {
   const supabase = await createClient()
+  const calendarRole = roleToCalendar[userRole]
 
   let query = supabase
     .from('appointments')
@@ -34,7 +44,7 @@ export async function AppointmentsListServer({ userId, userRole }: AppointmentsL
       return (
         <AppointmentsCalendar
           appointments={[]}
-          userRole={userRole}
+          userRole={calendarRole}
         />
       )
     }
@@ -52,7 +62,7 @@ export async function AppointmentsListServer({ userId, userRole }: AppointmentsL
       return (
         <AppointmentsCalendar
           appointments={[]}
-          userRole={userRole}
+          userRole={calendarRole}
         />
       )
     }
@@ -72,7 +82,7 @@ export async function AppointmentsListServer({ userId, userRole }: AppointmentsL
   return (
     <AppointmentsCalendar
       appointments={appointments as AppointmentWithRelations[]}
-      userRole={userRole}
+      userRole={calendarRole}
     />
   )
 }

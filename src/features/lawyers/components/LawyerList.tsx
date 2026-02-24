@@ -8,7 +8,7 @@ interface LawyerListProps {
 }
 
 export function LawyerList({ specialty }: LawyerListProps) {
-  const { lawyers, loading, error } = useLawyers({ specialty })
+  const { lawyers, loading, error } = useLawyers({ especialidad: specialty })
 
   if (loading) {
     return (
@@ -40,12 +40,12 @@ export function LawyerList({ specialty }: LawyerListProps) {
           </svg>
         </div>
         <h3 className="text-lg font-medium text-foreground mb-1">
-          No hay abogados disponibles
+          No hay especialistas disponibles
         </h3>
         <p className="text-foreground-secondary">
           {specialty
-            ? `No encontramos abogados con especialidad en ${specialty}`
-            : 'No hay abogados registrados en el sistema'}
+            ? `No encontramos especialistas con especialidad en ${specialty}`
+            : 'No hay especialistas registrados en el sistema'}
         </p>
       </div>
     )

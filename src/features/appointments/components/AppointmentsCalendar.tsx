@@ -10,7 +10,7 @@ type ViewType = 'week' | 'month'
 
 interface AppointmentsCalendarProps {
   appointments: AppointmentWithRelations[]
-  userRole: 'client' | 'lawyer' | 'admin'
+  userRole: 'cliente' | 'especialista' | 'admin'
 }
 
 const DAYS_SHORT = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
@@ -20,27 +20,29 @@ const MONTHS = [
 ]
 
 const statusColors: Record<string, string> = {
-  pending: 'bg-status-pending border-status-pending',
-  confirmed: 'bg-status-confirmed border-status-confirmed',
-  completed: 'bg-status-completed border-status-completed',
+  agendada: 'bg-status-pending border-status-pending',
+  confirmada: 'bg-status-confirmed border-status-confirmed',
+  en_sala: 'bg-purple-500 border-purple-500',
+  completada: 'bg-status-completed border-status-completed',
   paid: 'bg-status-paid border-status-paid',
-  cancelled: 'bg-status-cancelled border-status-cancelled',
+  cancelada: 'bg-status-cancelled border-status-cancelled',
   no_show: 'bg-gray-400 border-gray-400',
 }
 
 const statusLabels: Record<string, string> = {
-  pending: 'Pendiente',
-  confirmed: 'Confirmada',
-  completed: 'Completada',
+  agendada: 'Agendada',
+  confirmada: 'Confirmada',
+  en_sala: 'En Sala',
+  completada: 'Completada',
   paid: 'Pagada',
-  cancelled: 'Cancelada',
+  cancelada: 'Cancelada',
   no_show: 'No asistió',
 }
 
 // Helper to get client name from profile or direct field (for guest clients)
-const getClientName = (client: AppointmentWithRelations['client'] | undefined): string => {
-  if (!client) return 'Cliente'
-  return client.profile?.full_name || client.full_name || 'Cliente'
+const getClientName = (paciente: AppointmentWithRelations['paciente'] | undefined): string => {
+  if (!paciente) return 'Paciente'
+  return paciente.nombre + ' ' + (paciente.apellido || '')
 }
 
 export function AppointmentsCalendar({ appointments, userRole }: AppointmentsCalendarProps) {
@@ -51,7 +53,7 @@ export function AppointmentsCalendar({ appointments, userRole }: AppointmentsCal
   const appointmentsByDate = useMemo(() => {
     const map = new Map<string, AppointmentWithRelations[]>()
     appointments.forEach(apt => {
-      const dateKey = new Date(apt.scheduled_at).toDateString()
+      const dateKey = new Date(apt.fecha_hora).toDateString()
       if (!map.has(dateKey)) {
         map.set(dateKey, [])
       }
@@ -59,7 +61,7 @@ export function AppointmentsCalendar({ appointments, userRole }: AppointmentsCal
     })
     // Sort appointments by time within each day
     map.forEach((apts) => {
-      apts.sort((a, b) => new Date(a.scheduled_at).getTime() - new Date(b.scheduled_at).getTime())
+      apts.sort((a, b) => new Date(a.fecha_hora).getTime() - new Date(b.fecha_hora).getTime())
     })
     return map
   }, [appointments])
@@ -151,18 +153,18 @@ export function AppointmentsCalendar({ appointments, userRole }: AppointmentsCal
   }
 
   const renderAppointment = (apt: AppointmentWithRelations, compact = false) => {
-    const personName = userRole === 'lawyer'
-      ? getClientName(apt.client)
-      : apt.lawyer?.profile?.full_name || 'Abogado'
+    const personName = userRole === 'especialista'
+      ? getClientName(apt.paciente)
+      : apt.profesional?.nombre || 'Especialista'
 
     if (compact) {
       return (
         <Link
           key={apt.id}
           href={`/appointments/${apt.id}`}
-          className={`block text-xs p-1.5 rounded-lg text-white truncate hover:opacity-90 transition-opacity ${statusColors[apt.status]}`}
+          className={`block text-xs p-1.5 rounded-lg text-white truncate hover:opacity-90 transition-opacity ${statusColors[apt.estado]}`}
         >
-          {formatTime(apt.scheduled_at)} {personName.split(' ')[0]}
+          {formatTime(apt.fecha_hora)} {personName.split(' ')[0]}
         </Link>
       )
     }
@@ -171,22 +173,22 @@ export function AppointmentsCalendar({ appointments, userRole }: AppointmentsCal
       <Link
         key={apt.id}
         href={`/appointments/${apt.id}`}
-        className={`block p-3 rounded-xl border-l-4 bg-white shadow-sm hover:shadow-md transition-all ${statusColors[apt.status]}`}
+        className={`block p-3 rounded-xl border-l-4 bg-white shadow-sm hover:shadow-md transition-all ${statusColors[apt.estado]}`}
       >
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0 flex-1">
             <p className="font-medium text-foreground truncate">{personName}</p>
             <p className="text-sm text-foreground-secondary">
-              {formatTime(apt.scheduled_at)} - {apt.duration_minutes} min
+              {formatTime(apt.fecha_hora)} - {apt.duracion_minutos} min
             </p>
-            {apt.appointment_type && (
+            {apt.tratamiento && (
               <p className="text-xs text-foreground-muted mt-1 truncate">
-                {apt.appointment_type.name}
+                {apt.tratamiento.nombre}
               </p>
             )}
           </div>
-          <Badge variant={apt.status === 'confirmed' ? 'confirmed' : apt.status === 'pending' ? 'pending' : 'cancelled'} className="text-[10px] shrink-0">
-            {statusLabels[apt.status]}
+          <Badge variant={apt.estado === 'confirmada' ? 'confirmed' : apt.estado === 'agendada' ? 'pending' : apt.estado === 'cancelada' ? 'cancelled' : 'default'} className="text-[10px] shrink-0">
+            {statusLabels[apt.estado]}
           </Badge>
         </div>
       </Link>
@@ -227,21 +229,19 @@ export function AppointmentsCalendar({ appointments, userRole }: AppointmentsCal
           <div className="flex bg-white rounded-xl p-1 shadow-sm">
             <button
               onClick={() => setView('week')}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-                view === 'week'
-                  ? 'bg-primary-500 text-white shadow-sm'
-                  : 'text-foreground-secondary hover:text-foreground'
-              }`}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${view === 'week'
+                ? 'bg-primary-500 text-white shadow-sm'
+                : 'text-foreground-secondary hover:text-foreground'
+                }`}
             >
               Semana
             </button>
             <button
               onClick={() => setView('month')}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
-                view === 'month'
-                  ? 'bg-primary-500 text-white shadow-sm'
-                  : 'text-foreground-secondary hover:text-foreground'
-              }`}
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${view === 'month'
+                ? 'bg-primary-500 text-white shadow-sm'
+                : 'text-foreground-secondary hover:text-foreground'
+                }`}
             >
               Mes
             </button>
@@ -312,15 +312,13 @@ export function AppointmentsCalendar({ appointments, userRole }: AppointmentsCal
               return (
                 <div
                   key={idx}
-                  className={`min-h-[120px] p-2 border-b border-r border-border ${
-                    !isCurrentMonth ? 'bg-gray-50/50' : ''
-                  } ${today ? 'bg-accent-50' : ''}`}
+                  className={`min-h-[120px] p-2 border-b border-r border-border ${!isCurrentMonth ? 'bg-gray-50/50' : ''
+                    } ${today ? 'bg-accent-50' : ''}`}
                 >
-                  <div className={`text-sm font-medium mb-1 ${
-                    today
-                      ? 'w-7 h-7 rounded-full bg-accent-500 text-white flex items-center justify-center'
-                      : isCurrentMonth ? 'text-foreground' : 'text-foreground-muted'
-                  }`}>
+                  <div className={`text-sm font-medium mb-1 ${today
+                    ? 'w-7 h-7 rounded-full bg-accent-500 text-white flex items-center justify-center'
+                    : isCurrentMonth ? 'text-foreground' : 'text-foreground-muted'
+                    }`}>
                     {date.getDate()}
                   </div>
 
@@ -349,7 +347,7 @@ export function AppointmentsCalendar({ appointments, userRole }: AppointmentsCal
           <p className="text-foreground-secondary mb-6">
             Las citas aparecerán aquí cuando las programes
           </p>
-          {userRole === 'client' && (
+          {userRole === 'cliente' && (
             <Link
               href="/appointments/new"
               className="inline-flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-xl hover:bg-primary-600 transition-colors"

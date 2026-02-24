@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Paciente, Profesional, Tratamiento } from '@/types/database'
 
-export default function NuevaCitaPage() {
+function NuevaCitaContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const pacienteId = searchParams.get('paciente')
@@ -242,5 +242,13 @@ export default function NuevaCitaPage() {
                 </div>
             </form>
         </div>
+    )
+}
+
+export default function NuevaCitaPage() {
+    return (
+        <Suspense fallback={<div className="p-6 md:p-8 max-w-2xl mx-auto animate-pulse">Cargando...</div>}>
+            <NuevaCitaContent />
+        </Suspense>
     )
 }

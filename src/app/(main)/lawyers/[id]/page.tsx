@@ -62,7 +62,7 @@ export default async function LawyerDetailPage({ params }: Props) {
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Volver a abogados
+          Volver a especialistas
         </Link>
 
         <Card className="p-8">
@@ -72,7 +72,7 @@ export default async function LawyerDetailPage({ params }: Props) {
               {lawyer.profile?.avatar_url ? (
                 <img
                   src={lawyer.profile.avatar_url}
-                  alt={lawyer.profile.full_name || 'Abogado'}
+                  alt={lawyer.profile.full_name || 'Especialista'}
                   className="w-32 h-32 rounded-2xl object-cover"
                 />
               ) : (
@@ -173,7 +173,7 @@ export default async function LawyerDetailPage({ params }: Props) {
             <LawyerQRSection
               lawyerId={lawyer.id}
               lawyerSlug={lawyer.id}
-              lawyerName={lawyer.profile?.full_name || 'Abogado'}
+              lawyerName={lawyer.profile?.full_name || 'Especialista'}
             />
           </div>
         )}

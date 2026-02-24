@@ -56,7 +56,7 @@ export function LawyerQRSection({ lawyerId, lawyerSlug, lawyerName }: LawyerQRSe
     if (navigator.share) {
       await navigator.share({
         title: `Agendar cita con ${lawyerName}`,
-        text: `Agenda tu consulta legal con ${lawyerName}`,
+        text: `Agenda tu cita estética con ${lawyerName}`,
         url: bookingUrl
       })
     } else {

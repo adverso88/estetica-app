@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         resend.emails.send({
           from: EMAIL_CONFIG.from,
           to: clientEmail,
-          subject: `Cita Confirmada con ${lawyerName} - LexAgenda`,
+          subject: `Cita Confirmada con ${lawyerName} - EstéticaApp`,
           html: appointmentCreatedClientEmail(emailData),
         })
       )
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
         resend.emails.send({
           from: EMAIL_CONFIG.from,
           to: lawyerEmail,
-          subject: `Nueva Cita: ${clientName} - ${appointmentDate} - LexAgenda`,
+          subject: `Nueva Cita: ${clientName} - ${appointmentDate} - EstéticaApp`,
           html: appointmentCreatedLawyerEmail(emailData),
         })
       )
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
           resend.emails.send({
             from: EMAIL_CONFIG.from,
             to: ADMIN_EMAIL,
-            subject: `[Admin] Nueva Cita: ${clientName} con ${lawyerName} - LexAgenda`,
+            subject: `[Admin] Nueva Cita: ${clientName} con ${lawyerName} - EstéticaApp`,
             html: appointmentCreatedAdminEmail(emailData),
           })
         )
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
         resend.emails.send({
           from: EMAIL_CONFIG.from,
           to: clientEmail,
-          subject: `Cita ${statusLabels[status]} - LexAgenda`,
+          subject: `Cita ${statusLabels[status]} - EstéticaApp`,
           html: appointmentStatusChangedEmail({ ...emailData, status, recipientType: 'client' }),
         })
       )
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
         resend.emails.send({
           from: EMAIL_CONFIG.from,
           to: lawyerEmail,
-          subject: `Cita ${statusLabels[status]}: ${clientName} - LexAgenda`,
+          subject: `Cita ${statusLabels[status]}: ${clientName} - EstéticaApp`,
           html: appointmentStatusChangedEmail({ ...emailData, status, recipientType: 'lawyer' }),
         })
       )

@@ -3,55 +3,54 @@
 import { useState, useMemo } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import type { AppointmentWithRelations, AppointmentStatus, UserRole } from '@/types/database'
+import type { Cita, CitaEstado, UserRole } from '@/types/database'
 
 type ViewMode = 'day' | 'week' | 'month'
 
 interface CalendarViewProps {
-  initialAppointments: AppointmentWithRelations[]
-  lawyers: { id: string; profile: { full_name: string } }[]
+  initialAppointments: Cita[]
+  lawyers: { id: string; profile: { full_name: string } | null }[]
   userRole: UserRole
 }
 
-const STATUS_COLORS: Record<AppointmentStatus, { bg: string; border: string; text: string }> = {
-  pending: { bg: 'bg-warning-100', border: 'border-l-warning-500', text: 'text-warning-700' },
-  confirmed: { bg: 'bg-accent-100', border: 'border-l-accent-500', text: 'text-accent-700' },
-  completed: { bg: 'bg-success-100', border: 'border-l-success-500', text: 'text-success-700' },
-  paid: { bg: 'bg-purple-100', border: 'border-l-purple-500', text: 'text-purple-700' },
-  cancelled: { bg: 'bg-error-100', border: 'border-l-error-500', text: 'text-error-700' },
+const STATUS_COLORS: Record<CitaEstado, { bg: string; border: string; text: string }> = {
+  agendada: { bg: 'bg-warning-100', border: 'border-l-warning-500', text: 'text-warning-700' },
+  confirmada: { bg: 'bg-accent-100', border: 'border-l-accent-500', text: 'text-accent-700' },
+  en_sala: { bg: 'bg-primary-100', border: 'border-l-primary-500', text: 'text-primary-700' },
+  completada: { bg: 'bg-success-100', border: 'border-l-success-500', text: 'text-success-700' },
   no_show: { bg: 'bg-gray-100', border: 'border-l-gray-500', text: 'text-gray-700' },
+  cancelada: { bg: 'bg-error-100', border: 'border-l-error-500', text: 'text-error-700' },
 }
 
-const STATUS_LABELS: Record<AppointmentStatus, string> = {
-  pending: 'Pendiente',
-  confirmed: 'Confirmada',
-  completed: 'Completada',
-  paid: 'Pagada',
-  cancelled: 'Cancelada',
+const STATUS_LABELS: Record<CitaEstado, string> = {
+  agendada: 'Pendiente',
+  confirmada: 'Confirmada',
+  en_sala: 'En Sala',
+  completada: 'Completada',
   no_show: 'No asistió',
+  cancelada: 'Cancelada',
 }
 
 const DAYS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 const HOURS = Array.from({ length: 12 }, (_, i) => i + 8) // 8am to 7pm
 
-// Helper to get client name from profile or direct field (for guest clients)
-const getClientName = (client: AppointmentWithRelations['client'] | undefined): string => {
-  if (!client) return 'Cliente'
-  return client.profile?.full_name || client.full_name || 'Cliente'
+const getPatientName = (paciente: Cita['paciente'] | undefined): string => {
+  if (!paciente) return 'Paciente'
+  return `${paciente.nombre} ${paciente.apellido}`.trim() || 'Paciente'
 }
 
 export function CalendarView({ initialAppointments, lawyers, userRole }: CalendarViewProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('week')
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedLawyer, setSelectedLawyer] = useState<string>('all')
-  const [selectedStatus, setSelectedStatus] = useState<AppointmentStatus | 'all'>('all')
-  const [selectedAppointment, setSelectedAppointment] = useState<AppointmentWithRelations | null>(null)
+  const [selectedStatus, setSelectedStatus] = useState<CitaEstado | 'all'>('all')
+  const [selectedAppointment, setSelectedAppointment] = useState<Cita | null>(null)
 
   const appointments = useMemo(() => {
     return initialAppointments.filter(apt => {
-      if (selectedLawyer !== 'all' && apt.lawyer_id !== selectedLawyer) return false
-      if (selectedStatus !== 'all' && apt.status !== selectedStatus) return false
+      if (selectedLawyer !== 'all' && apt.profesional_id !== selectedLawyer) return false
+      if (selectedStatus !== 'all' && apt.estado !== selectedStatus) return false
       return true
     })
   }, [initialAppointments, selectedLawyer, selectedStatus])
@@ -98,25 +97,12 @@ export function CalendarView({ initialAppointments, lawyers, userRole }: Calenda
     return days
   }
 
-  const getAppointmentsForDate = (date: Date) => {
-    return appointments.filter(apt => {
-      const aptDate = new Date(apt.scheduled_at)
-      return aptDate.toDateString() === date.toDateString()
-    })
-  }
-
   const getAppointmentsForHour = (date: Date, hour: number) => {
     return appointments.filter(apt => {
-      const aptDate = new Date(apt.scheduled_at)
+      const aptDate = new Date(apt.fecha_hora)
       return aptDate.toDateString() === date.toDateString() && aptDate.getHours() === hour
     })
   }
-
-  const formatTime = (dateStr: string) => {
-    return new Date(dateStr).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
-  }
-
-  const isToday = (date: Date) => date.toDateString() === new Date().toDateString()
 
   return (
     <div className="space-y-6">
@@ -130,33 +116,34 @@ export function CalendarView({ initialAppointments, lawyers, userRole }: Calenda
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          {/* View Toggle */}
           <div className="flex bg-gray-100 rounded-xl p-1">
             {(['day', 'week', 'month'] as ViewMode[]).map(mode => (
               <button
                 key={mode}
                 onClick={() => setViewMode(mode)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  viewMode === mode
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${viewMode === mode
                     ? 'bg-white shadow-sm text-foreground'
                     : 'text-foreground-secondary hover:text-foreground'
-                }`}
+                  }`}
               >
                 {mode === 'day' ? 'Día' : mode === 'week' ? 'Semana' : 'Mes'}
               </button>
             ))}
           </div>
 
-          {/* Navigation */}
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={() => navigate('prev')}>
-              <ChevronLeftIcon className="w-4 h-4" />
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
             </Button>
             <Button variant="outline" size="sm" onClick={goToToday}>
               Hoy
             </Button>
             <Button variant="outline" size="sm" onClick={() => navigate('next')}>
-              <ChevronRightIcon className="w-4 h-4" />
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Button>
           </div>
         </div>
@@ -168,7 +155,7 @@ export function CalendarView({ initialAppointments, lawyers, userRole }: Calenda
           {userRole === 'admin' && lawyers.length > 0 && (
             <div>
               <label className="block text-xs font-medium text-foreground-secondary mb-1">
-                Abogado
+                Especialista
               </label>
               <select
                 value={selectedLawyer}
@@ -177,7 +164,7 @@ export function CalendarView({ initialAppointments, lawyers, userRole }: Calenda
               >
                 <option value="all">Todos</option>
                 {lawyers.map(l => (
-                  <option key={l.id} value={l.id}>{l.profile.full_name}</option>
+                  <option key={l.id} value={l.id}>{l.profile?.full_name}</option>
                 ))}
               </select>
             </div>
@@ -189,7 +176,7 @@ export function CalendarView({ initialAppointments, lawyers, userRole }: Calenda
             </label>
             <select
               value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value as AppointmentStatus | 'all')}
+              onChange={(e) => setSelectedStatus(e.target.value as CitaEstado | 'all')}
               className="px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"
             >
               <option value="all">Todos</option>
@@ -197,18 +184,6 @@ export function CalendarView({ initialAppointments, lawyers, userRole }: Calenda
                 <option key={value} value={value}>{label}</option>
               ))}
             </select>
-          </div>
-
-          {/* Legend */}
-          <div className="flex-1 flex items-end justify-end">
-            <div className="flex flex-wrap gap-3 text-xs">
-              {Object.entries(STATUS_LABELS).slice(0, 4).map(([status, label]) => (
-                <div key={status} className="flex items-center gap-1.5">
-                  <div className={`w-3 h-3 rounded ${STATUS_COLORS[status as AppointmentStatus].bg} border-l-2 ${STATUS_COLORS[status as AppointmentStatus].border}`} />
-                  <span className="text-foreground-secondary">{label}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </Card>
@@ -242,7 +217,6 @@ export function CalendarView({ initialAppointments, lawyers, userRole }: Calenda
         )}
       </Card>
 
-      {/* Appointment Detail Modal */}
       {selectedAppointment && (
         <AppointmentModal
           appointment={selectedAppointment}
@@ -253,19 +227,18 @@ export function CalendarView({ initialAppointments, lawyers, userRole }: Calenda
   )
 }
 
-// Month View Component
 function MonthView({
   days,
   appointments,
   onSelectAppointment
 }: {
   days: (Date | null)[]
-  appointments: AppointmentWithRelations[]
-  onSelectAppointment: (apt: AppointmentWithRelations) => void
+  appointments: Cita[]
+  onSelectAppointment: (apt: Cita) => void
 }) {
   const getAppointmentsForDate = (date: Date) => {
     return appointments.filter(apt => {
-      const aptDate = new Date(apt.scheduled_at)
+      const aptDate = new Date(apt.fecha_hora)
       return aptDate.toDateString() === date.toDateString()
     })
   }
@@ -287,37 +260,30 @@ function MonthView({
           return (
             <div
               key={i}
-              className={`min-h-[120px] p-2 border-b border-r border-border ${
-                !date ? 'bg-gray-50' : ''
-              }`}
+              className={`min-h-[120px] p-2 border-b border-r border-border ${!date ? 'bg-gray-50' : ''
+                }`}
             >
               {date && (
                 <>
-                  <div className={`text-sm font-medium mb-1 ${
-                    isCurrentDay
+                  <div className={`text-sm font-medium mb-1 ${isCurrentDay
                       ? 'w-7 h-7 rounded-full bg-accent-500 text-white flex items-center justify-center'
                       : 'text-foreground'
-                  }`}>
+                    }`}>
                     {date.getDate()}
                   </div>
                   <div className="space-y-1">
                     {dayAppointments.slice(0, 3).map(apt => {
-                      const colors = STATUS_COLORS[apt.status]
+                      const colors = STATUS_COLORS[apt.estado]
                       return (
                         <button
                           key={apt.id}
                           onClick={() => onSelectAppointment(apt)}
                           className={`w-full text-left px-2 py-1 rounded text-xs truncate ${colors.bg} ${colors.text} border-l-2 ${colors.border} hover:opacity-80 transition-opacity`}
                         >
-                          {new Date(apt.scheduled_at).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })} - {getClientName(apt.client)}
+                          {new Date(apt.fecha_hora).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })} - {getPatientName(apt.paciente)}
                         </button>
                       )
                     })}
-                    {dayAppointments.length > 3 && (
-                      <p className="text-xs text-foreground-secondary pl-2">
-                        +{dayAppointments.length - 3} más
-                      </p>
-                    )}
                   </div>
                 </>
               )}
@@ -329,7 +295,6 @@ function MonthView({
   )
 }
 
-// Week View Component
 function WeekView({
   days,
   hours,
@@ -338,13 +303,12 @@ function WeekView({
 }: {
   days: Date[]
   hours: number[]
-  getAppointmentsForHour: (date: Date, hour: number) => AppointmentWithRelations[]
-  onSelectAppointment: (apt: AppointmentWithRelations) => void
+  getAppointmentsForHour: (date: Date, hour: number) => Cita[]
+  onSelectAppointment: (apt: Cita) => void
 }) {
   return (
     <div className="overflow-auto max-h-[600px]">
       <div className="min-w-[800px]">
-        {/* Header */}
         <div className="grid grid-cols-8 border-b border-border sticky top-0 bg-white z-10">
           <div className="p-3 border-r border-border" />
           {days.map((date, i) => {
@@ -360,7 +324,6 @@ function WeekView({
           })}
         </div>
 
-        {/* Time Grid */}
         {hours.map(hour => (
           <div key={hour} className="grid grid-cols-8 border-b border-border min-h-[60px]">
             <div className="p-2 text-xs text-foreground-secondary border-r border-border text-right pr-3">
@@ -371,7 +334,7 @@ function WeekView({
               return (
                 <div key={i} className="p-1 border-r border-border relative">
                   {hourAppointments.map(apt => {
-                    const colors = STATUS_COLORS[apt.status]
+                    const colors = STATUS_COLORS[apt.estado]
                     return (
                       <button
                         key={apt.id}
@@ -379,10 +342,10 @@ function WeekView({
                         className={`w-full text-left px-2 py-1 rounded text-xs ${colors.bg} ${colors.text} border-l-2 ${colors.border} hover:opacity-80 transition-opacity mb-1`}
                       >
                         <div className="font-medium truncate">
-                          {getClientName(apt.client)}
+                          {getPatientName(apt.paciente)}
                         </div>
                         <div className="text-[10px] opacity-75">
-                          {apt.appointment_type?.name || 'Consulta'}
+                          {apt.tratamiento?.nombre || 'Tratamiento'}
                         </div>
                       </button>
                     )
@@ -397,7 +360,6 @@ function WeekView({
   )
 }
 
-// Day View Component
 function DayView({
   date,
   hours,
@@ -406,8 +368,8 @@ function DayView({
 }: {
   date: Date
   hours: number[]
-  getAppointmentsForHour: (date: Date, hour: number) => AppointmentWithRelations[]
-  onSelectAppointment: (apt: AppointmentWithRelations) => void
+  getAppointmentsForHour: (date: Date, hour: number) => Cita[]
+  onSelectAppointment: (apt: Cita) => void
 }) {
   return (
     <div className="overflow-auto max-h-[600px]">
@@ -425,7 +387,7 @@ function DayView({
             </div>
             <div className="flex-1 p-2 space-y-2">
               {hourAppointments.map(apt => {
-                const colors = STATUS_COLORS[apt.status]
+                const colors = STATUS_COLORS[apt.estado]
                 return (
                   <button
                     key={apt.id}
@@ -433,20 +395,15 @@ function DayView({
                     className={`w-full text-left px-4 py-3 rounded-xl ${colors.bg} ${colors.text} border-l-4 ${colors.border} hover:opacity-80 transition-opacity`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold">{getClientName(apt.client)}</span>
-                      <span className="text-sm">{apt.duration_minutes} min</span>
+                      <span className="font-semibold">{getPatientName(apt.paciente)}</span>
+                      <span className="text-sm">{apt.duracion_minutos} min</span>
                     </div>
                     <div className="text-sm opacity-75 mt-1">
-                      {apt.appointment_type?.name || 'Consulta'} - {apt.lawyer?.profile?.full_name || 'Abogado'}
+                      {apt.tratamiento?.nombre || 'Valoración'} - {apt.profesional?.profile?.full_name || 'Especialista'}
                     </div>
                   </button>
                 )
               })}
-              {hourAppointments.length === 0 && (
-                <div className="h-full flex items-center justify-center text-sm text-foreground-muted">
-                  Disponible
-                </div>
-              )}
             </div>
           </div>
         )
@@ -455,62 +412,69 @@ function DayView({
   )
 }
 
-// Appointment Modal
 function AppointmentModal({
   appointment,
   onClose
 }: {
-  appointment: AppointmentWithRelations
+  appointment: Cita
   onClose: () => void
 }) {
-  const colors = STATUS_COLORS[appointment.status]
+  const colors = STATUS_COLORS[appointment.estado]
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <Card className="w-full max-w-md p-6 animate-scale-in" onClick={e => e.stopPropagation()}>
+      <Card className="w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
         <div className="flex items-start justify-between mb-4">
           <div>
             <span className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${colors.bg} ${colors.text}`}>
-              {STATUS_LABELS[appointment.status]}
+              {STATUS_LABELS[appointment.estado]}
             </span>
             <h3 className="text-xl font-bold text-foreground mt-2">
-              {appointment.appointment_type?.name || 'Consulta Legal'}
+              {appointment.tratamiento?.nombre || 'Tratamiento'}
             </h3>
           </div>
           <button onClick={onClose} className="text-foreground-secondary hover:text-foreground">
-            <XIcon className="w-5 h-5" />
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
 
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-              <UserIcon className="w-5 h-5 text-primary-600" />
+            <div className="p-2 rounded-full bg-primary-50">
+              <svg className="w-5 h-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
             </div>
             <div>
-              <p className="text-sm text-foreground-secondary">Cliente</p>
-              <p className="font-medium text-foreground">{getClientName(appointment.client)}</p>
+              <p className="text-sm text-foreground-secondary">Paciente</p>
+              <p className="font-medium text-foreground">{getPatientName(appointment.paciente)}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-accent-100 flex items-center justify-center">
-              <BriefcaseIcon className="w-5 h-5 text-accent-600" />
+            <div className="p-2 rounded-full bg-accent-50">
+              <svg className="w-5 h-5 text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a2 2 0 00-1.96.808l-.447.595a6.78 6.78 0 01-3.128-3.128l.595-.447a2 2 0 00.808-1.96l-.477-2.387a2 2 0 00-.547-1.022L7.708 6.14a2 2 0 00-2.828 0L3.586 7.434a2 2 0 00-.586 1.414 12.001 12.001 0 0012.001 12.001 2 2 0 001.414-.586l1.294-1.294a2 2 0 000-2.828l-1.294-1.294z" />
+              </svg>
             </div>
             <div>
-              <p className="text-sm text-foreground-secondary">Abogado</p>
-              <p className="font-medium text-foreground">{appointment.lawyer?.profile?.full_name}</p>
+              <p className="text-sm text-foreground-secondary">Especialista</p>
+              <p className="font-medium text-foreground">{appointment.profesional?.profile?.full_name || 'Especialista'}</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-secondary-100 flex items-center justify-center">
-              <ClockIcon className="w-5 h-5 text-secondary-600" />
+            <div className="p-2 rounded-full bg-secondary-50">
+              <svg className="w-5 h-5 text-secondary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
             </div>
             <div>
               <p className="text-sm text-foreground-secondary">Fecha y Hora</p>
               <p className="font-medium text-foreground">
-                {new Date(appointment.scheduled_at).toLocaleDateString('es-ES', {
+                {new Date(appointment.fecha_hora).toLocaleDateString('es-ES', {
                   weekday: 'long',
                   day: 'numeric',
                   month: 'long',
@@ -518,20 +482,13 @@ function AppointmentModal({
                 })}
               </p>
               <p className="text-sm text-foreground-secondary">
-                {new Date(appointment.scheduled_at).toLocaleTimeString('es-ES', {
+                {new Date(appointment.fecha_hora).toLocaleTimeString('es-ES', {
                   hour: '2-digit',
                   minute: '2-digit'
-                })} - {appointment.duration_minutes} minutos
+                })} - {appointment.duracion_minutos} minutos
               </p>
             </div>
           </div>
-
-          {appointment.notes && (
-            <div className="p-3 bg-gray-50 rounded-xl">
-              <p className="text-sm text-foreground-secondary mb-1">Notas:</p>
-              <p className="text-sm text-foreground">{appointment.notes}</p>
-            </div>
-          )}
         </div>
 
         <div className="flex gap-3 mt-6">
@@ -544,54 +501,5 @@ function AppointmentModal({
         </div>
       </Card>
     </div>
-  )
-}
-
-// Icons
-function ChevronLeftIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-    </svg>
-  )
-}
-
-function ChevronRightIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-    </svg>
-  )
-}
-
-function XIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  )
-}
-
-function UserIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-    </svg>
-  )
-}
-
-function BriefcaseIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>
-  )
-}
-
-function ClockIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
   )
 }

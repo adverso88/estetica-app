@@ -2,7 +2,7 @@ interface IconProps {
   className?: string
 }
 
-export function ScaleIcon({ className }: IconProps) {
+export function SparklesIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 3v18M3 7l3-4 3 4M15 7l3-4 3 4M3 7v4a3 3 0 006 0V7M15 7v4a3 3 0 006 0V7" />
@@ -222,11 +222,11 @@ export function ServiceIcon({ icon, className }: { icon: string; className?: str
     case 'alimony': return <DollarIcon className={className} />
     case 'mediation': return <HandshakeIcon className={className} />
     case 'domestic-violence': return <AlertIcon className={className} />
-    case 'separation': return <ScaleIcon className={className} />
+    case 'separation': return <SparklesIcon className={className} />
     case 'contracts': return <DocumentIcon className={className} />
     case 'corporate': return <UsersGroupIcon className={className} />
     case 'criminal': return <GavelIcon className={className} />
-    default: return <ScaleIcon className={className} />
+    default: return <SparklesIcon className={className} />
   }
 }
 
@@ -239,6 +239,6 @@ export function ValueIcon({ icon, className }: { icon: string; className?: strin
     case 'experience': return <StarIcon className={className} />
     case 'confidential': return <ShieldIcon className={className} />
     case 'results': return <GavelIcon className={className} />
-    default: return <ScaleIcon className={className} />
+    default: return <SparklesIcon className={className} />
   }
 }

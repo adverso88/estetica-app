@@ -11,11 +11,11 @@ export function ValueCards() {
               key={index}
               className="bg-white rounded-xl shadow-elevated p-8 flex items-start gap-4 hover:shadow-modal transition-shadow duration-300 border border-gray-50"
             >
-              <div className="shrink-0 w-14 h-14 bg-teal-50 rounded-xl flex items-center justify-center">
-                <ValueIcon icon={value.icon} className="w-7 h-7 text-teal-600" />
+              <div className="shrink-0 w-14 h-14 bg-primary-50 rounded-xl flex items-center justify-center">
+                <ValueIcon icon={value.icon} className="w-7 h-7 text-primary-600" />
               </div>
               <div>
-                <p className="text-body-xs text-teal-600 font-semibold uppercase tracking-wider mb-1">
+                <p className="text-body-xs text-primary-600 font-semibold uppercase tracking-wider mb-1">
                   {value.icon === 'respect' ? 'Respeto y dignidad' : value.icon === 'quality' ? 'Cada caso es único' : 'Equipo experimentado'}
                 </p>
                 <h3 className="font-heading text-display-xs text-gray-900 mb-2">{value.title}</h3>

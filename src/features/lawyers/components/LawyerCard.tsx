@@ -26,7 +26,7 @@ export function LawyerCard({ lawyer }: LawyerCardProps) {
         {lawyer.profile?.avatar_url ? (
           <img
             src={lawyer.profile.avatar_url}
-            alt={lawyer.profile.full_name || 'Abogado'}
+            alt={lawyer.profile.full_name || 'Especialista'}
             className="w-16 h-16 rounded-full object-cover"
           />
         ) : (
@@ -46,7 +46,7 @@ export function LawyerCard({ lawyer }: LawyerCardProps) {
           </div>
 
           <p className="text-sm text-accent-500 font-medium mb-2">
-            {lawyer.specialty}
+            {lawyer.especialidad}
           </p>
 
           <div className="flex items-center gap-4 text-sm text-foreground-secondary mb-3">
@@ -56,9 +56,9 @@ export function LawyerCard({ lawyer }: LawyerCardProps) {
               </svg>
               {lawyer.rating.toFixed(1)}
             </span>
-            <span>{lawyer.experience_years} años exp.</span>
+            <span>{lawyer.experiencia_anos} años exp.</span>
             <span className="text-secondary-600 font-medium">
-              ${lawyer.hourly_rate}/hr
+              ${lawyer.tarifa_hora}/hr
             </span>
           </div>
 

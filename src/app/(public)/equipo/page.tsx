@@ -12,7 +12,7 @@ export default function EquipoPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-teal-800 to-teal-700 py-16 lg:py-24">
+      <section className="bg-gradient-to-br from-primary-800 to-primary-700 py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             label="Nuestro Equipo"
@@ -43,7 +43,7 @@ export default function EquipoPage() {
                         className="w-64 h-64 lg:w-80 lg:h-80 rounded-2xl object-cover shadow-elevated"
                       />
                     ) : (
-                      <div className="w-64 h-64 lg:w-80 lg:h-80 rounded-2xl bg-gradient-to-br from-teal-600 to-teal-800 flex items-center justify-center shadow-elevated">
+                      <div className="w-64 h-64 lg:w-80 lg:h-80 rounded-2xl bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-elevated">
                         <span className="text-7xl font-heading font-bold text-white/30">{initials}</span>
                       </div>
                     )}
@@ -54,7 +54,7 @@ export default function EquipoPage() {
                     <h2 className="font-heading text-display-sm md:text-display-md text-gray-900 mb-1">
                       {member.name}
                     </h2>
-                    <p className="text-body-lg text-teal-600 font-semibold mb-4">{member.title}</p>
+                    <p className="text-body-lg text-primary-600 font-semibold mb-4">{member.title}</p>
                     <p className="text-body-md text-foreground-secondary leading-relaxed mb-6">
                       {member.bio}
                     </p>
@@ -64,7 +64,7 @@ export default function EquipoPage() {
                       {member.specialties.map((spec) => (
                         <span
                           key={spec}
-                          className="bg-teal-50 text-teal-700 text-body-xs font-medium px-3 py-1.5 rounded-full"
+                          className="bg-primary-50 text-primary-700 text-body-xs font-medium px-3 py-1.5 rounded-full"
                         >
                           {spec}
                         </span>
@@ -74,7 +74,7 @@ export default function EquipoPage() {
                     {member.bookingSlug && (
                       <Link
                         href={`/book/${member.bookingSlug}`}
-                        className="inline-flex items-center bg-teal-600 hover:bg-teal-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors text-body-sm"
+                        className="inline-flex items-center bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors text-body-sm"
                       >
                         Agendar con {member.name.split(' ')[0]}
                       </Link>
@@ -98,7 +98,7 @@ export default function EquipoPage() {
           </p>
           <Link
             href="/contacto"
-            className="inline-flex items-center bg-teal-600 hover:bg-teal-700 text-white font-bold px-8 py-4 rounded-lg transition-colors uppercase tracking-wider text-body-sm"
+            className="inline-flex items-center bg-primary-600 hover:bg-primary-700 text-white font-bold px-8 py-4 rounded-lg transition-colors uppercase tracking-wider text-body-sm"
           >
             Contáctenos
           </Link>

@@ -13,7 +13,7 @@ export default function ServiciosPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-teal-800 to-teal-700 py-16 lg:py-24">
+      <section className="bg-gradient-to-br from-primary-800 to-primary-700 py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             label="Excelencia Médica"
@@ -37,8 +37,8 @@ export default function ServiciosPage() {
                 <div className={`flex flex-col lg:flex-row gap-10 items-start ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
                   {/* Icon block */}
                   <div className="shrink-0 w-full lg:w-80">
-                    <div className="bg-teal-50 rounded-2xl p-10 flex items-center justify-center">
-                      <ServiceIcon icon={service.icon} className="w-20 h-20 text-teal-600" />
+                    <div className="bg-primary-50 rounded-2xl p-10 flex items-center justify-center">
+                      <ServiceIcon icon={service.icon} className="w-20 h-20 text-primary-600" />
                     </div>
                   </div>
 
@@ -52,7 +52,7 @@ export default function ServiciosPage() {
                     </p>
                     <Link
                       href="/contacto"
-                      className="inline-flex items-center bg-teal-600 hover:bg-teal-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors text-body-sm"
+                      className="inline-flex items-center bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors text-body-sm"
                     >
                       Solicitar Información sobre {service.title}
                       <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -72,12 +72,12 @@ export default function ServiciosPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-teal-900 py-16">
+      <section className="bg-primary-900 py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="font-heading text-display-sm text-white mb-4">
             &iquest;Desea realzar su belleza?
           </h2>
-          <p className="text-body-lg text-teal-200 mb-8">
+          <p className="text-body-lg text-primary-200 mb-8">
             Agende su valoración profesional hoy y descubra el tratamiento ideal para usted.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">

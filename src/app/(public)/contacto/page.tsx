@@ -15,7 +15,7 @@ export default function ContactoPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-teal-800 to-teal-700 py-16 lg:py-24">
+      <section className="bg-gradient-to-br from-primary-800 to-primary-700 py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             label="Contáctenos"
@@ -47,28 +47,28 @@ export default function ContactoPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-                  <MapPinIcon className="w-5 h-5 text-teal-600 mt-0.5 shrink-0" />
+                  <MapPinIcon className="w-5 h-5 text-primary-600 mt-0.5 shrink-0" />
                   <div>
                     <p className="font-semibold text-gray-900 text-body-sm">Dirección</p>
                     <p className="text-body-xs text-foreground-secondary">{contact.address}, {contact.city}, {contact.country}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-                  <PhoneIcon className="w-5 h-5 text-teal-600 mt-0.5 shrink-0" />
+                  <PhoneIcon className="w-5 h-5 text-primary-600 mt-0.5 shrink-0" />
                   <div>
                     <p className="font-semibold text-gray-900 text-body-sm">Teléfono</p>
-                    <a href={`tel:${contact.phone}`} className="text-body-xs text-teal-600 hover:underline">{contact.phoneDisplay}</a>
+                    <a href={`tel:${contact.phone}`} className="text-body-xs text-primary-600 hover:underline">{contact.phoneDisplay}</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-                  <MailIcon className="w-5 h-5 text-teal-600 mt-0.5 shrink-0" />
+                  <MailIcon className="w-5 h-5 text-primary-600 mt-0.5 shrink-0" />
                   <div>
                     <p className="font-semibold text-gray-900 text-body-sm">Email</p>
-                    <a href={`mailto:${contact.email}`} className="text-body-xs text-teal-600 hover:underline">{contact.email}</a>
+                    <a href={`mailto:${contact.email}`} className="text-body-xs text-primary-600 hover:underline">{contact.email}</a>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-                  <ClockIcon className="w-5 h-5 text-teal-600 mt-0.5 shrink-0" />
+                  <ClockIcon className="w-5 h-5 text-primary-600 mt-0.5 shrink-0" />
                   <div>
                     <p className="font-semibold text-gray-900 text-body-sm">Horario</p>
                     <p className="text-body-xs text-foreground-secondary">{contact.officeHours}</p>

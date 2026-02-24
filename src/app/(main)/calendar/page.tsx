@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { CalendarView } from '@/features/calendar/components/CalendarView'
 
 export const metadata = {
-  title: 'Calendario | LexAgenda'
+  title: 'Calendario | EstéticaApp'
 }
 
 export default async function CalendarPage() {
@@ -33,16 +33,28 @@ export default async function CalendarPage() {
   let appointmentsQuery = supabase
     .from('appointments')
     .select(`
-      *,
-      client:clients(id, user_id, full_name, email, phone, address, notes, created_at, updated_at, profile:profiles(*)),
-      lawyer:lawyers(*, profile:profiles(*)),
-      appointment_type:appointment_types(*)
+      id,
+      paciente_id:client_id,
+      profesional_id:lawyer_id,
+      tratamiento_id:appointment_type_id,
+      fecha_hora:scheduled_at,
+      duracion_minutos:duration_minutes,
+      precio:price,
+      estado:status,
+      notas:notes,
+      notas_paciente:notes_client,
+      razon_cancelacion:cancellation_reason,
+      created_at,
+      updated_at,
+      paciente:clients(id, nombre:full_name, email, telefono:phone, notas:notes, profile:profiles(*)),
+      profesional:lawyers(id, nombre:full_name, especialidad:specialty, profile:profiles(*)),
+      tratamiento:appointment_types(id, nombre:name, descripcion:description, duracion_minutos:duration_minutes, precio:price)
     `)
     .gte('scheduled_at', startOfMonth.toISOString())
     .lte('scheduled_at', endOfMonth.toISOString())
     .order('scheduled_at', { ascending: true })
 
-  // Si es abogado, solo sus citas
+  // Si es especialista, solo sus citas
   if (profile?.role === 'lawyer') {
     const { data: lawyer } = await supabase
       .from('lawyers')
@@ -57,7 +69,7 @@ export default async function CalendarPage() {
 
   const { data: appointments } = await appointmentsQuery
 
-  // Obtener lista de abogados para filtro (solo admin)
+  // Obtener lista de especialistas para filtro (solo admin)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let lawyers: any[] = []
   if (profile?.role === 'admin') {
@@ -76,7 +88,7 @@ export default async function CalendarPage() {
   return (
     <div className="p-6 md:p-8">
       <CalendarView
-        initialAppointments={appointments || []}
+        initialAppointments={(appointments as any) || []}
         lawyers={lawyers}
         userRole={profile?.role || 'client'}
       />

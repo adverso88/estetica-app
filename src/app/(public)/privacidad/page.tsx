@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 export default function PrivacidadPage() {
   return (
     <>
-      <section className="bg-gradient-to-br from-teal-800 to-teal-700 py-12 lg:py-16">
+      <section className="bg-gradient-to-br from-primary-800 to-primary-700 py-12 lg:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="font-heading text-display-md text-white">Política de Privacidad</h1>
-          <p className="text-teal-200 mt-2 text-body-md">
+          <p className="text-primary-200 mt-2 text-body-md">
             Última actualización: {new Date(siteConfig.legal.privacyLastUpdated).toLocaleDateString('es', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
@@ -30,7 +30,7 @@ export default function PrivacidadPage() {
                 <li>Nombre completo</li>
                 <li>Dirección de correo electrónico</li>
                 <li>Número de teléfono</li>
-                <li>Información relacionada con su caso legal</li>
+                <li>Información relacionada con su historial o tratamiento estético</li>
               </ul>
             </div>
 
@@ -39,9 +39,9 @@ export default function PrivacidadPage() {
               <p>La información que recopilamos se utiliza para:</p>
               <ul className="list-disc pl-6 mt-3 space-y-2">
                 <li>Responder a sus consultas y solicitudes de información</li>
-                <li>Programar citas y consultas legales</li>
-                <li>Proporcionarle servicios legales profesionales</li>
-                <li>Comunicarnos con usted sobre su caso</li>
+                <li>Programar citas de valoración y procedimientos</li>
+                <li>Proporcionarle servicios estéticos profesionales</li>
+                <li>Comunicarnos con usted sobre sus resultados y seguimiento</li>
                 <li>Mejorar nuestros servicios</li>
               </ul>
             </div>
@@ -49,14 +49,14 @@ export default function PrivacidadPage() {
             <div>
               <h2 className="font-heading text-display-xs text-gray-900 mb-3">3. Protección de Datos</h2>
               <p>
-                Implementamos medidas de seguridad técnicas y organizativas apropiadas para proteger su información personal contra el acceso no autorizado, la alteración, divulgación o destrucción. Toda la información proporcionada está protegida por el secreto profesional abogado-cliente conforme a las leyes de {siteConfig.contact.country}.
+                Implementamos medidas de seguridad técnicas y organizativas apropiadas para proteger su información personal contra el acceso no autorizado, la alteración, divulgación o destrucción. Toda la información proporcionada está protegida por el secreto profesional clínica-paciente conforme a las leyes de {siteConfig.contact.country}.
               </p>
             </div>
 
             <div>
               <h2 className="font-heading text-display-xs text-gray-900 mb-3">4. Confidencialidad</h2>
               <p>
-                Como bufete de abogados, estamos obligados por el deber de confidencialidad profesional. Toda la información que comparta con nosotros está protegida por el privilegio abogado-cliente y no será divulgada a terceros sin su consentimiento expreso, salvo cuando la ley lo requiera.
+                Como centro de estética profesional, estamos obligados por el deber de confidencialidad profesional. Toda la información que comparta con nosotros está protegida y no será divulgada a terceros sin su consentimiento expreso, salvo cuando la ley lo requiera.
               </p>
             </div>
 
@@ -86,8 +86,8 @@ export default function PrivacidadPage() {
               <p className="mt-3">
                 <strong>{siteConfig.firmName}</strong><br />
                 {siteConfig.contact.address}, {siteConfig.contact.city}, {siteConfig.contact.country}<br />
-                Email: <a href={`mailto:${siteConfig.contact.email}`} className="text-teal-600 hover:underline">{siteConfig.contact.email}</a><br />
-                Teléfono: <a href={`tel:${siteConfig.contact.phone}`} className="text-teal-600 hover:underline">{siteConfig.contact.phoneDisplay}</a>
+                Email: <a href={`mailto:${siteConfig.contact.email}`} className="text-primary-600 hover:underline">{siteConfig.contact.email}</a><br />
+                Teléfono: <a href={`tel:${siteConfig.contact.phone}`} className="text-primary-600 hover:underline">{siteConfig.contact.phoneDisplay}</a>
               </p>
             </div>
           </div>

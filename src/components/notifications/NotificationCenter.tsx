@@ -3,13 +3,25 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Card } from '@/components/ui/card'
-import type { Notificacion, NotificationType } from '@/types/database'
+import type { Notificacion } from '@/types/database'
+
+/** Tipos de notificación para iconos y colores (definido aquí para no depender de export en database) */
+const NOTIFICATION_TIPOS = [
+  'appointment_created',
+  'appointment_confirmed',
+  'appointment_cancelled',
+  'appointment_reminder',
+  'payment_received',
+  'case_update',
+  'document_request',
+] as const
+type NotificationTipo = (typeof NOTIFICATION_TIPOS)[number] | string
 
 interface NotificationCenterProps {
   userId: string
 }
 
-const NOTIFICATION_ICONS: Record<NotificationType, React.FC<{ className?: string }>> = {
+const NOTIFICATION_ICONS: Record<NotificationTipo, React.FC<{ className?: string }>> = {
   appointment_created: CalendarPlusIcon,
   appointment_confirmed: CheckCircleIcon,
   appointment_cancelled: XCircleIcon,
@@ -19,7 +31,7 @@ const NOTIFICATION_ICONS: Record<NotificationType, React.FC<{ className?: string
   document_request: FolderIcon,
 }
 
-const NOTIFICATION_COLORS: Record<NotificationType, string> = {
+const NOTIFICATION_COLORS: Record<NotificationTipo, string> = {
   appointment_created: 'bg-accent-100 text-accent-600',
   appointment_confirmed: 'bg-success-100 text-success-600',
   appointment_cancelled: 'bg-error-100 text-error-600',
@@ -165,8 +177,8 @@ export function NotificationCenter({ userId }: NotificationCenterProps) {
               ) : (
                 <div className="divide-y divide-border">
                   {notifications.map(notification => {
-                    const Icon = NOTIFICATION_ICONS[notification.tipo as NotificationType] || BellIcon
-                    const colorClass = NOTIFICATION_COLORS[notification.tipo as NotificationType] || 'bg-gray-100 text-gray-600'
+                    const Icon = NOTIFICATION_ICONS[notification.tipo as NotificationTipo] || BellIcon
+                    const colorClass = NOTIFICATION_COLORS[notification.tipo as NotificationTipo] || 'bg-gray-100 text-gray-600'
 
                     return (
                       <button

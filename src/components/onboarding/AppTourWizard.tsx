@@ -15,7 +15,7 @@ const tourSteps: TourStep[] = [
   {
     target: '[data-tour="sidebar"]',
     title: 'Menu de Navegación',
-    description: 'Desde aquí puedes acceder a todas las secciones de la aplicación. El menú se adapta según tu rol (Admin, Abogado o Cliente).',
+    description: 'Desde aquí puedes acceder a todas las secciones de la aplicación. El menú se adapta según tu rol (Admin, Especialista o Paciente).',
     position: 'right'
   },
   {
@@ -38,14 +38,14 @@ const tourSteps: TourStep[] = [
   },
   {
     target: '[data-tour="lawyers"]',
-    title: 'Abogados',
-    description: 'Directorio de abogados disponibles. Consulta sus especialidades, experiencia y agenda una cita.',
+    title: 'Especialistas',
+    description: 'Directorio de profesionales disponibles. Consulta sus especialidades, trayectoria y agenda una cita de valoración.',
     position: 'right'
   },
   {
     target: '[data-tour="admin-section"]',
     title: 'Administración',
-    description: 'Sección exclusiva para administradores. Gestiona usuarios, precios y consulta analytics del bufete.',
+    description: 'Sección exclusiva para administradores. Gestiona el equipo, servicios y consulta analytics de la clínica.',
     position: 'right'
   },
   {
@@ -177,9 +177,8 @@ export function AppTourWizard({ onComplete, onSkip }: AppTourWizardProps) {
           {tourSteps.map((_, index) => (
             <div
               key={index}
-              className={`h-1 flex-1 rounded-full transition-colors ${
-                index <= currentStep ? 'bg-secondary-500' : 'bg-gray-200'
-              }`}
+              className={`h-1 flex-1 rounded-full transition-colors ${index <= currentStep ? 'bg-secondary-500' : 'bg-gray-200'
+                }`}
             />
           ))}
         </div>

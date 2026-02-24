@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { siteConfig } from '@/config/siteConfig'
-import { ScaleIcon, CloseIcon, ChevronDownIcon, PhoneIcon, MailIcon, MapPinIcon } from './icons'
+import { SparklesIcon, CloseIcon, ChevronDownIcon, PhoneIcon, MailIcon, MapPinIcon } from './icons'
 
 interface MobileMenuProps {
   open: boolean
@@ -25,8 +25,8 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
           <Link href="/" className="flex items-center gap-2" onClick={onClose}>
-            <ScaleIcon className="w-6 h-6 text-teal-600" />
-            <span className="font-heading font-bold text-teal-800">{siteConfig.firmName}</span>
+            <SparklesIcon className="w-6 h-6 text-primary-600" />
+            <span className="font-heading font-bold text-primary-800">{siteConfig.firmName}</span>
           </Link>
           <button onClick={onClose} className="p-2 text-gray-500 hover:text-gray-700" aria-label="Cerrar menú">
             <CloseIcon className="w-5 h-5" />
@@ -52,7 +52,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
                         <Link
                           key={child.label}
                           href={child.href}
-                          className="block py-2 text-body-sm text-gray-600 hover:text-teal-600"
+                          className="block py-2 text-body-sm text-gray-600 hover:text-primary-600"
                           onClick={onClose}
                         >
                           {child.label}
@@ -64,7 +64,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               ) : (
                 <Link
                   href={item.href}
-                  className="block py-3.5 text-body-md font-medium text-gray-800 hover:text-teal-600"
+                  className="block py-3.5 text-body-md font-medium text-gray-800 hover:text-primary-600"
                   onClick={onClose}
                 >
                   {item.label}
@@ -75,17 +75,17 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         </nav>
 
         {/* Contact info */}
-        <div className="p-4 mx-4 mb-4 bg-teal-50 rounded-xl space-y-3">
-          <a href={`tel:${siteConfig.contact.phone}`} className="flex items-center gap-2 text-body-sm text-teal-800">
-            <PhoneIcon className="w-4 h-4 text-teal-600" />
+        <div className="p-4 mx-4 mb-4 bg-primary-50 rounded-xl space-y-3">
+          <a href={`tel:${siteConfig.contact.phone}`} className="flex items-center gap-2 text-body-sm text-primary-800">
+            <PhoneIcon className="w-4 h-4 text-primary-600" />
             {siteConfig.contact.phoneDisplay}
           </a>
-          <a href={`mailto:${siteConfig.contact.email}`} className="flex items-center gap-2 text-body-sm text-teal-800">
-            <MailIcon className="w-4 h-4 text-teal-600" />
+          <a href={`mailto:${siteConfig.contact.email}`} className="flex items-center gap-2 text-body-sm text-primary-800">
+            <MailIcon className="w-4 h-4 text-primary-600" />
             {siteConfig.contact.email}
           </a>
-          <div className="flex items-start gap-2 text-body-sm text-teal-800">
-            <MapPinIcon className="w-4 h-4 text-teal-600 mt-0.5 shrink-0" />
+          <div className="flex items-start gap-2 text-body-sm text-primary-800">
+            <MapPinIcon className="w-4 h-4 text-primary-600 mt-0.5 shrink-0" />
             <span>{siteConfig.contact.address}, {siteConfig.contact.city}</span>
           </div>
         </div>
@@ -94,13 +94,13 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         <div className="p-4 space-y-3">
           <a
             href={`tel:${siteConfig.contact.phone}`}
-            className="block w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 rounded-lg transition-colors"
+            className="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-lg transition-colors"
           >
             Llama Ahora
           </a>
           <Link
             href="/login"
-            className="block w-full text-center border-2 border-teal-600 text-teal-600 hover:bg-teal-50 font-semibold py-3 rounded-lg transition-colors"
+            className="block w-full text-center border-2 border-primary-600 text-primary-600 hover:bg-primary-50 font-semibold py-3 rounded-lg transition-colors"
             onClick={onClose}
           >
             Portal Profesional

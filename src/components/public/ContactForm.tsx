@@ -54,9 +54,9 @@ export function ContactForm() {
 
   if (status === 'success') {
     return (
-      <div className="bg-teal-50 border border-teal-200 rounded-xl p-8 text-center">
-        <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg className="w-8 h-8 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+      <div className="bg-primary-50 border border-primary-200 rounded-xl p-8 text-center">
+        <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg className="w-8 h-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -66,7 +66,7 @@ export function ContactForm() {
         </p>
         <button
           onClick={() => setStatus('idle')}
-          className="mt-4 text-teal-600 hover:text-teal-700 font-semibold text-body-sm"
+          className="mt-4 text-primary-600 hover:text-primary-700 font-semibold text-body-sm"
         >
           Enviar otro mensaje
         </button>
@@ -85,7 +85,7 @@ export function ContactForm() {
           type="text"
           value={formData.name}
           onChange={(e) => { setFormData({ ...formData, name: e.target.value }); setErrors({ ...errors, name: undefined }) }}
-          className={`w-full px-4 py-3 rounded-xl border ${errors.name ? 'border-error-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors text-body-md`}
+          className={`w-full px-4 py-3 rounded-xl border ${errors.name ? 'border-error-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors text-body-md`}
           placeholder="Su nombre completo"
         />
         {errors.name && <p className="text-error-500 text-body-xs mt-1">{errors.name}</p>}
@@ -100,7 +100,7 @@ export function ContactForm() {
           type="email"
           value={formData.email}
           onChange={(e) => { setFormData({ ...formData, email: e.target.value }); setErrors({ ...errors, email: undefined }) }}
-          className={`w-full px-4 py-3 rounded-xl border ${errors.email ? 'border-error-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors text-body-md`}
+          className={`w-full px-4 py-3 rounded-xl border ${errors.email ? 'border-error-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors text-body-md`}
           placeholder="correo@ejemplo.com"
         />
         {errors.email && <p className="text-error-500 text-body-xs mt-1">{errors.email}</p>}
@@ -115,7 +115,7 @@ export function ContactForm() {
           type="tel"
           value={formData.phone}
           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors text-body-md"
+          className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors text-body-md"
           placeholder="+505 0000-0000"
         />
       </div>
@@ -129,7 +129,7 @@ export function ContactForm() {
           rows={5}
           value={formData.message}
           onChange={(e) => { setFormData({ ...formData, message: e.target.value }); setErrors({ ...errors, message: undefined }) }}
-          className={`w-full px-4 py-3 rounded-xl border ${errors.message ? 'border-error-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-colors text-body-md resize-none`}
+          className={`w-full px-4 py-3 rounded-xl border ${errors.message ? 'border-error-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors text-body-md resize-none`}
           placeholder="Describa brevemente su situación legal..."
         />
         {errors.message && <p className="text-error-500 text-body-xs mt-1">{errors.message}</p>}
@@ -144,7 +144,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="w-full bg-teal-600 hover:bg-teal-700 disabled:bg-teal-400 text-white font-bold py-4 rounded-xl transition-colors text-body-md uppercase tracking-wider"
+        className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white font-bold py-4 rounded-xl transition-colors text-body-md uppercase tracking-wider"
       >
         {status === 'loading' ? 'Enviando...' : 'Enviar Mensaje'}
       </button>

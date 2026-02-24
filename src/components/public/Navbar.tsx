@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { siteConfig } from '@/config/siteConfig'
-import { ScaleIcon, ChevronDownIcon, MenuIcon } from './icons'
+import { SparklesIcon, ChevronDownIcon, MenuIcon } from './icons'
 import { MobileMenu } from './MobileMenu'
 
 export function Navbar() {
@@ -35,9 +35,9 @@ export function Navbar() {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 group">
-              <ScaleIcon className="w-8 h-8 text-teal-600 group-hover:text-teal-700 transition-colors" />
+              <SparklesIcon className="w-8 h-8 text-primary-600 group-hover:text-primary-700 transition-colors" />
               <div>
-                <span className="font-heading text-xl font-bold text-teal-800 tracking-tight">
+                <span className="font-heading text-xl font-bold text-primary-800 tracking-tight">
                   {siteConfig.firmName.split(' ')[0]}
                 </span>
                 <span className="font-heading text-xl font-light text-gray-500 tracking-tight ml-1">
@@ -54,7 +54,7 @@ export function Navbar() {
                     <>
                       <button
                         onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                        className={`flex items-center gap-1 px-4 py-2 text-body-sm font-medium uppercase tracking-wider transition-colors ${openDropdown === item.label ? 'text-teal-600' : 'text-gray-700 hover:text-teal-600'
+                        className={`flex items-center gap-1 px-4 py-2 text-body-sm font-medium uppercase tracking-wider transition-colors ${openDropdown === item.label ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'
                           }`}
                       >
                         {item.label}
@@ -66,7 +66,7 @@ export function Navbar() {
                             <Link
                               key={child.label}
                               href={child.href}
-                              className="block px-4 py-2.5 text-body-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 transition-colors"
+                              className="block px-4 py-2.5 text-body-sm text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
                               onClick={() => setOpenDropdown(null)}
                             >
                               {child.label}
@@ -78,7 +78,7 @@ export function Navbar() {
                   ) : (
                     <Link
                       href={item.href}
-                      className="px-4 py-2 text-body-sm font-medium uppercase tracking-wider text-gray-700 hover:text-teal-600 transition-colors"
+                      className="px-4 py-2 text-body-sm font-medium uppercase tracking-wider text-gray-700 hover:text-primary-600 transition-colors"
                     >
                       {item.label}
                     </Link>
@@ -87,7 +87,7 @@ export function Navbar() {
               ))}
               <Link
                 href="/login"
-                className="ml-4 px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-body-sm font-semibold rounded-lg transition-colors"
+                className="ml-4 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-body-sm font-semibold rounded-lg transition-colors"
               >
                 Portal Profesional
               </Link>
@@ -96,7 +96,7 @@ export function Navbar() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 text-gray-700 hover:text-teal-600 transition-colors"
+              className="lg:hidden p-2 text-gray-700 hover:text-primary-600 transition-colors"
               aria-label="Abrir menú"
             >
               <MenuIcon className="w-6 h-6" />

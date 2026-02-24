@@ -22,27 +22,27 @@ interface LeadData {
 }
 
 const CASE_TYPES = [
-  'Derecho Civil',
-  'Derecho Penal',
-  'Derecho Familiar',
-  'Derecho Laboral',
-  'Derecho Mercantil',
+  'Botox y Rellenos',
+  'Limpieza Facial Profunda',
+  'Tratamientos Anti-manchas',
+  'Rejuvenecimiento Láser',
+  'Depilación Médica',
   'Otro'
 ]
 
 const INITIAL_MESSAGE: Message = {
   id: '1',
   type: 'bot',
-  content: 'Hola, soy el asistente virtual de LexAgenda. Estoy aquí para ayudarte a agendar una consulta con nuestros abogados.',
+  content: 'Hola, soy el asistente virtual de EstéticaApp. Estoy aquí para ayudarte a agendar una cita con nuestros especialistas y resolver tus dudas.',
   timestamp: new Date(),
-  quickReplies: ['Agendar cita', 'Ver servicios', 'Horarios de atención']
+  quickReplies: ['Agendar cita', 'Ver tratamientos', 'Horarios de atención']
 }
 
 const FAQ_RESPONSES: Record<string, string> = {
-  'horarios de atención': 'Nuestro horario de atención es de Lunes a Viernes de 9:00 AM a 6:00 PM. Los sábados atendemos de 9:00 AM a 1:00 PM.',
-  'ver servicios': 'Ofrecemos servicios en: Derecho Civil, Derecho Penal, Derecho Familiar, Derecho Laboral y Derecho Mercantil. ¿En qué área necesitas asesoría?',
-  'precios': 'Nuestras consultas iniciales tienen un costo desde $500 MXN. El precio final depende del tipo de caso y la complejidad. ¿Te gustaría agendar una consulta inicial?',
-  'ubicación': 'Nuestras oficinas están ubicadas en el centro de la ciudad. También ofrecemos consultas virtuales por videollamada.',
+  'horarios de atención': 'Nuestros horarios son de Lunes a Viernes de 8:00 AM a 7:00 PM. Los sábados atendemos de 9:00 AM a 2:00 PM.',
+  'ver tratamientos': 'Contamos con especialistas en: Botox, Ácido Hialurónico, Limpiezas Faciales, Láser y más. ¿En qué tratamiento estás interesado?',
+  'precios': 'Nuestras valoraciones iniciales pueden variar según el especialista. ¿Te gustaría agendar una valoración para obtener un presupuesto personalizado?',
+  'ubicación': 'Contamos con sedes en las principales zonas de la ciudad. También puedes agendar valoraciones virtuales para algunos procedimientos.',
 }
 
 export function ChatWidget() {
@@ -142,25 +142,25 @@ export function ChatWidget() {
       case 'phone':
         setLeadData(prev => ({ ...prev, phone: text }))
         setCurrentStep('case_type')
-        addBotMessage('¿En qué área legal necesitas asesoría?', CASE_TYPES)
+        addBotMessage('¿En qué tratamiento estás interesado?', CASE_TYPES)
         break
 
       case 'case_type':
         const caseType = CASE_TYPES.find(t => t.toLowerCase() === text.toLowerCase()) || text
         setLeadData(prev => ({ ...prev, caseType }))
         setCurrentStep('description')
-        addBotMessage('Cuéntame brevemente sobre tu caso. ¿Cuál es la situación que necesitas resolver?')
+        addBotMessage('Cuéntame brevemente tus objetivos. ¿Qué resultados buscas o qué área quieres mejorar?')
         break
 
       case 'description':
         setLeadData(prev => ({ ...prev, description: text }))
         setCurrentStep('urgency')
-        addBotMessage('¿Qué tan urgente es tu caso?', ['Baja - Puedo esperar', 'Media - Esta semana', 'Alta - Lo antes posible'])
+        addBotMessage('¿Qué tan pronto te gustaría realizar el procedimiento?', ['Baja - Solo información', 'Media - Próximas semanas', 'Alta - Lo antes posible'])
         break
 
       case 'urgency':
         let urgency: 'low' | 'medium' | 'high' = 'medium'
-        if (text.includes('baja') || text.includes('esperar')) urgency = 'low'
+        if (text.includes('baja') || text.includes('información')) urgency = 'low'
         else if (text.includes('alta') || text.includes('antes posible')) urgency = 'high'
 
         setLeadData(prev => ({ ...prev, urgency }))
@@ -172,8 +172,8 @@ export function ChatWidget() {
           `Nombre: ${finalData.fullName}\n` +
           `Email: ${finalData.email}\n` +
           `Teléfono: ${finalData.phone}\n` +
-          `Área: ${finalData.caseType}\n` +
-          `Urgencia: ${urgency === 'high' ? 'Alta' : urgency === 'medium' ? 'Media' : 'Baja'}\n\n` +
+          `Tratamiento: ${finalData.caseType}\n` +
+          `Interés: ${urgency === 'high' ? 'Alta (Inmediato)' : urgency === 'medium' ? 'Mediac' : 'Informativo'}\n\n` +
           `¿Los datos son correctos?`,
           ['Sí, confirmar', 'No, corregir datos']
         )
@@ -183,7 +183,7 @@ export function ChatWidget() {
         if (text.includes('sí') || text.includes('confirmar') || text.includes('si')) {
           setCurrentStep('done')
           addBotMessage(
-            '¡Excelente! Hemos registrado tu solicitud. Un abogado especializado se pondrá en contacto contigo dentro de las próximas 24 horas para agendar tu consulta.\n\n' +
+            '¡Excelente! Hemos registrado tu solicitud. Un especialista se pondrá en contacto contigo dentro de las próximas 24 horas para asesorarte y agendar tu cita.\n\n' +
             'También puedes agendar directamente desde nuestra plataforma si ya tienes una cuenta.',
             ['Crear cuenta', 'Iniciar sesión']
           )
@@ -232,10 +232,10 @@ export function ChatWidget() {
       <div className="bg-primary-500 text-white p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-secondary-500 rounded-full flex items-center justify-center">
-            <ScaleIcon className="w-5 h-5" />
+            <SparklesIcon className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-semibold">LexAgenda Asistente</h3>
+            <h3 className="font-semibold text-white">Asistente EstéticaApp</h3>
             <p className="text-xs text-white/70">En línea</p>
           </div>
         </div>
@@ -247,15 +247,15 @@ export function ChatWidget() {
         </button>
       </div>
 
-      {/* Legal Disclaimer */}
+      {/* Informativo Disclaimer */}
       {showDisclaimer && (
         <div className="bg-warning-50 border-b border-warning-200 p-3">
           <div className="flex items-start gap-2">
             <AlertIcon className="w-5 h-5 text-warning-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
               <p className="text-xs text-warning-800">
-                <strong>Aviso Legal:</strong> Este asistente virtual NO proporciona asesoría legal.
-                Su propósito es facilitar la programación de citas y responder preguntas generales.
+                <strong>Aviso:</strong> Este asistente virtual proporciona información general.
+                Su propósito es facilitar contactos y agendamiento de valoraciones.
               </p>
               <button
                 onClick={() => setShowDisclaimer(false)}
@@ -276,16 +276,14 @@ export function ChatWidget() {
             className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl px-4 py-3 ${
-                message.type === 'user'
-                  ? 'bg-primary-500 text-white rounded-br-md'
-                  : 'bg-white shadow-sm rounded-bl-md'
-              }`}
+              className={`max-w-[80%] rounded-2xl px-4 py-3 ${message.type === 'user'
+                ? 'bg-primary-500 text-white rounded-br-md'
+                : 'bg-white shadow-sm rounded-bl-md'
+                }`}
             >
               <p className="text-sm whitespace-pre-line">{message.content}</p>
-              <p className={`text-[10px] mt-1 ${
-                message.type === 'user' ? 'text-white/60' : 'text-foreground-muted'
-              }`}>
+              <p className={`text-[10px] mt-1 ${message.type === 'user' ? 'text-white/60' : 'text-foreground-muted'
+                }`}>
                 {message.timestamp.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
               </p>
             </div>
@@ -381,10 +379,10 @@ function AlertIcon({ className }: { className?: string }) {
   )
 }
 
-function ScaleIcon({ className }: { className?: string }) {
+function SparklesIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" />
     </svg>
   )
 }

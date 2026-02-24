@@ -57,10 +57,21 @@ export interface SiteConfig {
     imageUrl?: string
     bookingSlug?: string
   }>
+  values: Array<{
+    icon: string
+    title: string
+    description: string
+  }>
   legal: {
     privacyLastUpdated: string
     termsLastUpdated: string
   }
+  testimonials: Array<{
+    name: string
+    quote: string
+    rating: number
+    caseType?: string
+  }>
 }
 
 export const siteConfig: SiteConfig = {
@@ -154,8 +165,33 @@ export const siteConfig: SiteConfig = {
     },
   ],
 
+  values: [
+    { icon: 'respect', title: 'Respeto y dignidad', description: 'Cada paciente es tratado con la máxima confidencialidad y cuidado.' },
+    { icon: 'quality', title: 'Cada caso es único', description: 'Planes de tratamiento personalizados para resultados naturales.' },
+    { icon: 'team', title: 'Equipo experimentado', description: 'Profesionales especializados con años de trayectoria en estética.' },
+  ],
   legal: {
     privacyLastUpdated: '2024-01-01',
     termsLastUpdated: '2024-01-01',
   },
+  testimonials: [
+    {
+      name: 'Elena Rodríguez',
+      quote: 'La Dra. Valentina es una artista. Mi armonización facial superó todas mis expectativas, el resultado es tan natural que nadie nota el procedimiento, solo que me veo radiante.',
+      rating: 5,
+      caseType: 'Armonización Facial'
+    },
+    {
+      name: 'Carlos Mendoza',
+      quote: 'Excelente atención y profesionalismo. El Dr. Alejandro me explicó cada detalle del tratamiento de toxina botulínica. Instalaciones premium y seguimiento impecable.',
+      rating: 5,
+      caseType: 'Rejuvenecimiento'
+    },
+    {
+      name: 'Sofía Valderrama',
+      quote: 'Mi experiencia con el ácido hialurónico en labios fue increíble. Lograron el equilibrio perfecto que buscaba. ¡Totalmente recomendados!',
+      rating: 5,
+      caseType: 'Ácido Hialurónico'
+    }
+  ],
 }

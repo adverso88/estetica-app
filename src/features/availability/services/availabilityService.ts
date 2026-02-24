@@ -60,7 +60,12 @@ export const availabilityService = {
 
     if (error) throw error
     return data
-  }
+  },
+
+  /** Alias para compatibilidad con hooks que usan lawyerId */
+  getLawyerAvailability(lawyerId: string) {
+    return this.getProfesionalAvailability(lawyerId)
+  },
 }
 
 function generateTimeSlots(start: string, end: string, interval: number): string[] {

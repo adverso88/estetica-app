@@ -26,7 +26,7 @@ export function StepSelectLawyer({ preselectedLawyerId }: StepSelectLawyerProps)
     canProceedToStep2
   } = useBookingStore()
 
-  // Pre-seleccionar abogado si viene de la URL
+  // Pre-seleccionar especialista si viene de la URL
   useEffect(() => {
     if (preselectedLawyerId && !lawyerId) {
       setLawyer(preselectedLawyerId)
@@ -47,10 +47,10 @@ export function StepSelectLawyer({ preselectedLawyerId }: StepSelectLawyerProps)
 
   return (
     <div className="space-y-8">
-      {/* Selección de abogado */}
+      {/* Selección de especialista */}
       <div>
         <h3 className="text-lg font-semibold text-foreground mb-4">
-          Selecciona un abogado
+          Selecciona un especialista
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {lawyers.map((lawyer) => (
@@ -143,7 +143,7 @@ function LawyerSelectCard({
         {lawyer.profile?.avatar_url ? (
           <img
             src={lawyer.profile.avatar_url}
-            alt={lawyer.profile.full_name || 'Abogado'}
+            alt={lawyer.profile.full_name || 'Especialista'}
             className="w-14 h-14 rounded-full object-cover"
           />
         ) : (

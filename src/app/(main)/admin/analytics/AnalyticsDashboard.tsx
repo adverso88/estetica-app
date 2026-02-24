@@ -44,9 +44,9 @@ export function AnalyticsDashboard({ stats }: { stats: AnalyticsStats }) {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
+        <h1 className="text-2xl font-bold text-foreground">Estadísticas y Análisis</h1>
         <p className="text-foreground-secondary mt-1">
-          Métricas de rendimiento del bufete
+          Métricas de rendimiento de la clínica
         </p>
       </div>
 
@@ -94,11 +94,11 @@ export function AnalyticsDashboard({ stats }: { stats: AnalyticsStats }) {
           </div>
         </Card>
 
-        {/* Nuevos Clientes */}
+        {/* Nuevos Pacientes */}
         <Card className="p-6 border-l-4 border-success-500">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-medium text-foreground-secondary">Nuevos Clientes</p>
+              <p className="text-sm font-medium text-foreground-secondary">Nuevos Pacientes</p>
               <p className="text-3xl font-bold text-foreground mt-2">
                 {stats.clients.new}
               </p>
@@ -163,14 +163,14 @@ export function AnalyticsDashboard({ stats }: { stats: AnalyticsStats }) {
           </div>
         </Card>
 
-        {/* Rendimiento por Abogado */}
+        {/* Rendimiento por Especialista */}
         <Card className="p-6 lg:col-span-2">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Rendimiento por Abogado</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-4">Rendimiento por Especialista</h3>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="text-left py-3 text-sm font-medium text-foreground-secondary">Abogado</th>
+                  <th className="text-left py-3 text-sm font-medium text-foreground-secondary">Especialista</th>
                   <th className="text-center py-3 text-sm font-medium text-foreground-secondary">Citas</th>
                   <th className="text-center py-3 text-sm font-medium text-foreground-secondary">Completadas</th>
                   <th className="text-right py-3 text-sm font-medium text-foreground-secondary">Ingresos</th>
@@ -215,7 +215,7 @@ export function AnalyticsDashboard({ stats }: { stats: AnalyticsStats }) {
                 {stats.lawyerMetrics.length === 0 && (
                   <tr>
                     <td colSpan={5} className="py-8 text-center text-foreground-secondary">
-                      No hay datos de abogados
+                      No hay datos de especialistas
                     </td>
                   </tr>
                 )}

@@ -11,7 +11,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps) {
   return {
-    title: 'Detalle de Cita | LexAgenda'
+    title: 'Detalle de Cita | EstéticaApp'
   }
 }
 

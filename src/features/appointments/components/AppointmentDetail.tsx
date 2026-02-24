@@ -10,17 +10,17 @@ import type { AppointmentWithRelations } from '@/types/database'
 
 interface AppointmentDetailProps {
   appointment: AppointmentWithRelations
-  userRole: 'client' | 'lawyer'
+  userRole: 'cliente' | 'especialista' | any
 }
 
 export function AppointmentDetail({ appointment, userRole }: AppointmentDetailProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [notes, setNotes] = useState(appointment.notes || '')
+  const [notes, setNotes] = useState(appointment.notas || '')
 
   const handleStatusChange = async (status: 'confirmed' | 'cancelled' | 'completed') => {
     setLoading(true)
-    const result = await updateAppointmentStatus(appointment.id, status)
+    const result = await updateAppointmentStatus(appointment.id, status as any)
     setLoading(false)
 
     if (result.error) {
@@ -40,24 +40,24 @@ export function AppointmentDetail({ appointment, userRole }: AppointmentDetailPr
     }
   }
 
-  const scheduledDate = new Date(appointment.scheduled_at)
-  const endTime = new Date(scheduledDate.getTime() + appointment.duration_minutes * 60000)
+  const scheduledDate = new Date(appointment.fecha_hora)
+  const endTime = new Date(scheduledDate.getTime() + appointment.duracion_minutos * 60000)
 
   const statusVariant: Record<string, 'pending' | 'confirmed' | 'cancelled'> = {
     pending: 'pending',
-    confirmed: 'confirmed',
-    cancelled: 'cancelled',
-    completed: 'confirmed',
-    paid: 'confirmed',
+    agendada: 'pending',
+    confirmada: 'confirmed',
+    cancelada: 'cancelled',
+    completada: 'confirmed',
     no_show: 'cancelled'
   }
 
   const statusLabel: Record<string, string> = {
-    pending: 'Pendiente',
-    confirmed: 'Confirmada',
-    cancelled: 'Cancelada',
-    completed: 'Completada',
-    paid: 'Pagada',
+    agendada: 'Agendada',
+    confirmada: 'Confirmada',
+    cancelada: 'Cancelada',
+    completada: 'Completada',
+    en_sala: 'En Sala',
     no_show: 'No asistió'
   }
 
@@ -67,14 +67,14 @@ export function AppointmentDetail({ appointment, userRole }: AppointmentDetailPr
         <div className="flex items-start justify-between mb-6">
           <div>
             <h2 className="text-xl font-semibold text-foreground mb-1">
-              {appointment.appointment_type?.name || 'Consulta Legal'}
+              {appointment.tratamiento?.nombre || 'Cita Estética'}
             </h2>
             <p className="text-foreground-secondary">
-              {appointment.appointment_type?.description}
+              {appointment.tratamiento?.descripcion}
             </p>
           </div>
-          <Badge variant={statusVariant[appointment.status]}>
-            {statusLabel[appointment.status]}
+          <Badge variant={statusVariant[appointment.estado] || 'pending'}>
+            {statusLabel[appointment.estado] || appointment.estado}
           </Badge>
         </div>
 
@@ -100,14 +100,14 @@ export function AppointmentDetail({ appointment, userRole }: AppointmentDetailPr
                 {scheduledDate.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
                 {' - '}
                 {endTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
-                {' '}({appointment.duration_minutes} min)
+                {' '}({appointment.duracion_minutos} min)
               </p>
             </div>
           </div>
 
           <div>
             <h3 className="font-medium text-foreground mb-3">
-              {userRole === 'client' ? 'Abogado' : 'Cliente'}
+              {userRole === 'client' ? 'Especialista' : 'Paciente'}
             </h3>
             <div className="flex items-center gap-3">
               {userRole === 'client' ? (
@@ -123,11 +123,11 @@ export function AppointmentDetail({ appointment, userRole }: AppointmentDetailPr
               ) : (
                 <>
                   <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">
-                    {appointment.client?.profile?.full_name?.charAt(0) || 'C'}
+                    {appointment.paciente?.nombre?.charAt(0) || 'P'}
                   </div>
                   <div>
-                    <p className="font-medium">{appointment.client?.profile?.full_name}</p>
-                    <p className="text-sm text-foreground-secondary">{appointment.client?.phone || 'Sin teléfono'}</p>
+                    <p className="font-medium">{appointment.paciente?.nombre} {appointment.paciente?.apellido}</p>
+                    <p className="text-sm text-foreground-secondary">{appointment.paciente?.telefono || 'Sin teléfono'}</p>
                   </div>
                 </>
               )}
@@ -135,21 +135,21 @@ export function AppointmentDetail({ appointment, userRole }: AppointmentDetailPr
           </div>
         </div>
 
-        {appointment.appointment_type?.price && (
+        {appointment.tratamiento?.precio && (
           <div className="mt-6 pt-6 border-t">
             <div className="flex justify-between items-center">
-              <span className="text-foreground-secondary">Costo de la consulta</span>
+              <span className="text-foreground-secondary">Costo del tratamiento</span>
               <span className="text-xl font-semibold text-secondary-600">
-                ${appointment.appointment_type.price}
+                ${appointment.tratamiento.precio}
               </span>
             </div>
           </div>
         )}
       </Card>
 
-      {userRole === 'lawyer' && (
+      {userRole === 'especialista' && (
         <Card className="p-6">
-          <h3 className="font-medium text-foreground mb-3">Notas del abogado</h3>
+          <h3 className="font-medium text-foreground mb-3">Notas del especialista</h3>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -168,14 +168,14 @@ export function AppointmentDetail({ appointment, userRole }: AppointmentDetailPr
         </Card>
       )}
 
-      {appointment.client_notes && (
+      {appointment.notas_paciente && (
         <Card className="p-6">
-          <h3 className="font-medium text-foreground mb-3">Notas del cliente</h3>
-          <p className="text-foreground-secondary">{appointment.client_notes}</p>
+          <h3 className="font-medium text-foreground mb-3">Notas del paciente</h3>
+          <p className="text-foreground-secondary">{appointment.notas_paciente}</p>
         </Card>
       )}
 
-      {appointment.status === 'pending' && (
+      {appointment.estado === 'agendada' && (
         <Card className="p-6">
           <h3 className="font-medium text-foreground mb-4">Acciones</h3>
           <div className="flex flex-wrap gap-3">
@@ -199,7 +199,7 @@ export function AppointmentDetail({ appointment, userRole }: AppointmentDetailPr
         </Card>
       )}
 
-      {appointment.status === 'confirmed' && userRole === 'lawyer' && (
+      {appointment.estado === 'confirmada' && userRole === 'especialista' && (
         <Card className="p-6">
           <h3 className="font-medium text-foreground mb-4">Acciones</h3>
           <div className="flex flex-wrap gap-3">

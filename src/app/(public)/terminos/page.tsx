@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 export default function TerminosPage() {
   return (
     <>
-      <section className="bg-gradient-to-br from-teal-800 to-teal-700 py-12 lg:py-16">
+      <section className="bg-gradient-to-br from-primary-800 to-primary-700 py-12 lg:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="font-heading text-display-md text-white">Términos de Servicio</h1>
-          <p className="text-teal-200 mt-2 text-body-md">
+          <p className="text-primary-200 mt-2 text-body-md">
             Última actualización: {new Date(siteConfig.legal.termsLastUpdated).toLocaleDateString('es', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
@@ -29,16 +29,16 @@ export default function TerminosPage() {
             </div>
 
             <div>
-              <h2 className="font-heading text-display-xs text-gray-900 mb-3">2. Servicios Legales</h2>
+              <h2 className="font-heading text-display-xs text-gray-900 mb-3">2. Tratamientos y Servicios</h2>
               <p>
-                La información proporcionada en este sitio web es de carácter general e informativo. No constituye asesoramiento legal. La relación abogado-cliente solo se establece mediante un acuerdo formal de servicios legales firmado por ambas partes.
+                La información proporcionada en este sitio web es de carácter general e informativo. No constituye consejo médico o estético personalizado. La relación clínica-paciente solo se establece mediante una valoración presencial y la firma del consentimiento informado correspondiente.
               </p>
             </div>
 
             <div>
-              <h2 className="font-heading text-display-xs text-gray-900 mb-3">3. Consultas y Comunicaciones</h2>
+              <h2 className="font-heading text-display-xs text-gray-900 mb-3">3. Consultas y Valoraciones</h2>
               <p>
-                Las consultas realizadas a través de nuestro formulario de contacto o por correo electrónico no establecen una relación abogado-cliente. La información compartida a través de estos medios puede no estar protegida por el privilegio de confidencialidad hasta que se formalice la relación profesional.
+                Las consultas realizadas a través de nuestro formulario de contacto o por correo electrónico son meramente informativas. La información compartida a través de estos medios está protegida por nuestra política de privacidad, pero la relación clínica formal requiere una consulta de valoración inicial.
               </p>
             </div>
 
@@ -59,7 +59,7 @@ export default function TerminosPage() {
             <div>
               <h2 className="font-heading text-display-xs text-gray-900 mb-3">6. Limitación de Responsabilidad</h2>
               <p>
-                {siteConfig.firmName} no será responsable de daños directos, indirectos, incidentales o consecuentes que resulten del uso de este sitio web. Los resultados de casos anteriores no garantizan resultados futuros similares.
+                {siteConfig.firmName} no será responsable de daños directos, indirectos, incidentales o consecuentes que resulten del uso de este sitio web. Los resultados de tratamientos anteriores no garantizan resultados futuros similares, ya que cada organismo reacciona de manera única.
               </p>
             </div>
 
@@ -85,8 +85,8 @@ export default function TerminosPage() {
               <p className="mt-3">
                 <strong>{siteConfig.firmName}</strong><br />
                 {siteConfig.contact.address}, {siteConfig.contact.city}, {siteConfig.contact.country}<br />
-                Email: <a href={`mailto:${siteConfig.contact.email}`} className="text-teal-600 hover:underline">{siteConfig.contact.email}</a><br />
-                Teléfono: <a href={`tel:${siteConfig.contact.phone}`} className="text-teal-600 hover:underline">{siteConfig.contact.phoneDisplay}</a>
+                Email: <a href={`mailto:${siteConfig.contact.email}`} className="text-primary-600 hover:underline">{siteConfig.contact.email}</a><br />
+                Teléfono: <a href={`tel:${siteConfig.contact.phone}`} className="text-primary-600 hover:underline">{siteConfig.contact.phoneDisplay}</a>
               </p>
             </div>
           </div>

@@ -30,7 +30,7 @@ export function AdminDashboard({ stats, upcomingAppointments }: AdminDashboardPr
       {/* Overview Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard
-          title="Total Profesionales"
+          title="Especialistas"
           value={stats.totalLawyers}
           subtitle={`${stats.activeLawyers} activos`}
           icon={<UsersIcon className="w-6 h-6 text-primary-500" />}
@@ -40,21 +40,21 @@ export function AdminDashboard({ stats, upcomingAppointments }: AdminDashboardPr
           title="Total Pacientes"
           value={stats.totalClients}
           subtitle="registrados"
-          icon={<UserGroupIcon className="w-6 h-6 text-accent-500" />}
+          icon={<UserGroupIcon className="w-6 h-6 text-secondary-500" />}
           color="accent"
         />
         <StatCard
           title="Citas Hoy"
           value={stats.todayAppointments}
           subtitle={`${stats.pendingAppointments} pendientes`}
-          icon={<CalendarIcon className="w-6 h-6 text-warning-500" />}
+          icon={<CalendarIcon className="w-6 h-6 text-amber-500" />}
           color="warning"
         />
         <StatCard
-          title="Ingresos del Mes"
+          title="Ingresos Mensuales"
           value={formatCurrency(stats.monthlyRevenue)}
-          subtitle={`${stats.totalAppointments} citas totales`}
-          icon={<CurrencyIcon className="w-6 h-6 text-success-500" />}
+          subtitle={`${stats.totalAppointments} consultas`}
+          icon={<CurrencyIcon className="w-6 h-6 text-green-500" />}
           color="success"
           isLarge
         />
@@ -88,7 +88,7 @@ export function AdminDashboard({ stats, upcomingAppointments }: AdminDashboardPr
               </div>
             ) : (
               <div className="text-center py-8 text-foreground-secondary">
-                No hay abogados registrados
+                No hay profesionales registrados
               </div>
             )}
           </Card>
@@ -134,10 +134,10 @@ export function AdminDashboard({ stats, upcomingAppointments }: AdminDashboardPr
             </div>
           </Link>
           <Link href="/lawyers" className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-            <UsersIcon className="w-8 h-8 text-accent-500" />
+            <UsersIcon className="w-8 h-8 text-secondary-500" />
             <div>
-              <p className="font-medium text-foreground">Profesionales</p>
-              <p className="text-xs text-foreground-secondary">Gestionar equipo</p>
+              <p className="font-medium text-foreground">Equipo Médico</p>
+              <p className="text-xs text-foreground-secondary">Gestionar personal</p>
             </div>
           </Link>
           <Link href="/appointments/new/admin" className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
@@ -148,10 +148,10 @@ export function AdminDashboard({ stats, upcomingAppointments }: AdminDashboardPr
             </div>
           </Link>
           <Link href="/projects" className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-            <BriefcaseIcon className="w-8 h-8 text-warning-500" />
+            <SparklesIcon className="w-8 h-8 text-amber-500" />
             <div>
-              <p className="font-medium text-foreground">Seguimientos</p>
-              <p className="text-xs text-foreground-secondary">Ver planes activos</p>
+              <p className="font-medium text-foreground">Planes Estéticos</p>
+              <p className="text-xs text-foreground-secondary">Seguimientos activos</p>
             </div>
           </Link>
         </div>
@@ -337,10 +337,10 @@ function PlusIcon({ className }: { className?: string }) {
   )
 }
 
-function BriefcaseIcon({ className }: { className?: string }) {
+function SparklesIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z" />
     </svg>
   )
 }

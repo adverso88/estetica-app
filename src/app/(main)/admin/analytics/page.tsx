@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card'
 import { AnalyticsDashboard } from './AnalyticsDashboard'
 
 export const metadata = {
-  title: 'Analytics | LexAgenda Admin'
+  title: 'Analytics | EstéticaApp Admin'
 }
 
 export default async function AdminAnalyticsPage() {
@@ -47,7 +47,7 @@ export default async function AdminAnalyticsPage() {
     .gte('scheduled_at', startOfLastMonth.toISOString())
     .lte('scheduled_at', endOfLastMonth.toISOString())
 
-  // Obtener clientes nuevos del mes
+  // Obtener pacientes nuevos del mes
   const { data: newClients } = await supabase
     .from('clients')
     .select('id')
@@ -59,7 +59,7 @@ export default async function AdminAnalyticsPage() {
     .gte('created_at', startOfLastMonth.toISOString())
     .lte('created_at', endOfLastMonth.toISOString())
 
-  // Obtener abogados con sus citas
+  // Obtener especialistas con sus citas
   const { data: lawyers } = await supabase
     .from('lawyers')
     .select(`
@@ -93,7 +93,7 @@ export default async function AdminAnalyticsPage() {
   const totalAppointments = currentAppts.length
   const conversionRate = totalAppointments > 0 ? (completedAppointments / totalAppointments) * 100 : 0
 
-  // Métricas por abogado
+  // Métricas por especialista
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const lawyerMetrics = (lawyers || []).map((lawyer: any) => {
     const lawyerAppts = lawyer.appointments || []

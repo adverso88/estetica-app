@@ -244,7 +244,7 @@ export function PricingManager({ initialAppointmentTypes, initialLawyers }: Pric
         </div>
       </section>
 
-      {/* Tarifas por Abogado */}
+      {/* Tarifas por Especialista */}
       <section>
         <h2 className="text-lg font-semibold text-foreground mb-4">Tarifas por Profesional</h2>
 

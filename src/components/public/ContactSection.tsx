@@ -33,8 +33,8 @@ export function ContactSection() {
           <div className="space-y-6">
             <div className="bg-white rounded-xl p-6 shadow-card border border-gray-100">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
-                  <MapPinIcon className="w-6 h-6 text-teal-600" />
+                <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center shrink-0">
+                  <MapPinIcon className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-gray-900 mb-1">Ubicación de la Oficina</h3>
@@ -46,14 +46,14 @@ export function ContactSection() {
 
             <div className="bg-white rounded-xl p-6 shadow-card border border-gray-100">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
-                  <PhoneIcon className="w-6 h-6 text-teal-600" />
+                <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center shrink-0">
+                  <PhoneIcon className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-gray-900 mb-1">Datos de Contacto</h3>
                   <p className="text-body-sm text-foreground-secondary">
-                    Llame al <a href={`tel:${contact.phone}`} className="text-teal-600 hover:underline">{contact.phoneDisplay}</a> o envíe un correo electrónico a{' '}
-                    <a href={`mailto:${contact.email}`} className="text-teal-600 hover:underline">{contact.email}</a>
+                    Llame al <a href={`tel:${contact.phone}`} className="text-primary-600 hover:underline">{contact.phoneDisplay}</a> o envíe un correo electrónico a{' '}
+                    <a href={`mailto:${contact.email}`} className="text-primary-600 hover:underline">{contact.email}</a>
                   </p>
                 </div>
               </div>
@@ -61,8 +61,8 @@ export function ContactSection() {
 
             <div className="bg-white rounded-xl p-6 shadow-card border border-gray-100">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center shrink-0">
-                  <ClockIcon className="w-6 h-6 text-teal-600" />
+                <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center shrink-0">
+                  <ClockIcon className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-gray-900 mb-1">Horario Comercial</h3>
@@ -73,7 +73,7 @@ export function ContactSection() {
 
             <Link
               href="/contacto"
-              className="block w-full text-center bg-teal-600 hover:bg-teal-700 text-white font-bold py-4 rounded-xl transition-colors text-body-md uppercase tracking-wider"
+              className="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 rounded-xl transition-colors text-body-md uppercase tracking-wider"
             >
               Enviar Mensaje
             </Link>

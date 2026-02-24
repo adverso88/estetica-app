@@ -63,7 +63,7 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
       } else {
         // Create new client
         if (!clientName || !clientEmail || !clientPhone) {
-          setError('Por favor complete todos los datos del cliente')
+          setError('Por favor complete todos los datos del paciente')
           setLoading(false)
           return
         }
@@ -96,7 +96,7 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
             .single()
 
           if (clientError) {
-            throw new Error('Error al crear cliente: ' + clientError.message)
+            throw new Error('Error al crear paciente: ' + clientError.message)
           }
           clientId = newClient.id
         }
@@ -138,7 +138,7 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
             clientEmail: clientMode === 'existing'
               ? existingClients.find(c => c.id === selectedClientId)?.email
               : clientEmail,
-            lawyerName: lawyer?.name || 'Abogado',
+            lawyerName: lawyer?.name || 'Especialista',
             lawyerEmail: lawyer?.email || '',
             appointmentDate: new Date(selectedDate).toLocaleDateString('es-ES', {
               weekday: 'long',
@@ -179,14 +179,14 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Lawyer Selection */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold text-foreground mb-4">1. Seleccionar Abogado</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">1. Seleccionar Especialista</h3>
         <select
           value={selectedLawyer}
           onChange={(e) => setSelectedLawyer(e.target.value)}
           required
           className="w-full px-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-500"
         >
-          <option value="">Seleccione un abogado</option>
+          <option value="">Seleccione un especialista</option>
           {lawyers.map(lawyer => (
             <option key={lawyer.id} value={lawyer.id}>
               {lawyer.name} - {lawyer.specialty}
@@ -197,7 +197,7 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
 
       {/* Client Selection */}
       <Card className="p-6">
-        <h3 className="text-lg font-semibold text-foreground mb-4">2. Datos del Cliente</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-4">2. Datos del Paciente</h3>
 
         {/* Toggle between existing/new client */}
         <div className="flex gap-4 mb-4">
@@ -210,7 +210,7 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
                 : 'bg-gray-100 text-foreground-secondary hover:bg-gray-200'
             }`}
           >
-            Nuevo Cliente
+            Nuevo Paciente
           </button>
           <button
             type="button"
@@ -221,7 +221,7 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
                 : 'bg-gray-100 text-foreground-secondary hover:bg-gray-200'
             }`}
           >
-            Cliente Existente
+            Paciente Existente
           </button>
         </div>
 
@@ -232,7 +232,7 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
             required
             className="w-full px-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-500"
           >
-            <option value="">Seleccione un cliente</option>
+            <option value="">Seleccione un paciente</option>
             {existingClients.map(client => (
               <option key={client.id} value={client.id}>
                 {client.full_name || 'Sin nombre'} - {client.email || 'Sin email'}

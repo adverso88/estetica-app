@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 
     if (lawyerError || !lawyer) {
       return NextResponse.json(
-        { error: 'Abogado no encontrado' },
+        { error: 'Especialista no encontrado' },
         { status: 404 }
       )
     }
@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
           appointmentId: appointment.id,
           clientName: client.name,
           clientEmail: client.email,
-          lawyerName: lawyerProfile?.full_name || 'Abogado',
+          lawyerName: lawyerProfile?.full_name || 'Especialista',
           lawyerEmail: lawyerProfile?.email || '',
           appointmentDate,
           appointmentTime,

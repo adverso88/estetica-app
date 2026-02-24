@@ -10,7 +10,7 @@ export function SectionHeading({ label, title, subtitle, centered = true, light 
   return (
     <div className={centered ? 'text-center' : ''}>
       {label && (
-        <p className={`text-body-sm font-semibold uppercase tracking-widest mb-2 ${light ? 'text-teal-300' : 'text-teal-600'}`}>
+        <p className={`text-body-sm font-semibold uppercase tracking-widest mb-2 ${light ? 'text-primary-300' : 'text-primary-600'}`}>
           {label}
         </p>
       )}
