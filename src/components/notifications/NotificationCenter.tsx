@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Card } from '@/components/ui/card'
-import type { Notification, NotificationType } from '@/types/database'
+import type { Notificacion, NotificationType } from '@/types/database'
 
 interface NotificationCenterProps {
   userId: string
@@ -30,11 +30,11 @@ const NOTIFICATION_COLORS: Record<NotificationType, string> = {
 }
 
 export function NotificationCenter({ userId }: NotificationCenterProps) {
-  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [notifications, setNotifications] = useState<Notificacion[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  const unreadCount = notifications.filter(n => !n.is_read).length
+  const unreadCount = notifications.filter(n => !n.leida).length
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -67,7 +67,7 @@ export function NotificationCenter({ userId }: NotificationCenterProps) {
           filter: `user_id=eq.${userId}`,
         },
         (payload) => {
-          setNotifications(prev => [payload.new as Notification, ...prev])
+          setNotifications(prev => [payload.new as any, ...prev])
         }
       )
       .subscribe()
@@ -81,11 +81,11 @@ export function NotificationCenter({ userId }: NotificationCenterProps) {
     const supabase = createClient()
     await supabase
       .from('notifications')
-      .update({ is_read: true })
+      .update({ leida: true })
       .eq('id', notificationId)
 
     setNotifications(prev =>
-      prev.map(n => n.id === notificationId ? { ...n, is_read: true } : n)
+      prev.map(n => n.id === notificationId ? { ...n, leida: true } : n)
     )
   }
 
@@ -93,11 +93,11 @@ export function NotificationCenter({ userId }: NotificationCenterProps) {
     const supabase = createClient()
     await supabase
       .from('notifications')
-      .update({ is_read: true })
+      .update({ leida: true })
       .eq('user_id', userId)
-      .eq('is_read', false)
+      .eq('leida', false)
 
-    setNotifications(prev => prev.map(n => ({ ...n, is_read: true })))
+    setNotifications(prev => prev.map(n => ({ ...n, leida: true })))
   }
 
   const formatTime = (dateStr: string) => {
@@ -165,16 +165,15 @@ export function NotificationCenter({ userId }: NotificationCenterProps) {
               ) : (
                 <div className="divide-y divide-border">
                   {notifications.map(notification => {
-                    const Icon = NOTIFICATION_ICONS[notification.type]
-                    const colorClass = NOTIFICATION_COLORS[notification.type]
+                    const Icon = NOTIFICATION_ICONS[notification.tipo as NotificationType] || BellIcon
+                    const colorClass = NOTIFICATION_COLORS[notification.tipo as NotificationType] || 'bg-gray-100 text-gray-600'
 
                     return (
                       <button
                         key={notification.id}
                         onClick={() => markAsRead(notification.id)}
-                        className={`w-full p-4 text-left hover:bg-gray-50 transition-colors ${
-                          !notification.is_read ? 'bg-accent-50/50' : ''
-                        }`}
+                        className={`w-full p-4 text-left hover:bg-gray-50 transition-colors ${!notification.leida ? 'bg-primary-50/50 shadow-rose-sm' : ''
+                          }`}
                       >
                         <div className="flex gap-3">
                           <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${colorClass}`}>
@@ -182,15 +181,15 @@ export function NotificationCenter({ userId }: NotificationCenterProps) {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-2">
-                              <p className={`text-sm ${notification.is_read ? 'text-foreground' : 'font-semibold text-foreground'}`}>
-                                {notification.title}
+                              <p className={`text-sm ${notification.leida ? 'text-foreground' : 'font-semibold text-foreground'}`}>
+                                {notification.titulo}
                               </p>
-                              {!notification.is_read && (
-                                <span className="w-2 h-2 bg-accent-500 rounded-full flex-shrink-0 mt-1.5" />
+                              {!notification.leida && (
+                                <span className="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0 mt-1.5 shadow-rose-sm" />
                               )}
                             </div>
                             <p className="text-sm text-foreground-secondary line-clamp-2 mt-0.5">
-                              {notification.message}
+                              {notification.mensaje}
                             </p>
                             <p className="text-xs text-foreground-muted mt-1">
                               {formatTime(notification.created_at)}
