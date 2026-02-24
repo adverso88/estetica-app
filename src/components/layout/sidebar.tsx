@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { signout } from '@/actions/auth'
 import {
   LayoutDashboard,
   Calendar,
@@ -66,7 +67,13 @@ const navItems = [
   }
 ]
 
-export function Sidebar() {
+interface SidebarProps {
+  userEmail?: string
+  userDisplayName?: string
+  userInitials?: string
+}
+
+export function Sidebar({ userEmail = 'admin@estetica.com', userDisplayName = 'Admin Clínica', userInitials = 'AD' }: SidebarProps) {
   const pathname = usePathname()
 
   return (
@@ -108,16 +115,18 @@ export function Sidebar() {
       {/* Footer / User */}
       <div className="p-4 border-t border-border-light">
         <div className="flex items-center gap-3 p-3 rounded-xl bg-blush/20">
-          <div className="w-10 h-10 rounded-lg bg-primary-500 flex items-center justify-center text-white font-bold">
-            AD
+          <div className="w-10 h-10 rounded-lg bg-primary-500 flex items-center justify-center text-white font-bold text-sm">
+            {userInitials}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-foreground truncate">Admin Clínica</p>
-            <p className="text-[10px] text-foreground-muted truncate">admin@estetica.com</p>
+            <p className="text-sm font-bold text-foreground truncate">{userDisplayName}</p>
+            <p className="text-[10px] text-foreground-muted truncate">{userEmail}</p>
           </div>
-          <button className="p-2 text-foreground-muted hover:text-error-500 transition-colors">
-            <LogOut size={18} />
-          </button>
+          <form action={signout}>
+            <button type="submit" className="p-2 text-foreground-muted hover:text-error-500 transition-colors" title="Cerrar sesión">
+              <LogOut size={18} />
+            </button>
+          </form>
         </div>
       </div>
     </aside>

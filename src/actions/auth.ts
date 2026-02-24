@@ -23,9 +23,14 @@ export async function login(formData: FormData) {
 export async function signup(formData: FormData) {
   const supabase = await createClient()
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   const { error } = await supabase.auth.signUp({
     email: formData.get('email') as string,
     password: formData.get('password') as string,
+    options: {
+      // Enlace de confirmación en el correo debe ir a la app en producción, no a localhost
+      ...(siteUrl && { emailRedirectTo: `${siteUrl}/login` }),
+    },
   })
 
   if (error) {
