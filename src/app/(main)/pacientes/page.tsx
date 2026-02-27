@@ -81,7 +81,7 @@ export default async function PacientesPage({
                                 <th className="text-left text-xs font-semibold text-foreground-muted uppercase tracking-wide px-6 py-4">Paciente</th>
                                 <th className="text-left text-xs font-semibold text-foreground-muted uppercase tracking-wide px-4 py-4 hidden md:table-cell">Contacto</th>
                                 <th className="text-left text-xs font-semibold text-foreground-muted uppercase tracking-wide px-4 py-4 hidden lg:table-cell">Tipo piel</th>
-                                <th className="text-left text-xs font-semibold text-foreground-muted uppercase tracking-wide px-4 py-4 hidden lg:table-cell">Fuente</th>
+                                <th className="text-left text-xs font-semibold text-foreground-muted uppercase tracking-wide px-4 py-4 hidden lg:table-cell">¿Cómo nos conociste?</th>
                                 <th className="text-left text-xs font-semibold text-foreground-muted uppercase tracking-wide px-4 py-4 hidden xl:table-cell">Ingresó</th>
                                 <th className="px-4 py-4" />
                             </tr>

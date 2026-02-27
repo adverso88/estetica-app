@@ -42,6 +42,7 @@ export default function NuevoPacientePage() {
             const data = Object.fromEntries(
                 Object.entries(form).filter(([, v]) => v !== '' && v !== null && v !== undefined)
             )
+            console.log('Insertando paciente:', data)
             const { error: err } = await supabase.from('pacientes').insert(data)
             if (err) throw err
             router.push('/pacientes')
@@ -124,7 +125,7 @@ export default function NuevoPacientePage() {
                     </div>
                     <div>
                         <label className="block text-xs font-semibold text-foreground-secondary uppercase tracking-wide mb-1.5">
-                            Fuente de captación
+                            ¿Cómo nos conociste?
                         </label>
                         <select name="fuente_captacion" value={form.fuente_captacion} onChange={handleChange} className="input-field">
                             {FUENTES_CAPTACION.map(f => (

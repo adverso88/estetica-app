@@ -21,50 +21,50 @@ export default async function AdminNewAppointmentPage() {
     .eq('id', user.id)
     .single()
 
-  if (profile?.role !== 'admin') {
+  if (profile?.role !== 'admin' && profile?.role !== 'master' && profile?.role !== 'recepcionista') {
     redirect('/dashboard')
   }
 
-  // Get all active lawyers
-  const { data: lawyers } = await supabase
-    .from('lawyers')
-    .select('id, specialty, profile:profiles(full_name, email)')
+  // Get all active profesionales
+  const { data: profesionales } = await supabase
+    .from('profesionales')
+    .select('id, especialidad, nombre, profile:profiles(email)')
     .eq('is_active', true)
 
-  // Get appointment types
-  const { data: appointmentTypes } = await supabase
-    .from('appointment_types')
+  // Get tratamientos
+  const { data: tratamientos } = await supabase
+    .from('tratamientos')
     .select('*')
     .eq('is_active', true)
-    .order('name')
+    .order('nombre')
 
-  // Get existing clients for autocomplete
-  const { data: clients } = await supabase
-    .from('clients')
-    .select('id, full_name, email, phone')
-    .order('full_name')
+  // Get existing pacientes for autocomplete
+  const { data: pacientes } = await supabase
+    .from('pacientes')
+    .select('id, nombre, apellido, email, telefono')
+    .order('nombre')
     .limit(100)
 
-  const formattedLawyers = (lawyers || []).map((l: { id: string; specialty: string; profile: { full_name: string; email: string }[] | { full_name: string; email: string } }) => ({
+  const formattedLawyers = (profesionales || []).map((l: any) => ({
     id: l.id,
-    specialty: l.specialty,
-    name: Array.isArray(l.profile) ? l.profile[0]?.full_name : l.profile?.full_name,
-    email: Array.isArray(l.profile) ? l.profile[0]?.email : l.profile?.email
+    specialty: l.especialidad,
+    name: l.nombre,
+    email: l.profile?.email || ''
   }))
 
   return (
     <div className="p-6 md:p-8 max-w-3xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-foreground">Agendar Cita para Colaborador</h1>
+        <h1 className="text-2xl font-bold text-foreground">Agendar Cita (Staff)</h1>
         <p className="text-foreground-secondary mt-1">
-          Crea una cita para cualquier especialista del bufete
+          Crea una cita para cualquier especialista de la clínica
         </p>
       </div>
 
       <AdminBookingForm
         lawyers={formattedLawyers}
-        appointmentTypes={appointmentTypes || []}
-        existingClients={clients || []}
+        appointmentTypes={tratamientos || []}
+        existingClients={pacientes || []}
       />
     </div>
   )

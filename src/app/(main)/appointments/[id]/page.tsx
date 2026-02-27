@@ -26,12 +26,12 @@ export default async function AppointmentDetailPage({ params }: PageProps) {
 
   // Obtener cita con relaciones
   const { data: appointment, error } = await supabase
-    .from('appointments')
+    .from('citas')
     .select(`
       *,
-      client:clients(*, profile:profiles(*)),
-      lawyer:lawyers(*, profile:profiles(*)),
-      appointment_type:appointment_types(*)
+      paciente:pacientes(*),
+      profesional:profesionales(*),
+      tratamiento:tratamientos(*)
     `)
     .eq('id', id)
     .single()
@@ -47,7 +47,7 @@ export default async function AppointmentDetailPage({ params }: PageProps) {
     .eq('id', user.id)
     .single()
 
-  const userRole = profile?.role === 'lawyer' ? 'lawyer' : 'client'
+  const userRole = profile?.role || 'paciente'
 
   return (
     <div className="p-6 md:p-8 max-w-3xl mx-auto">

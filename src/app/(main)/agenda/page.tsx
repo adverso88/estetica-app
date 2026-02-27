@@ -170,7 +170,7 @@ export default async function AgendaPage({
                                             <MessageCircle size={18} />
                                         </a>
                                     )}
-                                    <Link href={`/citas/${cita.id}`}
+                                    <Link href={`/appointments/${cita.id}`}
                                         className="w-10 h-10 rounded-xl bg-white border border-border-light hover:bg-blush flex items-center justify-center text-foreground-muted hover:text-primary-500 transition-all"
                                         title="Ver detalle">
                                         <ChevronRight size={18} />

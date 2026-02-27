@@ -23,7 +23,7 @@ export default async function AdminUsersPage() {
     .eq('id', user.id)
     .single()
 
-  if (profile?.role !== 'admin') {
+  if (profile?.role !== 'admin' && profile?.role !== 'master') {
     redirect('/dashboard')
   }
 
@@ -36,7 +36,7 @@ export default async function AdminUsersPage() {
   // Obtener estadísticas
   const stats = {
     total: users?.length || 0,
-    admins: users?.filter(u => u.role === 'admin').length || 0,
+    admins: users?.filter(u => u.role === 'admin' || u.role === 'master').length || 0,
     profesionales: users?.filter(u => u.role === 'profesional').length || 0,
     staff: users?.filter(u => u.role === 'recepcionista').length || 0,
   }

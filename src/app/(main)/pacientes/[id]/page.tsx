@@ -36,6 +36,10 @@ export default async function PacienteDetailPage({ params }: { params: Promise<{
       historial_clinico (
         id, fecha, notas, unidades_usadas, nombre_producto, lote_producto, zonas_tratadas,
         tratamiento:tratamientos(nombre)
+      ),
+      consentimientos_firmados (
+        id, firmado_en, 
+        plantilla:consentimientos_plantillas(nombre, titulo)
       )
     `)
         .eq('id', id)
@@ -95,8 +99,17 @@ export default async function PacienteDetailPage({ params }: { params: Promise<{
                             <ShieldCheck size={18} className="text-primary-500" /> Seguridad Legal
                         </h3>
                         <div className="space-y-3">
-                            <ConsentStatus label="Botox Facial" signed={true} date="22/02/2026" />
-                            <ConsentStatus label="Relleno Labios" signed={false} />
+                            {paciente.consentimientos_firmados?.map((c: any) => (
+                                <ConsentStatus
+                                    key={c.id}
+                                    label={c.plantilla?.titulo || c.plantilla?.nombre || 'Consentimiento'}
+                                    signed={true}
+                                    date={new Date(c.firmado_en).toLocaleDateString()}
+                                />
+                            ))}
+                            {(!paciente.consentimientos_firmados || paciente.consentimientos_firmados.length === 0) && (
+                                <p className="text-xs text-foreground-muted text-center py-4">No hay consentimientos firmados aún.</p>
+                            )}
                         </div>
                     </div>
                 </div>

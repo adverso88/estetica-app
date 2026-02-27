@@ -35,7 +35,12 @@ interface AnalyticsStats {
 
 export function AnalyticsDashboard({ stats }: { stats: AnalyticsStats }) {
   const formatCurrency = (amount: number) =>
-    new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount)
+    new Intl.NumberFormat('es-CO', {
+      style: 'currency',
+      currency: 'COP',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount)
 
   const formatPercent = (value: number) =>
     `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`
@@ -56,8 +61,8 @@ export function AnalyticsDashboard({ stats }: { stats: AnalyticsStats }) {
         <Card className="p-6 border-l-4 border-secondary-500">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm font-medium text-foreground-secondary">Ingresos del Mes</p>
-              <p className="text-3xl font-bold text-foreground mt-2">
+              <p className="text-sm font-medium text-foreground-secondary">Dinero Recolectado (Mes)</p>
+              <p className="text-3xl font-bold text-success-600 mt-2">
                 {formatCurrency(stats.revenue.current)}
               </p>
             </div>
@@ -143,7 +148,7 @@ export function AnalyticsDashboard({ stats }: { stats: AnalyticsStats }) {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-warning-50 rounded-xl">
               <div>
-                <p className="text-sm text-foreground-secondary">Cuentas por Cobrar</p>
+                <p className="text-sm text-foreground-secondary">Dinero Pendiente (Mes)</p>
                 <p className="text-xl font-bold text-warning-700">{formatCurrency(stats.accountsReceivable)}</p>
               </div>
               <AlertIcon className="w-8 h-8 text-warning-500" />

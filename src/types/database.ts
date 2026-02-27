@@ -2,7 +2,7 @@
 // TIPOS DEL DOMINIO - APP CLÍNICA ESTÉTICA
 // ============================================
 
-export type UserRole = 'admin' | 'profesional' | 'recepcionista'
+export type UserRole = 'master' | 'admin' | 'profesional' | 'recepcionista'
 
 export interface Profile {
   id: string
@@ -285,6 +285,19 @@ export const DIAS_SEMANA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves'
 export type AppointmentStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'no_show'
 
 export type PaymentStatus = 'pending' | 'completed' | 'failed' | 'refunded'
+export type PaymentMethod = 'cash' | 'credit_card' | 'debit_card' | 'transfer' | 'bre-b' | 'other'
+
+export interface Payment {
+  id: string
+  appointment_id: string
+  amount: number
+  status: PaymentStatus
+  payment_method: PaymentMethod | null
+  transaction_id: string | null
+  paid_at: string | null
+  created_at: string
+  updated_at: string
+}
 
 /** Respuesta de la tabla appointments (lawyers/clients); puede usar status o estado según esquema */
 export type AppointmentWithRelations = Cita & {

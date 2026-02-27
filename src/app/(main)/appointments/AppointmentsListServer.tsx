@@ -2,67 +2,66 @@ import { createClient } from '@/lib/supabase/server'
 import { AppointmentsCalendar } from '@/features/appointments/components/AppointmentsCalendar'
 import type { AppointmentWithRelations } from '@/types/database'
 
-type ServerRole = 'client' | 'lawyer' | 'admin'
-type CalendarRole = 'cliente' | 'especialista' | 'admin'
-
-const roleToCalendar: Record<ServerRole, CalendarRole> = {
-  client: 'cliente',
-  lawyer: 'especialista',
+const roleToCalendar: Record<string, string> = {
+  paciente: 'cliente',
+  profesional: 'especialista',
   admin: 'admin',
+  master: 'admin',
+  recepcionista: 'admin',
 }
 
 interface AppointmentsListServerProps {
   userId: string
-  userRole: ServerRole
+  userRole: string
 }
 
 export async function AppointmentsListServer({ userId, userRole }: AppointmentsListServerProps) {
   const supabase = await createClient()
-  const calendarRole = roleToCalendar[userRole]
+  const calendarRole = roleToCalendar[userRole] || 'cliente'
 
   let query = supabase
-    .from('appointments')
+    .from('citas')
     .select(`
       *,
-      client:clients(*, profile:profiles(*)),
-      lawyer:lawyers(*, profile:profiles(*)),
-      appointment_type:appointment_types(*)
+      paciente:pacientes(*),
+      profesional:profesionales(*),
+      tratamiento:tratamientos(*)
     `)
-    .order('scheduled_at', { ascending: true })
+    .order('fecha_hora', { ascending: true })
 
-  if (userRole === 'client') {
-    // Obtener client_id del usuario
-    const { data: client } = await supabase
-      .from('clients')
+  if (userRole === 'paciente') {
+    // Obtener paciente_id del usuario
+    const { data: pac } = await supabase
+      .from('pacientes')
       .select('id')
       .eq('user_id', userId)
       .single()
 
-    if (client) {
-      query = query.eq('client_id', client.id)
+    if (pac) {
+      query = query.eq('paciente_id', pac.id)
     } else {
       return (
         <AppointmentsCalendar
           appointments={[]}
-          userRole={calendarRole}
+          userRole={calendarRole as any}
         />
       )
     }
-  } else if (userRole === 'lawyer') {
-    // Obtener lawyer_id del usuario
-    const { data: lawyer } = await supabase
-      .from('lawyers')
+  } else if (userRole === 'profesional') {
+    // Obtener profesional_id del usuario
+    const { data: pro } = await supabase
+      .from('profesionales')
       .select('id')
       .eq('user_id', userId)
       .single()
 
-    if (lawyer) {
-      query = query.eq('lawyer_id', lawyer.id)
+    if (pro) {
+      query = query.eq('profesional_id', pro.id)
     } else {
       return (
         <AppointmentsCalendar
           appointments={[]}
-          userRole={calendarRole}
+          userRole={calendarRole as any}
         />
       )
     }
@@ -82,7 +81,7 @@ export async function AppointmentsListServer({ userId, userRole }: AppointmentsL
   return (
     <AppointmentsCalendar
       appointments={appointments as AppointmentWithRelations[]}
-      userRole={calendarRole}
+      userRole={calendarRole as any}
     />
   )
 }

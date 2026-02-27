@@ -11,6 +11,7 @@ interface UserManagementProps {
 }
 
 const ROLES: { value: UserRole; label: string; color: string }[] = [
+  { value: 'master', label: 'CEO / Master', color: 'bg-primary-100 text-primary-700' },
   { value: 'admin', label: 'Administrador', color: 'bg-secondary-100 text-secondary-700' },
   { value: 'profesional', label: 'Profesional', color: 'bg-accent-100 text-accent-700' },
   { value: 'recepcionista', label: 'Recepcionista/Staff', color: 'bg-success-100 text-success-700' },
@@ -72,8 +73,8 @@ export function UserManagement({ initialUsers }: UserManagementProps) {
           <button
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${filter === 'all'
-                ? 'bg-primary-500 text-white'
-                : 'bg-white border border-border text-foreground-secondary hover:bg-gray-50'
+              ? 'bg-primary-500 text-white'
+              : 'bg-white border border-border text-foreground-secondary hover:bg-gray-50'
               }`}
           >
             Todos
@@ -83,8 +84,8 @@ export function UserManagement({ initialUsers }: UserManagementProps) {
               key={role.value}
               onClick={() => setFilter(role.value)}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${filter === role.value
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-white border border-border text-foreground-secondary hover:bg-gray-50'
+                ? 'bg-primary-500 text-white'
+                : 'bg-white border border-border text-foreground-secondary hover:bg-gray-50'
                 }`}
             >
               {role.label}s
@@ -138,8 +139,8 @@ export function UserManagement({ initialUsers }: UserManagementProps) {
                             onClick={() => handleRoleChange(user.id, role.value)}
                             disabled={saving}
                             className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${user.role === role.value
-                                ? `${role.color} ring-2 ring-offset-2 ring-primary-500`
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                              ? `${role.color} ring-2 ring-offset-2 ring-primary-500`
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                               }`}
                           >
                             {role.label}

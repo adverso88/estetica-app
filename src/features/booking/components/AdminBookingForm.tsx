@@ -16,9 +16,10 @@ interface Lawyer {
 
 interface ExistingClient {
   id: string
-  full_name: string | null
-  email: string | null
-  phone: string | null
+  nombre: string
+  apellido: string
+  email?: string | null
+  telefono?: string | null
 }
 
 interface AdminBookingFormProps {
@@ -68,9 +69,14 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
           return
         }
 
+        // Dividir nombre y apellido
+        const nameParts = clientName.trim().split(' ')
+        const nombre = nameParts[0]
+        const apellido = nameParts.slice(1).join(' ') || ' '
+
         // Check if client email already exists
         const { data: existingClient } = await supabase
-          .from('clients')
+          .from('pacientes')
           .select('id')
           .eq('email', clientEmail)
           .single()
@@ -79,18 +85,18 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
           clientId = existingClient.id
           // Update client info
           await supabase
-            .from('clients')
-            .update({ full_name: clientName, phone: clientPhone })
+            .from('pacientes')
+            .update({ nombre, apellido, telefono: clientPhone })
             .eq('id', clientId)
         } else {
           // Create new client
           const { data: newClient, error: clientError } = await supabase
-            .from('clients')
+            .from('pacientes')
             .insert({
-              full_name: clientName,
+              nombre,
+              apellido,
               email: clientEmail,
-              phone: clientPhone,
-              user_id: null
+              telefono: clientPhone,
             })
             .select('id')
             .single()
@@ -107,15 +113,16 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
 
       // Create appointment
       const { error: appointmentError } = await supabase
-        .from('appointments')
+        .from('citas')
         .insert({
-          lawyer_id: selectedLawyer,
-          client_id: clientId,
-          appointment_type_id: selectedType,
-          scheduled_at: scheduledAt,
-          duration_minutes: selectedAppointmentType?.duration_minutes || 30,
-          status: 'confirmed',
-          notes: notes || null
+          profesional_id: selectedLawyer,
+          paciente_id: clientId,
+          tratamiento_id: selectedType,
+          fecha_hora: scheduledAt,
+          duracion_minutos: selectedAppointmentType?.duracion_minutos || 30,
+          precio: selectedAppointmentType?.precio || 0,
+          estado: 'agendada',
+          notas: notes || null
         })
 
       if (appointmentError) {
@@ -133,7 +140,7 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
             type: 'created',
             appointmentId: 'admin-created',
             clientName: clientMode === 'existing'
-              ? existingClients.find(c => c.id === selectedClientId)?.full_name
+              ? `${existingClients.find(c => c.id === selectedClientId)?.nombre} ${existingClients.find(c => c.id === selectedClientId)?.apellido}`
               : clientName,
             clientEmail: clientMode === 'existing'
               ? existingClients.find(c => c.id === selectedClientId)?.email
@@ -204,22 +211,20 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
           <button
             type="button"
             onClick={() => setClientMode('new')}
-            className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-              clientMode === 'new'
-                ? 'bg-accent-500 text-white'
-                : 'bg-gray-100 text-foreground-secondary hover:bg-gray-200'
-            }`}
+            className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${clientMode === 'new'
+              ? 'bg-accent-500 text-white'
+              : 'bg-gray-100 text-foreground-secondary hover:bg-gray-200'
+              }`}
           >
             Nuevo Paciente
           </button>
           <button
             type="button"
             onClick={() => setClientMode('existing')}
-            className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-              clientMode === 'existing'
-                ? 'bg-accent-500 text-white'
-                : 'bg-gray-100 text-foreground-secondary hover:bg-gray-200'
-            }`}
+            className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${clientMode === 'existing'
+              ? 'bg-accent-500 text-white'
+              : 'bg-gray-100 text-foreground-secondary hover:bg-gray-200'
+              }`}
           >
             Paciente Existente
           </button>
@@ -235,7 +240,7 @@ export function AdminBookingForm({ lawyers, appointmentTypes, existingClients }:
             <option value="">Seleccione un paciente</option>
             {existingClients.map(client => (
               <option key={client.id} value={client.id}>
-                {client.full_name || 'Sin nombre'} - {client.email || 'Sin email'}
+                {client.nombre} {client.apellido} {client.telefono ? `(${client.telefono})` : ''}
               </option>
             ))}
           </select>

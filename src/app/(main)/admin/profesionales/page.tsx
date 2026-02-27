@@ -57,6 +57,9 @@ export default async function ProfesionalesPage() {
                 {(!profesionales || profesionales.length === 0) && (
                     <div className="col-span-full py-12 text-center card-elevated">
                         <p className="text-foreground-muted">No hay profesionales registrados aún.</p>
+                        <Link href="/admin/profesionales/nuevo" className="btn-primary inline-flex mt-4">
+                            + Agregar primer profesional
+                        </Link>
                     </div>
                 )}
             </div>

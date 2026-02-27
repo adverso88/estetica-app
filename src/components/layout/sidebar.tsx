@@ -13,57 +13,65 @@ import {
   Stethoscope,
   Clock,
   ClipboardCheck,
-  Zap
+  Zap,
+  BarChart2
 } from 'lucide-react'
+import { UserRole } from '@/types/database'
 
 const navItems = [
   {
     label: 'Dashboard',
     href: '/dashboard',
     icon: <LayoutDashboard size={20} />,
-    roles: ['admin', 'recepcionista']
+    roles: ['master', 'admin', 'recepcionista']
   },
   {
     label: 'Agenda',
     href: '/agenda',
     icon: <Calendar size={20} />,
-    roles: ['admin', 'recepcionista', 'profesional']
+    roles: ['master', 'admin', 'recepcionista', 'profesional']
   },
   {
     label: 'Pacientes',
     href: '/pacientes',
     icon: <Users size={20} />,
-    roles: ['admin', 'recepcionista', 'profesional']
+    roles: ['master', 'admin', 'recepcionista', 'profesional']
+  },
+  {
+    label: 'Analíticas (CEO)',
+    href: '/admin/analytics',
+    icon: <BarChart2 size={20} />,
+    roles: ['master']
   },
   {
     label: 'Historial Médico',
     href: '/historial',
     icon: <Stethoscope size={20} />,
-    roles: ['admin', 'profesional']
+    roles: ['master', 'admin', 'profesional']
   },
   {
     label: 'Consentimientos',
     href: '/consentimientos',
     icon: <ClipboardCheck size={20} />,
-    roles: ['admin', 'recepcionista', 'profesional']
+    roles: ['master', 'admin', 'recepcionista', 'profesional']
   },
   {
     label: 'Seguimientos',
     href: '/seguimientos',
     icon: <Zap size={20} />,
-    roles: ['admin', 'profesional']
+    roles: ['master', 'admin', 'profesional']
   },
   {
     label: 'Tratamientos',
     href: '/admin/tratamientos',
     icon: <Clock size={20} />,
-    roles: ['admin']
+    roles: ['master', 'admin']
   },
   {
     label: 'Configuración',
     href: '/admin/configuracion',
     icon: <Settings size={20} />,
-    roles: ['admin']
+    roles: ['master', 'admin']
   }
 ]
 
@@ -71,9 +79,15 @@ interface SidebarProps {
   userEmail?: string
   userDisplayName?: string
   userInitials?: string
+  userRole?: UserRole
 }
 
-export function Sidebar({ userEmail = 'admin@estetica.com', userDisplayName = 'Admin Clínica', userInitials = 'AD' }: SidebarProps) {
+export function Sidebar({
+  userEmail = 'admin@estetica.com',
+  userDisplayName = 'Admin Clínica',
+  userInitials = 'AD',
+  userRole = 'recepcionista'
+}: SidebarProps) {
   const pathname = usePathname()
 
   return (
@@ -92,24 +106,26 @@ export function Sidebar({ userEmail = 'admin@estetica.com', userDisplayName = 'A
 
       {/* Navigation */}
       <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all group ${isActive
+        {navItems
+          .filter(item => item.roles.includes(userRole))
+          .map((item) => {
+            const isActive = pathname === item.href
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all group ${isActive
                   ? 'bg-blush text-primary-600 shadow-sm border border-primary-100 shadow-rose/10'
                   : 'text-foreground-secondary hover:bg-blush/30 hover:text-primary-500'
-                }`}
-            >
-              <span className={`${isActive ? 'text-primary-500' : 'text-foreground-muted group-hover:text-primary-400'}`}>
-                {item.icon}
-              </span>
-              {item.label}
-            </Link>
-          )
-        })}
+                  }`}
+              >
+                <span className={`${isActive ? 'text-primary-500' : 'text-foreground-muted group-hover:text-primary-400'}`}>
+                  {item.icon}
+                </span>
+                {item.label}
+              </Link>
+            )
+          })}
       </nav>
 
       {/* Footer / User */}
